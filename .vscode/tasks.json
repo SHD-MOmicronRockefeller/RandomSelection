@@ -2,17 +2,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "CMake: Configure",
+            "label": "QMake: Configure",
             "type": "shell",
-            "command": "if not exist build mkdir build && cd build && cmake .. -G \"MinGW Makefiles\" -DCMAKE_PREFIX_PATH=\"${env:QTDIR}\"",
+            "command": "if not exist build mkdir build && cd build && qmake .. -spec win32-g++",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [],
-            "detail": "自动创建build目录并生成Makefile，适配Qt环境变量"
+            "detail": "自动创建build目录并生成Makefile(qmake适配MinGW),无需手动指定Qt路径"
         },
         {
-            "label": "CMake: Build",
+            "label": "QMake: Build",
             "type": "shell",
             "command": "cd build && mingw32-make -j${env:NUMBER_OF_PROCESSORS}",
             "options": {
@@ -34,18 +34,18 @@
                     "message": 6
                 }
             },
-            "dependsOn": "CMake: Configure",
-            "detail": "多核编译项目，自动依赖配置步骤，支持多文件多目录"
+            "dependsOn": "QMake: Configure",
+            "detail": "多核编译项目(自动适配CPU核心数),依赖qmake配置步骤"
         },
         {
-            "label": "CMake: Clean",
+            "label": "QMake: Clean",
             "type": "shell",
-            "command": "rmdir /s /q build",
+            "command": "if exist build (cd build && mingw32-make clean) && rmdir /s /q build",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
             "problemMatcher": [],
-            "detail": "清理整个build目录，重置构建环境"
+            "detail": "先清理编译产物,再删除build目录,彻底重置构建环境"
         }
     ]
 }

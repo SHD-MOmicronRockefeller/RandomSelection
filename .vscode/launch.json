@@ -1,20 +1,19 @@
 {
-    // 使用 IntelliSense 了解相关属性。 
-    // 悬停以查看现有属性的描述。
-    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "name": "Qt Debug (MinGW GDB)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/${workspaceFolderBasename}.exe",
+            // 核心修改：适配 qmake 编译的程序路径（release 目录下的同名 exe）
+            "program": "${workspaceFolder}/build/release/${workspaceFolderBasename}.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": true,
-            //"preLaunchTask": "CMake: Build",
+            // 关键：关联 qmake 的 Build 任务，调试前自动编译
+            //"preLaunchTask": "QMake: Build",
             "MIMode": "gdb",
             "miDebuggerPath": "D:/DownApp/Qt/Tools/mingw1310_64/bin/gdb.exe",
             "setupCommands": [
@@ -28,7 +27,12 @@
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 }
-            ]
+            ],
+            // 新增：调试时自动加载符号，定位源码更准确
+            "symbolLoadInfo": {
+                "loadAll": true,
+                "exceptionList": ""
+            }
         }
     ]
 }
