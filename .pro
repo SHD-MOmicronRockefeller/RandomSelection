@@ -12,7 +12,8 @@ isEmpty(TARGET) {
 TEMPLATE = app
 
 # C++ 标准
-CONFIG += c++17
+#CONFIG += c++17
+CONFIG += c++20
 # 强制 UTF-8 编码
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
@@ -27,7 +28,7 @@ RESOURCES += $$files(*.qrc, true)
 SOURCES -= $$files(build/*.cpp, true)
 HEADERS -= $$files(build/*.h, true)
 
-# Qt 模块配置（按需添加）
+# Qt 模块配置
 QT += core widgets gui
 
 # Windows 显示控制台窗口

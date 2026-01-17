@@ -3,22 +3,30 @@
 
 #include "VariablesStore/variables.h"
 #include "QtPrecompiled.h"
-#include "CoreControlWidgets/MainWindow/CustomTitleBar.h"
+#include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
+
+// 声明MainWindowShell类
+namespace MainWindow {
+class CustomTitleBar;
+}
+// CustomTitleBar类声明
+namespace Variables{
+extern CoreControlWidgets::MainWindow::CustomTitleBar* customTitleBar;
+}
+
 namespace CoreControlWidgets {
 
 class MainWindowShell : public QMainWindow{
     Q_OBJECT
-public:
     // 构造函数
-    explicit MainWindowShell(QWidget *parent = nullptr);
+    public: explicit MainWindowShell(QWidget *parent = nullptr);
 
     // widget
-    QWidget* centralWidget = nullptr;
+    public: QWidget* m_centralWidget = nullptr;
 
     //设置标题栏
-    QVBoxLayout* mainLayout = nullptr;
-    MainWindow::CustomTitleBar *titleBar;
-    void setWindowTitleBox();
+    public: MainWindow::CustomTitleBar *&m_titleBar = Variables::customTitleBar;
+    public: void setWindowTitleBox();
 
     // override
 };

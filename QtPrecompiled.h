@@ -26,6 +26,7 @@
 #include <QDialogButtonBox>
 #include <QDial>
 #include <QDir>
+#include <QDockWidget>
 #include <QDoubleSpinBox>
 #include <QDrag>
 #include <QDropEvent>
@@ -41,6 +42,7 @@
 #include <QFrame>
 #include <QGesture>
 #include <QGestureEvent>
+#include <QGraphicsDropShadowEffect>
 #include <QGraphicsItem>
 #include <QGraphicsScene>
 #include <QGraphicsView>
