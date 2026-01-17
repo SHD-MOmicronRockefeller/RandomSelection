@@ -8,4 +8,4 @@
 你可以从[这里](https://github.com/SHD-MOmicronRockefeller/RandomSelection.git)下载最新版本的程序。
 (如果链接失效，那就请等待开发者更新)
 
-这可能需要一些库，我会
+这可能需要一些库，我会[放在这里](https://github.com/SHD-MOmicronRockefeller/RandomSelection/tree/main/lib)，尽管你不能很方便的下载他们
