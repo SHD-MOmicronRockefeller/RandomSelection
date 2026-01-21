@@ -2,17 +2,20 @@
 
 BaseWidgets::BaseElements::ControlList::ControlList(QWidget *parent) : QWidget(parent)
 {
+    this->setAutoFillBackground(true);
+    this->setAttribute(Qt::WA_StyledBackground, true);
     this->setObjectName("ControlList");
+
     this->m_centerLayout = new QVBoxLayout(this);
     this->setLayout(this->m_centerLayout);
-    this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
+
+    this->m_centerLayout->setContentsMargins(10, 10, 10, 10);
     this->m_centerLayout->setSpacing(0);
     this->m_centerLayout->setAlignment(Qt::AlignTop);
 
     this->setStyleSheet(R"(
     QWidget#ControlList{
         background-color:rgba(243, 243, 35, 1);
-        border:none;
     }
     )");
 }
@@ -24,6 +27,8 @@ BaseWidgets::BaseElements::ControlList::~ControlList()
 
 QLabel * BaseWidgets::BaseElements::ControlList::pushLable(QLabel *lbl)
 {
+    lbl->setAutoFillBackground(true);
+    lbl->setAttribute(Qt::WA_StyledBackground, true);
     lbl->setStyleSheet(R"(
     QLabel{
         background-color:transparent;
@@ -39,6 +44,8 @@ QLabel * BaseWidgets::BaseElements::ControlList::pushLable(QLabel *lbl)
 
 QPushButton * BaseWidgets::BaseElements::ControlList::pushButton(QPushButton *btn)
 {
+    btn->setAutoFillBackground(true);
+    btn->setAttribute(Qt::WA_StyledBackground, true);
     btn->setStyleSheet(R"(
     QPushButton{
         background-color:transparent;
