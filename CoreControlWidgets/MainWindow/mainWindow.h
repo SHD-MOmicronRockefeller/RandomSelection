@@ -5,6 +5,8 @@
 #include "QtPrecompiled.h"
 #include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
 
+#include "CoreControlWidgets/SelectTab/selectTab.h"
+
 // 声明MainWindowShell类
 namespace MainWindow {
 class CustomTitleBar;
@@ -25,6 +27,7 @@ class MainWindowShell : public QMainWindow{
     // widget
     public: QWidget* m_baseWidget = nullptr;
     public: QWidget* m_centralWidget = nullptr;
+    public: QVBoxLayout* m_centralLayout = nullptr;
 
     //设置标题栏
     public: MainWindow::CustomTitleBar *&m_customTitleBar = Variables::customTitleBar;
@@ -33,7 +36,7 @@ class MainWindowShell : public QMainWindow{
     //title layout
     private: QVBoxLayout *m_titleLayout = nullptr;
 
-    // override
+    public: CoreControlWidgets::SelectTab* m_selectTab = nullptr;
 };
 
 } // namespace CoreControlWidgets

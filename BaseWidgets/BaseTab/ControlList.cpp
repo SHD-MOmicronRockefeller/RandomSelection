@@ -1,28 +1,56 @@
 #include "ControlList.h"
 
-BaseWidgets::ControlList::ControlList(QWidget *parent) : QWidget(parent)
+BaseWidgets::BaseElements::ControlList::ControlList(QWidget *parent) : QWidget(parent)
 {
-    this->mainLayout = new QVBoxLayout(this);
+    this->setObjectName("ControlList");
+    this->m_centerLayout = new QVBoxLayout(this);
+    this->setLayout(this->m_centerLayout);
+    this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
+    this->m_centerLayout->setSpacing(0);
+    this->m_centerLayout->setAlignment(Qt::AlignTop);
 
-    this->initLayout();
-    this->initWidgets();
-    this->initStyle();
+    this->setStyleSheet(R"(
+    QWidget#ControlList{
+        background-color:rgba(243, 243, 35, 1);
+        border:none;
+    }
+    )");
 }
 
-BaseWidgets::ControlList::~ControlList()
+BaseWidgets::BaseElements::ControlList::~ControlList()
 {
-    this->mainLayout->deleteLater();
-    this->mainLayout = nullptr;
+    this->m_centerLayout = nullptr;
 }
 
-void BaseWidgets::ControlList::initLayout()
+QLabel * BaseWidgets::BaseElements::ControlList::pushLable(QLabel *lbl)
 {
+    lbl->setStyleSheet(R"(
+    QLabel{
+        background-color:transparent;
+        color:black;
+        border:none;
+        padding:5px;
+        font-size:14px;
+    }
+    )");
+    this->m_centerLayout->addWidget(lbl);
+    return lbl;
 }
 
-void BaseWidgets::ControlList::initWidgets()
+QPushButton * BaseWidgets::BaseElements::ControlList::pushButton(QPushButton *btn)
 {
-}
-
-void BaseWidgets::ControlList::initStyle()
-{
+    btn->setStyleSheet(R"(
+    QPushButton{
+        background-color:transparent;
+        color:black;
+        border:none;
+        padding:5px;
+        font-size:14px;
+    }
+    QPushButton:hover{
+        background-color:rgb(200, 200, 200);
+    }
+    )");
+    this->m_centerLayout->addWidget(btn);
+    return btn;
 }

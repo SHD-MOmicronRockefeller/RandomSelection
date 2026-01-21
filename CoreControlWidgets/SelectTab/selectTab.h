@@ -3,21 +3,15 @@
 
 #include "QtPrecompiled.h"
 
+#include "BaseWidgets/BaseTab/BaseTab.h"
+
 namespace CoreControlWidgets{
-
-namespace SelectTab{
-
-
-class SelectTab : public QWidget{
+class SelectTab : public BaseWidgets::BaseTab{
     Q_OBJECT
     public: SelectTab(QWidget *parent = nullptr);
 };
 
 
-
-
-
-} // namespace SelectTab
 
 
 

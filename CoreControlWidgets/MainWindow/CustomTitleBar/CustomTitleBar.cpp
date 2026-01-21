@@ -13,12 +13,14 @@ CustomTitleBar::CustomTitleBar(QWidget *parent): QFrame(parent)
     initWidgets();
     initStyle();
 
+    onMidBtnClicked("randomSelect", false);
+
     // 设置尺寸
     setFixedHeight(40);
     //setFixedWidth(600);
     move((Variables::WINDOW_WIDTH - 600)/2, 5);
     // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-    // /setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 CustomTitleBar::~CustomTitleBar()
@@ -89,8 +91,8 @@ void CustomTitleBar::initWidgets()
         m_midLayout->addWidget(btn);
         m_midBtns[midBtnNames[i]] = btn;
         // 发射信号：必须用 this->sigMidBtnClicked，或直接 emit sigMidBtnClicked
-        connect(btn, &QPushButton::clicked, this, [i, this](){
-            return this->onMidBtnClicked(i);
+        connect(btn, &QPushButton::clicked, this, [i, this, midBtnNames](){
+            return this->onMidBtnClicked(midBtnNames[i]);
         });
     }
     m_midBtns["randomSelect"]->setIcon(QIcon(":/ICONS/icons/MainTabIcons/RandomSelectTabIcon.png"));
@@ -101,6 +103,8 @@ void CustomTitleBar::initWidgets()
     m_midBtns["setting"]->setIconSize(QSize(20, 20));
     m_midBtns["about"]->setIcon(QIcon(":/ICONS/icons/MainTabIcons/AboutTabIcon.png"));
     m_midBtns["about"]->setIconSize(QSize(20, 20));
+
+    thisTabBtn = m_midBtns["randomSelect"];
 
     // 右侧按钮
     m_btnMin = new QPushButton(this);
@@ -137,35 +141,50 @@ void CustomTitleBar::initStyle()//#f8f9fa
 {
     setStyleSheet(R"(
         #CustomTitleBar { 
-            background-color: #f8f9fa; 
-            border-bottom: 1px solid #e0e0e0; 
+            background-color: rgba(248, 249, 250, 1); 
+            border-bottom: 1px solid rgba(220, 220, 220, 1); 
             border-radius: 0px;
         }
         QPushButton#midBtn {
             padding: 0px 12px; font-size: 15px;
             height: 36px;
             border: none; border-radius: 18px;
-            background-color: #e9ecef; color: #333;
+            background-color: rgba(255, 255, 255, 1); color: #333;
         }
-        QPushButton#midBtn:hover { background-color: #dee2e6; }
-        QPushButton#midBtn:pressed { background-color: #adb5bd; }
+        QPushButton#midBtn:hover { background-color: rgba(152, 200, 248, 1);}
+        QPushButton#midBtn:pressed { background-color: rgba(88, 171, 255, 1);}
+        QPushButton#midBtn::icon { filter: none   }
         QPushButton#rightBtn {
             width: 35px;
             height: 35px;
             border: none; border-radius: 0px;
             background-color: transparent;
         }
-        QPushButton#rightBtn:hover { background-color: #dee2e6; }
-        QPushButton#rightBtn:pressed { background-color: #adb5bd; }
+        QPushButton#rightBtn:hover { background-color: rgba(222, 226, 230, 1); }
+        QPushButton#rightBtn:pressed { background-color: rgba(173, 181, 189, 1); }
         QPushButton#closeBtn {
             width: 35px;
             height: 35px;
             border: none; border-radius: 0px;
             background-color: transparent;
         }
-        QPushButton#closeBtn:hover { background-color: #ff7875; }
-        QPushButton#closeBtn:pressed { background-color: #ff1f1f; }
+        QPushButton#closeBtn:hover { background-color: rgba(255, 120, 117, 1); }
+        QPushButton#closeBtn:pressed { background-color: rgba(255, 31, 31, 1); }
     )");
+}
+
+QIcon CustomTitleBar::setIconColor(QIcon icon, QColor color)
+{
+    if (icon.isNull()) {
+        printf("icon is null\n");
+        return icon; // 返回原图标，避免崩溃
+    }
+    QPixmap pixmap = icon.pixmap(QSize(32, 32));
+    QPainter painter(&pixmap);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    painter.fillRect(pixmap.rect(), color);
+    painter.end();
+    return QIcon(pixmap);
 }
 
 void CustomTitleBar::onMinimizeClicked()
@@ -188,14 +207,50 @@ void CustomTitleBar::onCloseClicked()
     this->window()->close();
 }
 
-void CustomTitleBar::onMidBtnClicked(int index)
+void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 {
-    printf("mid button clicked: %d\n", index);
-    switch (index){
-        case 0: onMidBtnClicked_randomSelect();  break;
-        case 1: onMidBtnClicked_fileEdit();      break;
-        case 2: onMidBtnClicked_setting();       break;
-        case 3: onMidBtnClicked_about();         break;
+    printf("mid button clicked: %s\n", ObjectName.toStdString().c_str());
+    // 设置当前按钮
+    if (ObjectName != ""){
+        thisTabBtn = m_midBtns[ObjectName];
+    }
+    for (auto &button : m_midBtns){
+        button->setStyleSheet(R"(
+        QPushButton#midBtn {
+            color: rgba(51, 51, 51, 1);
+            padding: 0px 12px; font-size: 15px;
+            height: 36px;
+            border: none; border-radius: 18px;
+            background-color: rgba(255, 255, 255, 1);
+        }
+        QPushButton#midBtn:hover { background-color: rgba(152, 200, 248, 1); }
+        QPushButton#midBtn:pressed { background-color: rgba(88, 171, 255, 1); }
+        )");
+        button->setIcon(setIconColor(button->icon(), QColor(0, 0, 0)));
+    }
+    thisTabBtn->setStyleSheet(R"(
+    QPushButton#midBtn {
+        color: rgba(255, 255, 255, 1);
+        padding: 0px 12px; font-size: 15px;
+        height: 36px;
+        border: none; border-radius: 18px;
+        background-color: rgba(17, 112, 208, 1);
+    }
+    QPushButton#midBtn:pressed { background-color: rgba(88, 171, 255, 1); }
+    QPushButton#midBtn::icon { filter: invert(100%); }
+    )");
+    thisTabBtn->setIcon(setIconColor(thisTabBtn->icon(), QColor(255, 255, 255)));
+
+    if (!canRun) return;
+
+    if (ObjectName == "randomSelect") {
+        onMidBtnClicked_randomSelect();
+    } else if (ObjectName == "fileEdit") {
+        onMidBtnClicked_fileEdit();
+    } else if (ObjectName == "setting") {
+        onMidBtnClicked_setting();
+    } else if (ObjectName == "about") {
+        onMidBtnClicked_about();
     }
 }
 

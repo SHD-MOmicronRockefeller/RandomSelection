@@ -1,28 +1,31 @@
-#ifndef SELECTTAB_H
-#define SELECTTAB_H
+#ifndef CONTROLLIST_H
+#define CONTROLLIST_H
 
 #include "QtPrecompiled.h"
 
 namespace BaseWidgets {
 
+namespace BaseElements {
 
 class ControlList : public QWidget{
     Q_OBJECT
     public: ControlList(QWidget *parent = nullptr);
     public: ~ControlList();
+    
+    protected: QVBoxLayout* m_centerLayout = nullptr;
 
-    public: QVBoxLayout* mainLayout = nullptr;
 
-    private: void initLayout(); // 初始化布局
-    private: void initWidgets(); // 初始化控件
-    private: void initStyle(); // 初始化样式
+    public: QLabel * pushLable(QLabel *lbl = nullptr);
+    public: QPushButton * pushButton(QPushButton *btn = nullptr);
+
+    public: QPushButton *thisTabButton = nullptr;
     
 };
 
-
+} // namespace BaseElements
 
 
 } // namespace BaseWidgets
 
 
-#endif // SELECTTAB_H
+#endif // CONTROLLIST_H
