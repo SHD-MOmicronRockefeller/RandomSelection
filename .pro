@@ -31,6 +31,9 @@ HEADERS -= $$files(build/*.h, true)
 # Qt 模块配置
 QT += core widgets gui
 
+# 资源文件
+#add_executable($$TARGET $$SOURCES $$HEADERS $$FORMS $$RESOURCES)
+
 # Windows 显示控制台窗口
 win32 {
     CONFIG -= windows

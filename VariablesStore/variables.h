@@ -4,7 +4,7 @@
 // 常量//////////////////////////////////////////////////////////////////////////////////////////////
 namespace Variables{
     const int WINDOW_WIDTH = 700;
-    const int WINDOW_HEIGHT = 300 + 30;
+    const int WINDOW_HEIGHT = 350 + 30;
 }
 
 

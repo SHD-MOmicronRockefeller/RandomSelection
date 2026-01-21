@@ -3,9 +3,10 @@
 #include "Initialization/Initialization.h"
 
 int main(int argc, char* argv[]){
+    system("chcp 65001"); // 设置编码为UTF-8
     // 创建应用程序实例
     Variables::applicationShell = new ApplicationClass::ApplicationShell(argc, argv);
-
+    
     // 初始化变量
     Initialization::initialize_values();
 

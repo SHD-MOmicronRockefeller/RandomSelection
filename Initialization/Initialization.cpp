@@ -4,8 +4,8 @@ namespace Initialization {
 
 void initialize_values()
 {
-    Variables::mainWindowShell = new CoreControlWidgets::MainWindowShell();
     Variables::customTitleBar = new CoreControlWidgets::MainWindow::CustomTitleBar(Variables::mainWindowShell);
+    Variables::mainWindowShell = new CoreControlWidgets::MainWindowShell();
 }
 
 void initialize_settings()

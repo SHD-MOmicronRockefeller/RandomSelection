@@ -13,6 +13,7 @@ class CustomTitleBar : public QFrame
     Q_OBJECT
 public:
     public: explicit CustomTitleBar(QWidget *parent = nullptr);
+    public: ~CustomTitleBar();
     //public: void setTitleText(const QString &text);
 
     // 窗口函数
@@ -25,11 +26,12 @@ public:
     public: void onMidBtnClicked(int index); // 中间按钮点击槽函数
     public: void onMidBtnClicked_randomSelect();// 随机选择按钮点击槽函数
     public: void onMidBtnClicked_fileEdit(); // 文件编辑按钮点击槽函数
-    public: void onMidBtnClicked_baibao(); // 百宝盒子按钮点击槽函数
+    public: void onMidBtnClicked_setting(); // 设置按钮点击槽函数
     public: void onMidBtnClicked_about(); // 关于程序按钮点击槽函数
 
     //自定义函数
-    public: void setMainWindowNormal(); // 设置主窗口
+    public: void setMainWindowMaximized(); // 设置主窗口
+    public: void setMainWindowminimized(); // 设置主窗口最小化;
     
     // 重写父类函数
     protected: void mousePressEvent(QMouseEvent *event) override; // 鼠标按下事件
@@ -50,7 +52,7 @@ public:
     private: QHBoxLayout *m_rightLayout = nullptr; // 右侧布局
 
     // 控件成员
-    private: QLabel *m_iconLabel = nullptr; // 图标标签
+    private: QPushButton *m_iconBtn = nullptr; // 图标标签
     private: QLabel *m_titleLabel = nullptr; // 标题标签
     private: QMap<QString, QPushButton *> m_midBtns; // 中间按钮列表
     private: QPushButton *m_btnMin = nullptr; // 最小化按钮
@@ -60,7 +62,10 @@ public:
 
     // 拖动相关
     private: bool m_isDragging = false; // 是否正在拖动
+    private: bool m_isMaximized = false; // 是否最大化
+    private: QSize m_windowSize; // 窗口大小
     private: QPoint m_dragStartPos; // 鼠标按下时的位置
+    private: QPoint m_dragStartGlobalPos; // 鼠标释放时的位置
 };
 
 } // namespace MainWindow
