@@ -34,7 +34,7 @@ class MainWindowShell : public QMainWindow{
     public: void setWindowTitleBox();
 
     //title layout
-    private: QVBoxLayout *m_titleLayout = nullptr;
+    public: QVBoxLayout *m_titleLayout = nullptr;
 
     public: CoreControlWidgets::SelectTab* m_selectTab = nullptr;
 };

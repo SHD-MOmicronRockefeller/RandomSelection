@@ -16,7 +16,7 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
 
     // 设置窗口大小
     this->setGeometry(100, 100, 800, 600);
-    this->centralWidget()->setContentsMargins(10, 10, 10, 10);
+    this->centralWidget()->setContentsMargins(0, 0, 0, 0);
 
     // 设置窗口标签
     //this->setWindowFlags(Qt::Window | Qt::WindowTitleHint);
@@ -26,7 +26,8 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
 
     // 初始化title layout
     this->m_titleLayout = new QVBoxLayout(this->m_baseWidget);// 标题栏layout 用于显示title bar
-    this->m_titleLayout->setContentsMargins(10, 10, 10, 10);// 设置边距为0
+    this->m_titleLayout->setContentsMargins(0, 0, 0, 0);// 设置边距为0
+    this->m_titleLayout->setSpacing(0);// 设置间距为0
 
     // 初始化自定义标题栏
     this->m_customTitleBar = Variables::customTitleBar;// 设置自定义标题栏
@@ -46,12 +47,12 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
 
     // 初始化主体layout
     this->m_centralLayout = new QVBoxLayout();// 主体layout 用于显示主体内容
-    this->m_centralLayout->setContentsMargins(10, 10, 10, 10);// 设置边距为0
+    this->m_centralLayout->setContentsMargins(0, 0, 0, 0);// 设置边距为0
     this->m_centralWidget->setLayout(this->m_centralLayout);
 
     // 初始化选择tab
-    this->m_selectTab = new CoreControlWidgets::SelectTab();
-    this->m_centralLayout->addWidget(this->m_selectTab);
+    // this->m_selectTab = new CoreControlWidgets::SelectTab();
+    // this->m_centralLayout->addWidget(this->m_selectTab);
 }
 
 CoreControlWidgets::MainWindowShell::~MainWindowShell()

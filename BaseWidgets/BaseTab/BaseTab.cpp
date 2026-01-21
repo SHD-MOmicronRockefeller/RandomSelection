@@ -15,7 +15,7 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
     
     // 设置控件列表的样式
     this->m_controLayout = new QHBoxLayout(this);
-    this->m_controLayout->setContentsMargins(10, 10, 10, 10);
+    this->m_controLayout->setContentsMargins(0, 0, 0, 0);
     this->m_controLayout->setSpacing(0);
     this->m_controLayout->setAlignment(Qt::AlignLeft);
     this->setLayout(this->m_controLayout);
@@ -42,7 +42,7 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
     
     // 设置中心区域的布局
     this->m_centerLayout = new QVBoxLayout(this->m_centerWidget);
-    this->m_centerLayout->setContentsMargins(10, 10, 10, 10);
+    this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
     this->m_centerLayout->setSpacing(0);
     this->m_centerLayout->setAlignment(Qt::AlignTop);
     this->m_centerWidget->setLayout(this->m_centerLayout);

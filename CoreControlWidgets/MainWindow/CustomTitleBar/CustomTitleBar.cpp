@@ -207,9 +207,15 @@ void CustomTitleBar::onCloseClicked()
     this->window()->close();
 }
 
+void CustomTitleBar::closeThisTab()
+{
+    if (Variables::thisTabWidget == nullptr) return;
+    Variables::mainWindowShell->m_centralLayout->removeWidget(Variables::thisTabWidget);
+    Variables::thisTabWidget->hide();
+}
+
 void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 {
-    printf("mid button clicked: %s\n", ObjectName.toStdString().c_str());
     // 设置当前按钮
     if (ObjectName != ""){
         thisTabBtn = m_midBtns[ObjectName];
@@ -243,6 +249,8 @@ void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 
     if (!canRun) return;
 
+    closeThisTab();
+
     if (ObjectName == "randomSelect") {
         onMidBtnClicked_randomSelect();
     } else if (ObjectName == "fileEdit") {
@@ -256,22 +264,34 @@ void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 
 void CustomTitleBar::onMidBtnClicked_randomSelect()
 {
-    printf("random select button clicked\n");
+    printf("randomSelect button clicked\n");
+    Variables::thisTabWidget = Variables::selectTab;
+    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
+    Variables::thisTabWidget->show();
 }
 
 void CustomTitleBar::onMidBtnClicked_fileEdit()
 {
-    printf("file edit button clicked\n");
+    printf("fileEdit button clicked\n");
+    Variables::thisTabWidget = Variables::fileTab;
+    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
+    Variables::thisTabWidget->show();
 }
 
 void CustomTitleBar::onMidBtnClicked_setting()
 {
-    printf("baibao button clicked\n");
+    printf("setting button clicked\n");
+    Variables::thisTabWidget = Variables::settingTab;
+    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
+    Variables::thisTabWidget->show();
 }
 
 void CustomTitleBar::onMidBtnClicked_about()
 {
     printf("about button clicked\n");
+    Variables::thisTabWidget = Variables::aboutTab;
+    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
+    Variables::thisTabWidget->show();
 }
 
 void CustomTitleBar::setMainWindowMaximized()

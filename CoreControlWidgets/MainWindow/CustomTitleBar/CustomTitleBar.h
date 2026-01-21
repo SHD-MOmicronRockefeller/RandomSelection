@@ -28,6 +28,7 @@ class CustomTitleBar : public QFrame
     protected: void onCloseClicked(); // 关闭按钮点击槽函数
 
     // 页面函数
+    protected: void closeThisTab(); // 关闭当前标签页
 public: void onMidBtnClicked(QString objectName = "", bool canRun = true); // 中间按钮点击槽函数
     protected: void onMidBtnClicked_randomSelect();// 随机选择按钮点击槽函数
     protected: void onMidBtnClicked_fileEdit(); // 文件编辑按钮点击槽函数
