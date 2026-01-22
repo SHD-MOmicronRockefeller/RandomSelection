@@ -12,6 +12,7 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
     }
     )");
     
+    this->setMinimumSize(0, 0);
     
     // 设置控件列表的样式
     this->m_controLayout = new QHBoxLayout(this);
@@ -23,6 +24,7 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
     
     // 添加控件列表到布局中
     this->controlList = new BaseElements::ControlList();// 创建控件列表
+    this->controlList->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     this->m_controLayout->addWidget(this->controlList);
 
     // 创建中心区域
@@ -30,6 +32,7 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
     this->m_centerWidget->setAutoFillBackground(true);
     this->m_centerWidget->setAttribute(Qt::WA_StyledBackground, true);
     this->m_centerWidget->setObjectName("BaseTab_CenterWidget");
+    this->m_centerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->m_controLayout->addWidget(this->m_centerWidget);
     this->m_controLayout->setStretchFactor(this->m_centerWidget, 1);
 
