@@ -2,8 +2,8 @@
 
 CoreControlWidgets::SettingTab::SettingTab(QWidget *parent): BaseWidgets::BaseTab(parent)
 {
-    this->controlList->pushLable(new QLabel("SettingTabLabel"));
-    this->controlList->pushButton(new QPushButton("SettingTabButton1"));
-    this->controlList->pushButton(new QPushButton("SettingTabButton2"));
-    this->controlList->pushButton(new QPushButton("SettingTabButton3"));
+    this->controlList->pushLable(new QLabel("设置"));
+    this->controlList->pushButton(new QPushButton("基础设置"));
+    this->controlList->pushButton(new QPushButton("高级设置"));
+    this->controlList->pushButton(new QPushButton("开发者设置"));
 }

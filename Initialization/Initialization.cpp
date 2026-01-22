@@ -27,8 +27,8 @@ void initialize_settings()
 
     //添加状态栏
     Variables::mainWindowShell->m_titleLayout->addWidget(Variables::statusBar);
-    Variables::statusBar->addLeftWidget(new QLabel("状态栏左侧"));
-    Variables::statusBar->addRightWidget(new QLabel("状态栏右侧"));
+    Variables::statusBar->addLeftWidget(new QLabel("__状态栏左侧__"));
+    Variables::statusBar->addRightWidget(new QLabel("__状态栏右侧__"));
 }
 
 } // namespace Initialization

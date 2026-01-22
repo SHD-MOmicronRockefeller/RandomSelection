@@ -2,8 +2,8 @@
 
 CoreControlWidgets::FileTab::FileTab(QWidget *parent): BaseWidgets::BaseTab(parent)
 {
-    this->controlList->pushLable(new QLabel("FileTabLabel"));
-    this->controlList->pushButton(new QPushButton("FileTabButton1"));
-    this->controlList->pushButton(new QPushButton("FileTabButton2"));
-    this->controlList->pushButton(new QPushButton("FileTabButton3"));
+    this->controlList->pushLable(new QLabel("编辑："));
+    this->controlList->pushButton(new QPushButton("文件编辑"));
+    this->controlList->pushButton(new QPushButton("基本语法"));
+    this->controlList->pushButton(new QPushButton("常用函数"));
 }

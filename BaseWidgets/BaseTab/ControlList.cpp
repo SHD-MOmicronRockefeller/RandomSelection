@@ -9,7 +9,7 @@ BaseWidgets::BaseElements::ControlList::ControlList(QWidget *parent) : QWidget(p
     this->m_centerLayout = new QVBoxLayout(this);
     this->setLayout(this->m_centerLayout);
 
-    this->m_centerLayout->setContentsMargins(10, 10, 10, 10);
+    this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
     this->m_centerLayout->setSpacing(0);
     this->m_centerLayout->setAlignment(Qt::AlignTop);
 
@@ -32,12 +32,13 @@ QLabel * BaseWidgets::BaseElements::ControlList::pushLable(QLabel *lbl)
     lbl->setStyleSheet(R"(
     QLabel{
         background-color:transparent;
-        color:black;
+        color:rgba(92, 92, 92, 1);
         border:none;
         padding:5px;
-        font-size:14px;
+        font-size:12px;
     }
     )");
+    lbl->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     this->m_centerLayout->addWidget(lbl);
     return lbl;
 }
@@ -53,6 +54,8 @@ QPushButton * BaseWidgets::BaseElements::ControlList::pushButton(QPushButton *bt
         border:none;
         padding:5px;
         font-size:14px;
+        padding-left:12px;
+        padding-right:12px;
     }
     QPushButton:hover{
         background-color:rgb(200, 200, 200);

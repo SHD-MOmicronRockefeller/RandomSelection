@@ -2,8 +2,9 @@
 
 CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab(parent)
 {
-    this->controlList->pushLable(new QLabel("SelectTabLabel"));
-    this->controlList->pushButton(new QPushButton("SelectTabButton1"));
-    this->controlList->pushButton(new QPushButton("SelectTabButton2"));
-    this->controlList->pushButton(new QPushButton("SelectTabButton3"));
+    this->controlList->pushLable(new QLabel("选择："));
+    this->controlList->pushButton(new QPushButton("文件选择"));
+    this->controlList->pushButton(new QPushButton("随机选择"));
+    this->controlList->pushButton(new QPushButton("列表设置"));
+    this->controlList->pushButton(new QPushButton("基本设置"));
 }
