@@ -21,7 +21,7 @@ CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab
 
     // ========== 3. 构建中间比例固定区域 ==========
     // 初始化比例容器（示例：4:3的宽高比）
-    m_aspectMidWidget = new BaseWidgets::AspectRatioWidget(5.0/1.0);
+    m_aspectMidWidget = new BaseWidgets::AspectRatioWidget(4.0/1.0);
     m_aspectMidWidget->setObjectName("SelectTab_AspectMidWidget");
     m_aspectMidWidget->setStyleSheet("QWidget#SelectTab_AspectMidWidget{background: #66CCFF;}");
     // 包裹原有MidWidget

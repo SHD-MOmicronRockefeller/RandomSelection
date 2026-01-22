@@ -5,7 +5,7 @@
 
 #include "BaseWidgets/BaseTab/BaseTab.h"
 
-#include "midWidget.h"
+#include "Select_P/midWidget.h"
 
 #include "BaseWidgets/BaseCoreWidget/AspectRatioWidget.h"
 
