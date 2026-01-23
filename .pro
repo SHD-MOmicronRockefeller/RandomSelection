@@ -44,3 +44,18 @@ win32 {
 win32-g++ {
     QMAKE_CXXFLAGS += -fexec-charset=utf-8 -finput-charset=utf-8
 }
+
+win32 { # 仅在Windows下执行打包逻辑
+    ENIGMA_PATH = "D:/DownApp/Enigma Virtual Box/enigmavb.exe"
+
+    # 2. 定位项目根目录下的.evb模板文件（关键：$$PWD就是项目根目录）
+    # 替换「your_app_template.evb」为你实际的.evb文件名
+    ENIGMA_TEMPLATE = $$PWD/random_selection.evb
+
+    # 3. 打包输出路径（编译输出目录，和生成的exe同目录）
+    #OUTPUT_PACKAGE = $$OUT_PWD/random_selection.exe
+
+    # 4. 编译完成后自动打包（/silent 可选，静默打包不弹窗口）
+    #QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE $$OUTPUT_PACKAGE $$escape_expand(\\n\\t)
+    QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE  $$escape_expand(\\n\\t)
+}

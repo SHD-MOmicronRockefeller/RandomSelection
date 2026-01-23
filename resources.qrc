@@ -1,0 +1,19 @@
+<RCC>
+  <qresource prefix="/ICONS">
+    <file>icons/ApplicationIcon.png</file>
+    <file>icons/ApplicationIconIco.ico</file>
+
+    <file>icons/MainTabIcons/AboutTabIcon.png</file>
+    <file>icons/MainTabIcons/FileEditTabIcon.png</file>
+    <file>icons/MainTabIcons/RandomSelectTabIcon.png</file>
+    <file>icons/MainTabIcons/SettingTabIcon.png</file>
+
+    <file>icons/TitleIcons/_CloseButton.png</file>
+    <file>icons/TitleIcons/_MaximizeButtonM.png</file>
+    <file>icons/TitleIcons/_MaximizeButtonN.png</file>
+    <file>icons/TitleIcons/_MinimizeButton.png</file>
+    <file>icons/TitleIcons/_MinWindowButtonM.png</file>
+    <file>icons/TitleIcons/_MinWindowButtonN.png</file>
+    
+  </qresource>
+</RCC>

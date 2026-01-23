@@ -1,4 +1,4 @@
-#include "midWidget.h"
+#include "slc_midWidget.h"
 
 CoreControlWidgets::SelectTab_NS::MidWidget::MidWidget(QWidget *parent) : QWidget(parent)
 {

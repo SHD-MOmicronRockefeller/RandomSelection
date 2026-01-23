@@ -5,9 +5,7 @@
 
 #include "BaseWidgets/BaseTab/BaseTab.h"
 
-#include "Select_P/midWidget.h"
-
-#include "BaseWidgets/BaseCoreWidget/AspectRatioWidget.h"
+#include "Select_P/select_P.h"
 
 namespace CoreControlWidgets{
 class SelectTab : public BaseWidgets::BaseTab{
@@ -15,12 +13,7 @@ class SelectTab : public BaseWidgets::BaseTab{
     public: SelectTab(QWidget *parent = nullptr);
     public: ~SelectTab();
 
-    protected: QWidget *m_topWidget = nullptr;    // 上层固定区域
-
-    protected: BaseWidgets::AspectRatioWidget *m_aspectMidWidget = nullptr; // 中间比例容器
-    protected: SelectTab_NS::MidWidget* m_midWidget = nullptr;
-
-    protected: QWidget *m_bottomWidget = nullptr; // 下层固定区域
+    public: SelectTab_NS::Select_Page *select_page = nullptr;
 };
 
 

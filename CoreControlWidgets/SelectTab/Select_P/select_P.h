@@ -1,7 +1,11 @@
-#ifndef MIDWIDGET_H
-#define MIDWIDGET_H
+#ifndef SELECT_P_H
+#define SELECT_P_H
 
 #include "QtPrecompiled.h"
+
+#include "BaseWidgets/BaseCoreWidget/AspectRatioWidget.h"
+
+#include "slc_midWidget.h"
 
 namespace CoreControlWidgets
 {
@@ -15,16 +19,15 @@ class Select_Page : public QWidget
     public: Select_Page(QWidget *parent = 0);
     public: ~Select_Page();
 
-    protected: QHBoxLayout *m_mainLayout;
+    public: QVBoxLayout *m_centerLayout = nullptr;
 
-    protected: QVBoxLayout *m_upLayout;
-    protected: void setUpLayout();
 
-    protected: QVBoxLayout *m_midLayout;
-    protected: void setMidLayout();
+    protected: QWidget *m_topWidget = nullptr;    // 上层固定区域
 
-    protected: QVBoxLayout *m_downLayout;
-    protected: void setDownLayout();
+    protected: BaseWidgets::AspectRatioWidget *m_aspectMidWidget = nullptr; // 中间比例容器
+    protected: MidWidget* m_midWidget = nullptr;
+
+    protected: QWidget *m_bottomWidget = nullptr; // 下层固定区域
 
 };
 
@@ -40,4 +43,4 @@ class Select_Page : public QWidget
 
 
 
-#endif // MIDWIDGET_H
+#endif // SELECT_P_H
