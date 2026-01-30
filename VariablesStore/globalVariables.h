@@ -45,25 +45,25 @@ class GlobalVariables {
     public: ApplicationClass::ApplicationShell* application_shell                   = nullptr;
 
     // 主窗口
-    public: CoreControlWidgets::MainWindowShell* main_window_shell                  = new CoreControlWidgets::MainWindowShell();
+    public: CoreControlWidgets::MainWindowShell* main_window_shell                  = nullptr;
 
     // 标题栏
-    public: CoreControlWidgets::MainWindow::CustomTitleBar* custom_title_bar        = new CoreControlWidgets::MainWindow::CustomTitleBar(this->main_window_shell);
+    public: CoreControlWidgets::MainWindow::CustomTitleBar* custom_title_bar        = nullptr;
     
     // 状态栏
-    public: CoreControlWidgets::MainWindow::StatusBar* status_bar                   = new CoreControlWidgets::MainWindow::StatusBar();
+    public: CoreControlWidgets::MainWindow::StatusBar* status_bar                   = nullptr;
 
     // 选择页面
-    public: CoreControlWidgets::SelectTab* select_tab                               = new CoreControlWidgets::SelectTab();
+    public: CoreControlWidgets::SelectTab* select_tab                               = nullptr;
 
     // 文件页面
-    public: CoreControlWidgets::FileTab* file_tab                                   = new CoreControlWidgets::FileTab();
+    public: CoreControlWidgets::FileTab* file_tab                                   = nullptr;
 
     // 设置页面
-    public: CoreControlWidgets::SettingTab* setting_tab                             = new CoreControlWidgets::SettingTab();
+    public: CoreControlWidgets::SettingTab* setting_tab                             = nullptr;
 
     // 更多页面
-    public: CoreControlWidgets::AboutTab* about_tab                                 = new CoreControlWidgets::AboutTab();
+    public: CoreControlWidgets::AboutTab* about_tab                                 = nullptr;
 
     // 其他变量
     public: QWidget* this_tab_widget                                                = nullptr;

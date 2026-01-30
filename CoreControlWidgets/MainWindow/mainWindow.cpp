@@ -32,6 +32,7 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
     this->m_titleLayout->setSpacing(0);// 设置间距为0
 
     // 初始化自定义标题栏
+    qDebug() << (GlobalVariables::getInstance()->custom_title_bar == nullptr); 
     this->m_customTitleBar = GlobalVariables::getInstance()->custom_title_bar;
     this->m_titleLayout->addWidget(this->m_customTitleBar); // 添加自定义标题栏
 
