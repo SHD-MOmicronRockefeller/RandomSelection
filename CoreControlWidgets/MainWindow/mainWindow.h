@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "VariablesStore/variables.h"
+// #include "VariablesStore/globalVariables.h"
 #include "QtPrecompiled.h"
 #include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
 
@@ -10,10 +10,6 @@
 // 声明MainWindowShell类
 namespace MainWindow {
 class CustomTitleBar;
-}
-// CustomTitleBar类声明
-namespace Variables{
-extern CoreControlWidgets::MainWindow::CustomTitleBar* customTitleBar;
 }
 
 namespace CoreControlWidgets {
@@ -30,7 +26,7 @@ class MainWindowShell : public QMainWindow{
     public: QVBoxLayout* m_centralLayout = nullptr;
 
     //设置标题栏
-    public: MainWindow::CustomTitleBar *&m_customTitleBar = Variables::customTitleBar;
+    public: MainWindow::CustomTitleBar *m_customTitleBar = nullptr;
     public: void setWindowTitleBox();
 
     //title layout

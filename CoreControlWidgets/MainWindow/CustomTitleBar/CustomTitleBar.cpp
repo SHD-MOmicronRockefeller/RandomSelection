@@ -1,5 +1,7 @@
 #include "CustomTitleBar.h"
 
+#include "VariablesStore/globalVariables.h"
+
 namespace CoreControlWidgets {
 
 namespace MainWindow {
@@ -18,7 +20,7 @@ CustomTitleBar::CustomTitleBar(QWidget *parent): QFrame(parent)
     // 设置尺寸
     setFixedHeight(40);
     //setFixedWidth(600);
-    move((Variables::WINDOW_WIDTH - 600)/2, 5);
+    move((GlobalVariables::getInstance()->main_window_width - 600)/2, 5);
     // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
@@ -209,9 +211,9 @@ void CustomTitleBar::onCloseClicked()
 
 void CustomTitleBar::closeThisTab()
 {
-    if (Variables::thisTabWidget == nullptr) return;
-    Variables::mainWindowShell->m_centralLayout->removeWidget(Variables::thisTabWidget);
-    Variables::thisTabWidget->hide();
+    if (GlobalVariables::getInstance()->this_tab_widget == nullptr) return;
+    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->removeWidget(GlobalVariables::getInstance()->this_tab_widget);
+    GlobalVariables::getInstance()->this_tab_widget->hide();
 }
 
 void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
@@ -264,34 +266,30 @@ void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 
 void CustomTitleBar::onMidBtnClicked_randomSelect()
 {
-    printf("randomSelect button clicked\n");
-    Variables::thisTabWidget = Variables::selectTab;
-    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
-    Variables::thisTabWidget->show();
+    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->select_tab;
+    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
+    GlobalVariables::getInstance()->this_tab_widget->show();
 }
 
 void CustomTitleBar::onMidBtnClicked_fileEdit()
 {
-    printf("fileEdit button clicked\n");
-    Variables::thisTabWidget = Variables::fileTab;
-    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
-    Variables::thisTabWidget->show();
+    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->file_tab;
+    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
+    GlobalVariables::getInstance()->this_tab_widget->show();
 }
 
 void CustomTitleBar::onMidBtnClicked_setting()
 {
-    printf("setting button clicked\n");
-    Variables::thisTabWidget = Variables::settingTab;
-    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
-    Variables::thisTabWidget->show();
+    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->setting_tab;
+    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
+    GlobalVariables::getInstance()->this_tab_widget->show();
 }
 
 void CustomTitleBar::onMidBtnClicked_about()
 {
-    printf("about button clicked\n");
-    Variables::thisTabWidget = Variables::aboutTab;
-    Variables::mainWindowShell->m_centralLayout->addWidget(Variables::thisTabWidget);
-    Variables::thisTabWidget->show();
+ GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->about_tab;
+    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
+    GlobalVariables::getInstance()->this_tab_widget->show();
 }
 
 void CustomTitleBar::setMainWindowMaximized()

@@ -67,6 +67,7 @@
 #include <QMetaObject>
 #include <QMouseEvent>
 #include <QMovie>
+#include <QMutex>
 #include <QObject>
 #include <QPaintEvent>
 #include <QPalette>

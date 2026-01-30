@@ -18,6 +18,29 @@ CONFIG += c++20
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
+# ========== 多线程编译配置（修正语法错误） ==========
+# 自动获取CPU逻辑核心数（跨平台适配，修正命令执行语法）
+win32 {
+    # Windows平台：通过wmic命令获取CPU核心数（修正命令拼接语法）
+    CPU_CORES = $$system(powershell -Command "(Get-CimInstance Win32_Processor).NumberOfLogicalProcessors")
+} else {
+    # Linux/macOS平台：通过sysctl/nproc获取核心数
+    CPU_CORES = $$system(sysctl -n hw.logicalcpu 2>/dev/null || nproc)
+}
+
+# 兜底：获取失败时默认使用4线程（修正条件判断语法）
+isEmpty(CPU_CORES) {
+    CPU_CORES = 4
+}
+
+# 设置多线程编译参数（修正变量赋值语法）
+win32 {
+    MAKEFLAGS += -j$$CPU_CORES
+} else {
+    QMAKE_MAKEFLAGS += -j$$CPU_CORES
+}
+
+# ========== 自动扫描文件配置 ==========
 # 自动扫描源文件、头文件、UI、资源文件
 SOURCES += $$files(*.cpp, true)
 HEADERS += $$files(*.h, true)
@@ -30,9 +53,6 @@ HEADERS -= $$files(build/*.h, true)
 
 # Qt 模块配置
 QT += core widgets gui
-
-# 资源文件
-#add_executable($$TARGET $$SOURCES $$HEADERS $$FORMS $$RESOURCES)
 
 # Windows 显示控制台窗口
 win32 {
@@ -48,14 +68,9 @@ win32-g++ {
 win32 { # 仅在Windows下执行打包逻辑
     ENIGMA_PATH = "D:/DownApp/Enigma Virtual Box/enigmavb.exe"
 
-    # 2. 定位项目根目录下的.evb模板文件（关键：$$PWD就是项目根目录）
-    # 替换「your_app_template.evb」为你实际的.evb文件名
+    # 定位项目根目录下的.evb模板文件
     ENIGMA_TEMPLATE = $$PWD/random_selection.evb
 
-    # 3. 打包输出路径（编译输出目录，和生成的exe同目录）
-    #OUTPUT_PACKAGE = $$OUT_PWD/random_selection.exe
-
-    # 4. 编译完成后自动打包（/silent 可选，静默打包不弹窗口）
-    #QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE $$OUTPUT_PACKAGE $$escape_expand(\\n\\t)
+    # 编译完成后自动打包
     QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE  $$escape_expand(\\n\\t)
 }

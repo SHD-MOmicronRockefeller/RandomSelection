@@ -1,7 +1,9 @@
 #include "mainWindow.h"
+#include "VariablesStore/globalVariables.h"
 
 CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWindow(parent)
 {
+    this->m_customTitleBar = GlobalVariables::getInstance()->custom_title_bar;
     this->setObjectName("MainWindowShell");
     this->m_baseWidget = new QWidget(this);// 整个窗口的widget
     this->m_baseWidget->setObjectName("MainWindowShell_baseWidget");
@@ -30,7 +32,7 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
     this->m_titleLayout->setSpacing(0);// 设置间距为0
 
     // 初始化自定义标题栏
-    this->m_customTitleBar = Variables::customTitleBar;// 设置自定义标题栏
+    this->m_customTitleBar = GlobalVariables::getInstance()->custom_title_bar;
     this->m_titleLayout->addWidget(this->m_customTitleBar); // 添加自定义标题栏
 
     // 初始化主体widget

@@ -1,4 +1,5 @@
-#include "VariablesStore/variables.h"
+#ifndef INITIALIZATION_H
+#define INITIALIZATION_H
 namespace Initialization {
 
 // 初始化变量
@@ -8,3 +9,5 @@ void initialize_values();
 void initialize_settings();
 
 } // namespace Initialization
+
+#endif // INITIALIZATION_H
