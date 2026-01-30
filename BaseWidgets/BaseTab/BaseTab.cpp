@@ -55,3 +55,14 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
 BaseWidgets::BaseTab::~BaseTab()
 {
 }
+
+void BaseWidgets::BaseTab::setPage(QWidget *page)
+{
+    if (this->m_this_widget != nullptr){
+        this->m_this_widget->hide();
+        this->m_centerLayout->removeWidget(this->m_this_widget);
+    }
+    this->m_this_widget = page;
+    this->m_centerLayout->addWidget(page);
+    page->show();
+}

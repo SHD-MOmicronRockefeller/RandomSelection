@@ -6,6 +6,7 @@
 #include "BaseWidgets/BaseTab/BaseTab.h"
 
 #include "Select_P/select_P.h"
+#include "SelectFile_P/selectFile.h"
 
 namespace CoreControlWidgets{
 class SelectTab : public BaseWidgets::BaseTab{
@@ -14,6 +15,7 @@ class SelectTab : public BaseWidgets::BaseTab{
     public: ~SelectTab();
 
     public: SelectTab_NS::Select_Page *select_page = nullptr;
+    public: SelectTab_NS::SelectFile_Page *selectFile_page = nullptr;
 };
 
 
