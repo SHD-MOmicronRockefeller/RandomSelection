@@ -26,6 +26,8 @@ namespace CoreControlWidgets{
 
         class MidWidget;
         class Select_Page;
+        
+        class ListSet_Page;
     }
 
 

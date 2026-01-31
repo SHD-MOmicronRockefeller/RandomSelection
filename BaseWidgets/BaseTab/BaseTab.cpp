@@ -68,5 +68,6 @@ void BaseWidgets::BaseTab::setPage(QWidget *page)
     }
     this->m_this_widget = page;
     this->m_centerLayout->addWidget(page);
-    page->show();
+    this->m_this_widget->show();
+    this->m_centerLayout->setStretchFactor(this->m_this_widget, 1);
 }
