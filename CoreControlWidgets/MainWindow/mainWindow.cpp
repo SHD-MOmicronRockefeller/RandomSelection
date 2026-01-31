@@ -1,5 +1,7 @@
 #include "mainWindow.h"
 #include "VariablesStore/globalVariables.h"
+#include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
+#include "CoreControlWidgets/SelectTab/selectTab.h"
 
 CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWindow(parent)
 {

@@ -1,5 +1,9 @@
 #include "BaseTab.h"
 
+#include "BaseWidgets/BaseTab/ControlList.h"
+
+#include "BaseWidgets/BaseTab/ControlList.h"
+
 BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
 {
     this->setAutoFillBackground(true);

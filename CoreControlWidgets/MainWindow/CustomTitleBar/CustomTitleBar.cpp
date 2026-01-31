@@ -2,6 +2,8 @@
 
 #include "VariablesStore/globalVariables.h"
 
+#include "CoreControlWidgets/MainWindow/mainWindow.h"
+
 namespace CoreControlWidgets {
 
 namespace MainWindow {

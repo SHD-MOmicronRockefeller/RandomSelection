@@ -1,5 +1,8 @@
 #include "fileTab.h"
 
+#include "BaseWidgets/BaseTab/ControlList.h"
+#include "BaseWidgets/BaseTab/BaseTab.h"
+
 CoreControlWidgets::FileTab::FileTab(QWidget *parent): BaseWidgets::BaseTab(parent)
 {
     this->controlList->pushLable(new QLabel("编辑："));

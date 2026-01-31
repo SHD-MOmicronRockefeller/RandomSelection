@@ -4,7 +4,7 @@
 
 #include "QtPrecompiled.h"
 
-#include "CoreControlWidgets/MainWindow/mainWindow.h"
+#include "ClassSpace.h"
 // StatusBar.h
 namespace CoreControlWidgets {
 

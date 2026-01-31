@@ -1,5 +1,11 @@
 #include "selectTab.h"
 
+#include "BaseWidgets/BaseTab/ControlList.h"
+#include "BaseWidgets/BaseTab/BaseTab.h"
+
+#include "Select_P/select_P.h"
+#include "SelectFile_P/selectFile.h"
+
 CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab(parent)
 {
     this->select_page = new SelectTab_NS::Select_Page();

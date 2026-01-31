@@ -3,10 +3,9 @@
 
 #include "QtPrecompiled.h"
 
-#include "BaseWidgets/BaseTab/BaseTab.h"
+#include "ClassSpace.h"
 
-#include "Select_P/select_P.h"
-#include "SelectFile_P/selectFile.h"
+#include "BaseWidgets/BaseTab/BaseTab.h"
 
 namespace CoreControlWidgets{
 class SelectTab : public BaseWidgets::BaseTab{

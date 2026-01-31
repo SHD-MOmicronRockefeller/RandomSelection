@@ -11,6 +11,7 @@
 #include "CoreControlWidgets/FileTab/fileTab.h"
 #include "CoreControlWidgets/SettingTab/settingTab.h"
 #include "CoreControlWidgets/AboutTab/aboutTab.h"
+#include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
 
 
 class GlobalVariables {

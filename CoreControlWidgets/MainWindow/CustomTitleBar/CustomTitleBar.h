@@ -3,7 +3,8 @@
 
 #include "QtPrecompiled.h"
 
-#include "CoreControlWidgets/MainWindow/mainWindow.h"
+
+#include "ClassSpace.h"
 namespace CoreControlWidgets {
 
 namespace MainWindow {

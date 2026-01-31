@@ -3,7 +3,7 @@
 
 #include "QtPrecompiled.h"
 
-#include "BaseWidgets/BaseTab/ControlList.h"
+#include "ClassSpace.h"
 
 namespace BaseWidgets {
 

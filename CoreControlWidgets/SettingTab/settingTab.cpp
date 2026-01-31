@@ -1,5 +1,8 @@
 #include "settingTab.h"
 
+#include "BaseWidgets/BaseTab/ControlList.h"
+#include "BaseWidgets/BaseTab/BaseTab.h"
+
 CoreControlWidgets::SettingTab::SettingTab(QWidget *parent): BaseWidgets::BaseTab(parent)
 {
     this->controlList->pushLable(new QLabel("设置"));

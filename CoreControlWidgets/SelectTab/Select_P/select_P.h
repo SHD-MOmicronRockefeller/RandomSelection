@@ -3,9 +3,9 @@
 
 #include "QtPrecompiled.h"
 
-#include "BaseWidgets/BaseCoreWidget/AspectRatioWidget.h"
 
-#include "slc_midWidget.h"
+
+#include "ClassSpace.h"
 
 namespace CoreControlWidgets
 {

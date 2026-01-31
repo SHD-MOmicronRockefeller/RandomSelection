@@ -3,6 +3,8 @@
 
 #include "QtPrecompiled.h"
 
+#include "ClassSpace.h"
+
 #include "BaseWidgets/BaseTab/BaseTab.h"
 
 namespace CoreControlWidgets{

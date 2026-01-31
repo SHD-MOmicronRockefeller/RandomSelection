@@ -1,6 +1,8 @@
 
 #include "StatusBar.h"
 
+#include "CoreControlWidgets/MainWindow/mainWindow.h"
+
 CoreControlWidgets::MainWindow::StatusBar::StatusBar(QWidget* parent) : QWidget(parent) {
     this->setObjectName("StatusBar");
     this->setAutoFillBackground(true);

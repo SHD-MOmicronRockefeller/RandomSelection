@@ -3,14 +3,10 @@
 
 // #include "VariablesStore/globalVariables.h"
 #include "QtPrecompiled.h"
-#include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
 
-#include "CoreControlWidgets/SelectTab/selectTab.h"
 
 // 声明MainWindowShell类
-namespace MainWindow {
-class CustomTitleBar;
-}
+#include "ClassSpace.h"
 
 namespace CoreControlWidgets {
 

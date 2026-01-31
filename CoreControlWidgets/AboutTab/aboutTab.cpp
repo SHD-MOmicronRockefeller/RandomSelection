@@ -1,5 +1,8 @@
 #include "aboutTab.h"
 
+#include "BaseWidgets/BaseTab/ControlList.h"
+#include "BaseWidgets/BaseTab/BaseTab.h"
+
 CoreControlWidgets::AboutTab::AboutTab(QWidget *parent): BaseWidgets::BaseTab(parent)
 {
     this->controlList->pushLable(new QLabel("关于："));

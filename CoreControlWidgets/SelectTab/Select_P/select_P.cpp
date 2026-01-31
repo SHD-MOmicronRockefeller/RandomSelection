@@ -1,5 +1,9 @@
 #include "select_P.h"
 
+#include "BaseWidgets/BaseCoreWidget/AspectRatioWidget.h"
+
+#include "slc_midWidget.h"
+
 CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
