@@ -26,7 +26,7 @@ CONFIG += debug_and_release  # 支持两种模式，但不自动同时编译
 
 # Debug 模式：保留调试信息，关闭优化（断点必备）
 CONFIG(debug, debug|release) {
-    TARGET = $${TARGET_NAME}_Debug
+    TARGET = Application_Debug
     DEFINES += QT_DEBUG
     QMAKE_CXXFLAGS += -g -O0  # 断点生效核心：-g生成调试信息，-O0关闭优化
     QMAKE_LFLAGS += -g        # 链接时也保留调试信息（新增，确保断点可用）
