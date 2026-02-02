@@ -560,3 +560,5 @@
 2026-02-02 20:10:53 1770034253027:[Log]ArkLanguageServer::OnDidChangeWatchedFiles in.
 2026-02-02 20:13:54 1770034434528:[Info]receive message body:{"jsonrpc":"2.0","method":"workspace/didChangeWatchedFiles","params":{"changes":[{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/refs/remotes/origin/HEAD.lock","type":1},{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/refs/remotes/origin/HEAD.lock","type":3}]}}
 2026-02-02 20:13:54 1770034434528:[Log]ArkLanguageServer::OnDidChangeWatchedFiles in.
+2026-02-02 20:16:06 1770034566179:[Info]receive message body:{"jsonrpc":"2.0","method":"workspace/didChangeWatchedFiles","params":{"changes":[{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/index.lock","type":1},{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/index.lock","type":3}]}}
+2026-02-02 20:16:06 1770034566179:[Log]ArkLanguageServer::OnDidChangeWatchedFiles in.
