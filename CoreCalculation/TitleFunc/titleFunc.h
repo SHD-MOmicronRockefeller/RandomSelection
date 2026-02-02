@@ -11,6 +11,10 @@ void setMinWindow();
 
 void setMainWindow();
 
+void setWindowMaximized();
+
+void setWindowReMaximized();
+
 } // namespace MY_FUNC
 
 #endif // TITLEFUNC_H

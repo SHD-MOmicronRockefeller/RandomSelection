@@ -202,24 +202,43 @@ void CustomTitleBar::onSettingClicked()
 {
     GlobalVariables *gv = GlobalVariables::getInstance();
 
-    if (not gv->is_mini_window_showed){
-        gv->old_window_is_max = this->m_isMaximized;
-    }
-
     if (gv->is_mini_window_showed){
+        bool old_is_max = gv->is_max_window_showed;
+        if (gv->is_max_window_showed)
+            MY_FUNC::setWindowReMaximized();
         MY_FUNC::setMainWindow();
         if (gv->old_window_is_max){
-            this->setMainWindowMaximized();
+            MY_FUNC::setWindowMaximized();
+            return;
+        }
+        if (old_is_max) {
+            QScreen* screen = gv->main_window_shell->screen();
+            if (!screen) screen = QGuiApplication::primaryScreen();
+            QRect screenRect = screen->availableGeometry();
+
+            int screenCenterX = screenRect.x() + screenRect.width() / 2;
+            int screenCenterY = screenRect.y() + screenRect.height() / 2;
+
+            int windowWidth = gv->main_window_shell->width();
+            int windowHeight = gv->main_window_shell->height();
+            int windowX = screenCenterX - windowWidth / 2;
+            int windowY = screenCenterY - windowHeight / 2;
+
+            gv->main_window_shell->move(windowX, windowY);
         }
         return;
     }
 
-    if (this->m_isMaximized){
-        this->setMainWindowUNMaximized();
+    gv->old_window_is_max = gv->is_max_window_showed;
+
+    if (gv->old_window_is_max){
+        MY_FUNC::setWindowReMaximized();
     }
+
     MY_FUNC::setMinWindow();
 
-    if (gv->is_max_window_showed){
+    if (gv->old_window_is_max){
+
         QScreen* screen = gv->main_window_shell->screen();
         if (!screen) screen = QGuiApplication::primaryScreen();
         QRect screenRect = screen->availableGeometry();
@@ -240,14 +259,13 @@ void CustomTitleBar::onSettingClicked()
 void CustomTitleBar::onMaximizeClicked()
 {
     GlobalVariables *gv = GlobalVariables::getInstance();
-    if (gv->is_mini_window_showed)
-        onSettingClicked();
-    if (this->m_isMaximized){
-        this->setMainWindowUNMaximized();
+    // if (gv->is_mini_window_showed)
+    //     onSettingClicked();
+    if (gv->is_max_window_showed){
+        MY_FUNC::setWindowReMaximized();
     } else {
-        this->setMainWindowMaximized();
+        MY_FUNC::setWindowMaximized();
     }
-    gv->is_max_window_showed = this->m_isMaximized;
 }
 
 void CustomTitleBar::onCloseClicked()
@@ -366,24 +384,6 @@ void CustomTitleBar::onMidBtnClicked_help()
     gv->this_tab_widget->show();
 }
 
-void CustomTitleBar::setMainWindowMaximized()
-{
-    this->m_windowSize = this->window()->size();
-    this->window()->showMaximized();
-    this->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonM.png"));
-    this->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonM.png"));
-    this->m_isMaximized = true;
-}
-
-void CustomTitleBar::setMainWindowUNMaximized()
-{
-    this->window()->showNormal();
-    this->window()->resize(this->m_windowSize);
-    this->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
-    this->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonN.png"));
-    this->m_isMaximized = false;
-}
-
 void CustomTitleBar::setMainWindowminimized()
 {
     CoreControlWidgets::MainWindowShell *mainWindowShell = qobject_cast<CoreControlWidgets::MainWindowShell *>(this->window());
@@ -413,8 +413,8 @@ void CustomTitleBar::mouseMoveEvent(QMouseEvent *event)
         return;
     }
     // 窗口最大化时，移动窗口
-    if (this->m_isMaximized){
-        this->setMainWindowMaximized();
+    if (GlobalVariables::getInstance()->is_max_window_showed){
+        MY_FUNC::setWindowReMaximized();
         double screenWidth = this->window()->screen()->size().width();
         double windowWidth = this->window()->width();
         int newX = static_cast<int>(m_dragStartGlobalPos.x() / screenWidth * windowWidth);
@@ -456,7 +456,7 @@ void CustomTitleBar::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() != Qt::LeftButton) return;
 
-    this->setMainWindowMaximized();
+    MY_FUNC::setWindowMaximized();
 }
 
 } // namespace MainWindow

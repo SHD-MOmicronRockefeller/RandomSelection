@@ -43,6 +43,8 @@ class GlobalVariables {
     public: const int main_window_height = 350 + 30; // 30为状态栏高度
     public: const double mid_window_porportion = 3.0 / 1.0; // 主窗口中部窗口的比例
 
+    // 最大化窗口信息
+    public: QSize normal_window_size = QSize(main_window_width, main_window_height); // 储存窗口最大化之前的大小
     public: bool is_max_window_showed = false; // 是否最大化窗口
 
     public: unsigned int tab_index = 0; // 当前标签页索引

@@ -61,6 +61,9 @@ void initialize_settings()
     // 设置非迷你窗口
     MY_FUNC::setMainWindow();
 
+    // 设置迷你窗口图标
+    gv->min_custom_title_bar->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonM.png"));
+
 
     // 后续 ///////////////////////////
 

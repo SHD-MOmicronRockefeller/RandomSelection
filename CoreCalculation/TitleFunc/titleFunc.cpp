@@ -82,6 +82,38 @@ void setMainWindow()
     int new_x = center_x - main_width / 2;
     int new_y = center_y - main_height / 2;
     gv->main_window_shell->move(new_x, new_y); // 修正：原逻辑完全反向，已重构
+
+    // 5. 设置按钮图标
+}
+
+void setWindowMaximized()
+{
+    GlobalVariables* gv = GlobalVariables::getInstance();
+
+    // 获取原始大小
+    gv->normal_window_size = gv->main_window_shell->size();
+
+    // 最大化窗口
+    gv->main_window_shell->showMaximized();
+    gv->is_max_window_showed = true;
+
+    // 切换按钮图标
+    gv->custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonM.png"));
+    gv->min_custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonM.png"));
+}
+
+void setWindowReMaximized()
+{
+    GlobalVariables* gv = GlobalVariables::getInstance();
+
+    // 还原窗口
+    gv->main_window_shell->showNormal();
+    gv->main_window_shell->resize(gv->normal_window_size);
+    gv->is_max_window_showed = false;
+
+    // 切换按钮图标
+    gv->custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
+    gv->min_custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
 }
 
 } // namespace MY_FUNC

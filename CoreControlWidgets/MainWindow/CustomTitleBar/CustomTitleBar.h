@@ -39,8 +39,6 @@ class CustomTitleBar : public QFrame
     public:    void onMidBtnClicked_clicked(int tab_index); 
 
     //自定义函数
-    public: void setMainWindowMaximized(); // 设置主窗口
-    public: void setMainWindowUNMaximized(); // 设置主窗口
     protected: void setMainWindowminimized(); // 设置主窗口最小化;
     
     // 重写父类函数
@@ -66,14 +64,12 @@ class CustomTitleBar : public QFrame
     protected: QLabel *m_titleLabel = nullptr; // 标题标签
     protected: QMap<QString, QPushButton *> m_midBtns; // 中间按钮列表
     protected: QPushButton *m_btnMin = nullptr; // 最小化按钮
-    protected: QPushButton *m_btnSetting = nullptr; // 设置按钮
-    protected: QPushButton *m_btnMax = nullptr; // 最大化按钮
+    public: QPushButton *m_btnSetting = nullptr; // 设置按钮
+    public: QPushButton *m_btnMax = nullptr; // 最大化按钮
     protected: QPushButton *m_btnClose = nullptr; // 关闭按钮
 
     // 拖动相关
     protected: bool m_isDragging = false; // 是否正在拖动
-    protected: bool m_isMaximized = false; // 是否最大化
-    protected: QSize m_windowSize; // 窗口大小
     protected: QPoint m_dragStartPos; // 鼠标按下时的位置
     protected: QPoint m_dragStartGlobalPos; // 鼠标释放时的位置
 };
