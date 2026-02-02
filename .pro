@@ -40,7 +40,7 @@ CONFIG(release, debug|release) {
     # 仅 Release 模式执行打包
     win32 {
         ENIGMA_PATH = "D:/DownApp/Enigma Virtual Box/enigmavb.exe"
-        ENIGMA_TEMPLATE = $$PWD/random_selection.evb
+        ENIGMA_TEMPLATE = $$PWD/MakeBagTarget.evb
         QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE  $$escape_expand(\\n\\t)
     }
 }

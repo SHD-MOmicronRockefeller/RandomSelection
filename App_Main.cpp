@@ -18,5 +18,6 @@ int main(int argc, char* argv[]){
     // 运行应用程序
     GlobalVariables::getInstance()->application_shell->exec();
 
+    
     return 0;
 }
