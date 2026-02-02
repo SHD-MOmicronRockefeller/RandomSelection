@@ -466,3 +466,7 @@
 2026-02-02 19:00:12 1770030012418:[Warning]unhandled notification:$/setTrace
 2026-02-02 19:01:48 1770030108631:[Info]receive message body:{"jsonrpc":"2.0","method":"workspace/didChangeWatchedFiles","params":{"changes":[{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/refs/remotes/origin/HEAD.lock","type":1},{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/refs/remotes/origin/HEAD.lock","type":3}]}}
 2026-02-02 19:01:48 1770030108631:[Log]ArkLanguageServer::OnDidChangeWatchedFiles in.
+2026-02-02 19:02:23 1770030143592:[Info]receive message body:{"jsonrpc":"2.0","method":"workspace/didChangeWatchedFiles","params":{"changes":[{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/index.lock","type":1},{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/index.lock","type":3}]}}
+2026-02-02 19:02:23 1770030143592:[Log]ArkLanguageServer::OnDidChangeWatchedFiles in.
+2026-02-02 19:02:25 1770030145266:[Info]receive message body:{"jsonrpc":"2.0","method":"workspace/didChangeWatchedFiles","params":{"changes":[{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/index.lock","type":1},{"uri":"file:///d%3A/Base_Desktop/Desktop/RandomSelection/.git/index.lock","type":3}]}}
+2026-02-02 19:02:25 1770030145266:[Log]ArkLanguageServer::OnDidChangeWatchedFiles in.
