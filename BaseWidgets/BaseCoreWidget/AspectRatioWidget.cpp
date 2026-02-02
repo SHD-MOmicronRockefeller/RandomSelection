@@ -3,7 +3,7 @@
 namespace BaseWidgets {
 
 
-AspectRatioWidget::AspectRatioWidget(double ratio, QWidget *parent)
+AspectRatioWidget::AspectRatioWidget(QWidget *parent, double ratio)
     : QWidget(parent), m_aspectRatio(ratio)
 {
     // 核心：用布局管理内容，避免手动move/setFixedSize冲突

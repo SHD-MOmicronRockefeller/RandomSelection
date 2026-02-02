@@ -15,6 +15,10 @@ int main(int argc, char* argv[]){
     // 初始化设置
     Initialization::initialize_settings();
 
+
+    if (not GlobalVariables::getInstance()->is_mini_window_showed) 
+        qDebug() << "not is_mini_window_showed";
+
     // 运行应用程序
     GlobalVariables::getInstance()->application_shell->exec();
 

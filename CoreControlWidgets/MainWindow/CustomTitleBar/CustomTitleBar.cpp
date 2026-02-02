@@ -4,6 +4,8 @@
 
 #include "CoreControlWidgets/MainWindow/mainWindow.h"
 
+#include "CoreCalculation/TitleFunc/titleFunc.h"
+
 namespace CoreControlWidgets {
 
 namespace MainWindow {
@@ -198,12 +200,15 @@ void CustomTitleBar::onMinimizeClicked()
 
 void CustomTitleBar::onSettingClicked()
 {
-    this->onMaximizeClicked();
+    if (GlobalVariables::getInstance()->is_mini_window_showed)
+        MY_FUNC::setMainWindow();
+    else
+        MY_FUNC::setMinWindow();
 }
 
 void CustomTitleBar::onMaximizeClicked()
 {
-    this->setMainWindowMaximized();
+    this->window()->showMaximized();
 }
 
 void CustomTitleBar::onCloseClicked()
@@ -269,29 +274,57 @@ void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 void CustomTitleBar::onMidBtnClicked_randomSelect()
 {
     GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->select_tab;
-    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
-    GlobalVariables::getInstance()->this_tab_widget->show();
+    this->onMidBtnClicked_help();
+    GlobalVariables::getInstance()->tab_index = 0;
 }
 
 void CustomTitleBar::onMidBtnClicked_fileEdit()
 {
     GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->file_tab;
-    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
-    GlobalVariables::getInstance()->this_tab_widget->show();
+    this->onMidBtnClicked_help();
+    GlobalVariables::getInstance()->tab_index = 1;
 }
 
 void CustomTitleBar::onMidBtnClicked_setting()
 {
     GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->setting_tab;
-    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
-    GlobalVariables::getInstance()->this_tab_widget->show();
+    this->onMidBtnClicked_help();
+    GlobalVariables::getInstance()->tab_index = 2;
 }
 
 void CustomTitleBar::onMidBtnClicked_about()
 {
- GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->about_tab;
-    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
-    GlobalVariables::getInstance()->this_tab_widget->show();
+    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->about_tab;
+    this->onMidBtnClicked_help();
+    GlobalVariables::getInstance()->tab_index = 3;
+}
+
+void CustomTitleBar::onMidBtnClicked_clicked(int tab_index)
+{
+    switch (tab_index)
+    {
+        case 0:
+            onMidBtnClicked("randomSelect");
+            break;
+        case 1:
+            onMidBtnClicked("fileEdit");
+            break;
+        case 2:
+            onMidBtnClicked("setting");
+            break;
+        case 3:
+            onMidBtnClicked("about");
+            break;
+    default:
+        break;
+    }
+}
+
+void CustomTitleBar::onMidBtnClicked_help()
+{
+    GlobalVariables* gv = GlobalVariables::getInstance();
+    gv->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
+    gv->this_tab_widget->show();
 }
 
 void CustomTitleBar::setMainWindowMaximized()

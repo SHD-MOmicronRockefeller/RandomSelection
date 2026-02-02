@@ -30,11 +30,13 @@ class CustomTitleBar : public QFrame
 
     // 页面函数
     protected: void closeThisTab(); // 关闭当前标签页
-public: void onMidBtnClicked(QString objectName = "", bool canRun = true); // 中间按钮点击槽函数
+    public:    void onMidBtnClicked(QString objectName = "", bool canRun = true); // 中间按钮点击槽函数
     protected: void onMidBtnClicked_randomSelect();// 随机选择按钮点击槽函数
     protected: void onMidBtnClicked_fileEdit(); // 文件编辑按钮点击槽函数
     protected: void onMidBtnClicked_setting(); // 设置按钮点击槽函数
     protected: void onMidBtnClicked_about(); // 关于程序按钮点击槽函数
+    protected: void onMidBtnClicked_help(); 
+    public:    void onMidBtnClicked_clicked(int tab_index); 
 
     //自定义函数
     protected: void setMainWindowMaximized(); // 设置主窗口

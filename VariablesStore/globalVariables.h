@@ -12,6 +12,7 @@
 #include "CoreControlWidgets/SettingTab/settingTab.h"
 #include "CoreControlWidgets/AboutTab/aboutTab.h"
 #include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
+#include "CoreControlWidgets/MinWindowShell/minWindowShell.h"
 
 
 class GlobalVariables {
@@ -38,12 +39,18 @@ class GlobalVariables {
     public: const int application_setp_version = 1;
 
     // 主窗口信息
-    public: const int main_window_width = 700;
-    public: const int main_window_height = 350 + 30;
+    public: const int main_window_width = 700; // 主窗口宽度
+    public: const int main_window_height = 350 + 30; // 30为状态栏高度
+    public: const double mid_window_porportion = 3.0 / 1.0; // 主窗口中部窗口的比例
+
+    public: unsigned int tab_index = 0; // 当前标签页索引
 
     // 数据库信息
     // public: ApplicationClass::ApplicationShell* applicationShell = nullptr;
     public: ApplicationClass::ApplicationShell* application_shell                   = nullptr;
+
+    // 窗口栈
+    public: QStackedWidget* window_stack                                            =  nullptr;
 
     // 主窗口
     public: CoreControlWidgets::MainWindowShell* main_window_shell                  = nullptr;
@@ -53,6 +60,15 @@ class GlobalVariables {
     
     // 状态栏
     public: CoreControlWidgets::MainWindow::StatusBar* status_bar                   = nullptr;
+    
+    // 主窗口Widgets
+    public: QWidget* main_window_widget                                             = nullptr;
+
+    // 迷你窗口Widgets
+    public: CoreControlWidgets::MinWindow::MinWindowShell* min_window_widget        = nullptr;
+
+    // 迷你窗口标题栏
+    public: CoreControlWidgets::MainWindow::CustomTitleBar* min_custom_title_bar    = nullptr;
 
     // 选择页面
     public: CoreControlWidgets::SelectTab* select_tab                               = nullptr;
@@ -68,6 +84,11 @@ class GlobalVariables {
 
     // 其他变量
     public: QWidget* this_tab_widget                                                = nullptr;
+
+    // 迷你窗口
+    public: bool is_mini_window_showed = false;
+
+
 };
 
 #endif // GLOBALVARIABLES_H

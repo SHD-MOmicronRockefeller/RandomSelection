@@ -28,16 +28,23 @@ namespace CoreControlWidgets{
         class Select_Page;
         
         class ListSet_Page;
+        class BasicSet_Page;
     }
 
-
-    
     class MainWindowShell;
     namespace MainWindow {
         class StatusBar;
         class CustomTitleBar;
     }
+
+    namespace MinWindow{
+        class MinWindowShell;
+    } // namespace MinWindow
+
+
 } // namespace CoreControlWidgets
+
+
 
 
 

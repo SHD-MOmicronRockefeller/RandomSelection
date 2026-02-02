@@ -23,7 +23,6 @@ class MainWindowShell : public QMainWindow{
 
     //设置标题栏
     public: MainWindow::CustomTitleBar *m_customTitleBar = nullptr;
-    public: void setWindowTitleBox();
 
     //title layout
     public: QVBoxLayout *m_titleLayout = nullptr;

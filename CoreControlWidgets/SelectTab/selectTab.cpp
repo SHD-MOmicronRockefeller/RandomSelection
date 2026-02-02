@@ -6,12 +6,14 @@
 #include "Select_P/select_P.h"
 #include "SelectFile_P/selectFile.h"
 #include "ListSet_P/listSet.h"
+#include "BasicSet_P/basicSet.h"
 
 CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab(parent)
 {
     this->select_page = new SelectTab_NS::Select_Page();
     this->selectFile_page = new SelectTab_NS::SelectFile_Page();
     this->listSet_page = new SelectTab_NS::ListSet_Page();  
+    this->basicSet_page = new SelectTab_NS::BasicSet_Page();
 
     // ========== 1. 原有controlList逻辑（保留） ==========
     this->controlList->pushLable(new QLabel("选择："));
@@ -40,6 +42,9 @@ CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab
     this->controlList->pushButton(listSettingButton);
     
     QPushButton* basicSettingButton = new QPushButton("基本设置");
+    connect(basicSettingButton, &QPushButton::clicked, this, [=, this](){
+        this->setPage(this->basicSet_page);
+    });
     this->controlList->pushButton(basicSettingButton);
     
     

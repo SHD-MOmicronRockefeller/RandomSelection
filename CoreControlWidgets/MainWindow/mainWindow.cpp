@@ -2,10 +2,10 @@
 #include "VariablesStore/globalVariables.h"
 #include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
 #include "CoreControlWidgets/SelectTab/selectTab.h"
+#include "CoreControlWidgets/MinWindowShell/minWindowShell.h"
 
 CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWindow(parent)
 {
-    this->m_customTitleBar = GlobalVariables::getInstance()->custom_title_bar;
     this->setObjectName("MainWindowShell");
     this->m_baseWidget = new QWidget(this);// 整个窗口的widget
     this->m_baseWidget->setObjectName("MainWindowShell_baseWidget");
@@ -17,6 +17,7 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
         }
     )");
     this->setCentralWidget(this->m_baseWidget);// 设置窗口 
+    GlobalVariables::getInstance()->main_window_widget = this->m_baseWidget;
 
     // 设置窗口大小
     this->setGeometry(100, 100, 800, 600);
@@ -69,7 +70,3 @@ CoreControlWidgets::MainWindowShell::~MainWindowShell()
     this->m_titleLayout = nullptr;
 }
 
-void CoreControlWidgets::MainWindowShell::setWindowTitleBox()
-{
-    return;          
-}
