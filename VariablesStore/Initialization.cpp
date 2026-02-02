@@ -17,6 +17,9 @@ void initialize_settings()
     
     // 分步初始化UI成员（确保在QApplication就绪后）
 
+    gv->window_size[0] = gv->main_window_width;
+    gv->window_size[1] = gv->main_window_height;
+
     // 第一梯队
     if (!gv->custom_title_bar)      gv->custom_title_bar    = new CoreControlWidgets::MainWindow::CustomTitleBar();                         // 标题栏
     if (!gv->status_bar)            gv->status_bar          = new CoreControlWidgets::MainWindow::StatusBar();                              // 状态栏
@@ -43,20 +46,44 @@ void initialize_settings()
     gv->main_window_shell->show();
 
 
-    GlobalVariables::getInstance()->main_window_shell->resize(GlobalVariables::getInstance()->main_window_width, GlobalVariables::getInstance()->main_window_height);
-    GlobalVariables::getInstance()->main_window_shell->show();
+    gv->main_window_shell->resize(gv->main_window_width, gv->main_window_height);
+    gv->main_window_shell->show();
 
     // 设置默认选择页面
-    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->select_tab);
-    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->select_tab;
+    gv->main_window_shell->m_centralLayout->addWidget(gv->select_tab);
+    gv->this_tab_widget = gv->select_tab;
 
     // 添加状态栏
-    GlobalVariables::getInstance()->main_window_shell->m_titleLayout->addWidget(GlobalVariables::getInstance()->status_bar);
-    GlobalVariables::getInstance()->status_bar->addLeftWidget(new QLabel("__状态栏左侧__"));
-    GlobalVariables::getInstance()->status_bar->addRightWidget(new QLabel("__状态栏右侧__"));
+    gv->main_window_shell->m_titleLayout->addWidget(gv->status_bar);
+    gv->status_bar->addLeftWidget(new QLabel("__状态栏左侧__"));
+    gv->status_bar->addRightWidget(new QLabel("__状态栏右侧__"));
 
     // 设置非迷你窗口
     MY_FUNC::setMainWindow();
+
+
+    // 后续 ///////////////////////////
+
+    gv->main_window_shell->m_customTitleBar->onMidBtnClicked_clicked(0); // 切换到默认选择页面
+
+    // 设置原始尺寸
+    gv->main_window_shell->resize(gv->main_window_width, gv->main_window_height);
+
+    // 移动到屏幕中心
+    QScreen* screen = gv->main_window_shell->screen();
+    if (!screen) screen = QGuiApplication::primaryScreen();
+    QRect screenRect = screen->availableGeometry();
+
+    int screenCenterX = screenRect.x() + screenRect.width() / 2;
+    int screenCenterY = screenRect.y() + screenRect.height() / 2;
+
+    int windowWidth = gv->main_window_shell->width();
+    int windowHeight = gv->main_window_shell->height();
+    int windowX = screenCenterX - windowWidth / 2;
+    int windowY = screenCenterY - windowHeight / 2;
+
+    gv->main_window_shell->move(windowX, windowY);
+
 }
 
 } // namespace Initialization

@@ -43,7 +43,7 @@ BaseWidgets::BaseTab::BaseTab(QWidget *parent) : QWidget(parent)
     // 设置中心区域的样式
     this->m_centerWidget->setStyleSheet(R"(
     QWidget#BaseTab_CenterWidget{
-        background-color: rgba(16, 195, 240, 1);
+        background-color: rgba(211, 229, 247, 1);
     }
     )");
     

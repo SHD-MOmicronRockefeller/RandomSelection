@@ -7,7 +7,7 @@ CoreControlWidgets::SelectTab_NS::MidWidget::MidWidget(QWidget *parent) : QWidge
     this->setObjectName("MidWidget");
     this->setStyleSheet(R"(
     QWidget#MidWidget{
-        background-color: rgba(243, 35, 191, 1);
+        background-color: rgba(201, 201, 201, 1);
     }
     )");
     this->m_mainLayout = new QHBoxLayout(this);

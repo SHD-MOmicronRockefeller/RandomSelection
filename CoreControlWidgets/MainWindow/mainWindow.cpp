@@ -13,7 +13,7 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
     this->m_baseWidget->setAttribute(Qt::WA_StyledBackground, true);
     this->m_baseWidget->setStyleSheet(R"(
         QWidget#MainWindowShell_baseWidget{
-            background-color: rgba(255, 130, 13, 1);
+            background-color: rgba(211, 229, 247, 1);
         }
     )");
     this->setCentralWidget(this->m_baseWidget);// 设置窗口 
@@ -46,7 +46,7 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
     this->m_centralWidget->setAttribute(Qt::WA_StyledBackground, true);
     this->m_centralWidget->setStyleSheet(R"(
         QWidget#MainWindowShell_centralWidget{
-            background-color: rgba(13, 69, 255, 1);
+            background-color: rgba(211, 229, 247, 1);
         }
     )");
     this->m_titleLayout->addWidget(this->m_centralWidget); // 添加主体widget

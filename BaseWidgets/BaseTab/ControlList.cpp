@@ -15,7 +15,7 @@ BaseWidgets::BaseElements::ControlList::ControlList(QWidget *parent) : QWidget(p
 
     this->setStyleSheet(R"(
     QWidget#ControlList{
-        background-color:rgba(243, 243, 35, 1);
+        background-color:rgba(253, 253, 255, 1);
     }
     )");
 }

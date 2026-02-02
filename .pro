@@ -1,76 +1,71 @@
-# ========== 核心：自动获取当前文件夹名称作为项目名 ==========
-# _PRO_FILE_PWD_ 是 .pro 文件所在目录的绝对路径
-# dirname 提取路径的最后一级（即文件夹名）
-TARGET = $$TARGET_NAME
-
-# 兜底：防止传参失败
-isEmpty(TARGET) {
-    TARGET = RandomSelection
-}
-
-# 生成可执行文件
+# ========== 基础配置（修复核心） ==========
+isEmpty(TARGET_NAME) { TARGET_NAME = RandomSelection }  # 兜底项目名
 TEMPLATE = app
-
-# C++ 标准
-#CONFIG += c++17
 CONFIG += c++20
-# 强制 UTF-8 编码
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 
-# ========== 多线程编译配置（修正语法错误） ==========
-# 自动获取CPU逻辑核心数（跨平台适配，修正命令执行语法）
-win32 {
-    # Windows平台：通过wmic命令获取CPU核心数（修正命令拼接语法）
-    CPU_CORES = $$system(powershell -Command "(Get-CimInstance Win32_Processor).NumberOfLogicalProcessors")
-} else {
-    # Linux/macOS平台：通过sysctl/nproc获取核心数
-    CPU_CORES = $$system(sysctl -n hw.logicalcpu 2>/dev/null || nproc)
-}
-
-# 兜底：获取失败时默认使用4线程（修正条件判断语法）
-isEmpty(CPU_CORES) {
-    CPU_CORES = 4
-}
-
-# 设置多线程编译参数（修正变量赋值语法）
-win32 {
-    MAKEFLAGS += -j$$CPU_CORES
-} else {
-    QMAKE_MAKEFLAGS += -j$$CPU_CORES
-}
-
-# ========== 自动扫描文件配置 ==========
-# 自动扫描源文件、头文件、UI、资源文件
-SOURCES += $$files(*.cpp, true)
-HEADERS += $$files(*.h, true)
-FORMS   += $$files(*.ui, true)
-RESOURCES += $$files(*.qrc, true)
-
-# 排除 build 目录
+# ========== 关键修复：文件扫描（避免生成多余减号） ==========
+# 方式1：显式过滤，避免空值导致的减号问题
+SOURCES = $$files(*.cpp, true)
 SOURCES -= $$files(build/*.cpp, true)
-HEADERS -= $$files(build/*.h, true)
+SOURCES -= $$files(build_debug/*.cpp, true)
+SOURCES -= $$files(build_release/*.cpp, true)
 
-# Qt 模块配置
+HEADERS = $$files(*.h, true)
+HEADERS -= $$files(build/*.h, true)
+HEADERS -= $$files(build_debug/*.h, true)
+HEADERS -= $$files(build_release/*.h, true)
+
+FORMS = $$files(*.ui, true)
+RESOURCES = $$files(*.qrc, true)
+
+# ========== Debug/Release 模式配置（关闭同时编译） ==========
+CONFIG += debug_and_release  # 支持两种模式，但不自动同时编译
+# 移除 CONFIG += build_all （关键：避免同时编译Debug/Release）
+
+# Debug 模式：保留调试信息，关闭优化（断点必备）
+CONFIG(debug, debug|release) {
+    TARGET = $${TARGET_NAME}_Debug
+    DEFINES += QT_DEBUG
+    QMAKE_CXXFLAGS += -g -O0  # 断点生效核心：-g生成调试信息，-O0关闭优化
+    QMAKE_LFLAGS += -g        # 链接时也保留调试信息（新增，确保断点可用）
+}
+
+# Release 模式：优化编译，自动打包
+CONFIG(release, debug|release) {
+    TARGET = $${TARGET_NAME}_Release
+    DEFINES += QT_NO_DEBUG
+    QMAKE_CXXFLAGS += -O2  # 开启优化
+    # 仅 Release 模式执行打包
+    win32 {
+        ENIGMA_PATH = "D:/DownApp/Enigma Virtual Box/enigmavb.exe"
+        ENIGMA_TEMPLATE = $$PWD/random_selection.evb
+        QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE  $$escape_expand(\\n\\t)
+    }
+}
+
+# ========== 其他基础配置（不变） ==========
 QT += core widgets gui
 
-# Windows 显示控制台窗口
-win32 {
-    CONFIG -= windows
-    CONFIG += console
+# Windows 控制台
+win32 { 
+    CONFIG -= windows 
+    CONFIG += console 
 }
 
-# MinGW 编译选项
-win32-g++ {
-    QMAKE_CXXFLAGS += -fexec-charset=utf-8 -finput-charset=utf-8
+# MinGW 编码
+win32-g++ { 
+    QMAKE_CXXFLAGS += -fexec-charset=utf-8 -finput-charset=utf-8 
 }
 
-win32 { # 仅在Windows下执行打包逻辑
-    ENIGMA_PATH = "D:/DownApp/Enigma Virtual Box/enigmavb.exe"
-
-    # 定位项目根目录下的.evb模板文件
-    ENIGMA_TEMPLATE = $$PWD/random_selection.evb
-
-    # 编译完成后自动打包
-    QMAKE_POST_LINK += $$ENIGMA_PATH /pack /silent $$ENIGMA_TEMPLATE  $$escape_expand(\\n\\t)
+# 多核编译（修复：避免空值问题）
+win32 { 
+    CPU_CORES = $$system(powershell -Command "(Get-CimInstance Win32_Processor).NumberOfLogicalProcessors") 
 }
+else { 
+    CPU_CORES = $$system(sysctl -n hw.logicalcpu 2>/dev/null || nproc) 
+}
+isEmpty(CPU_CORES) { CPU_CORES = 4 }
+win32 { MAKEFLAGS += -j$$CPU_CORES }
+else { QMAKE_MAKEFLAGS += -j$$CPU_CORES }

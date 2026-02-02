@@ -1,51 +1,68 @@
 {
     "version": "2.0.0",
     "tasks": [
+        // 1. 配置 Debug 版本（仅生成 Debug 的 Makefile）
         {
-            "label": "QMake: Configure",
+            "label": "QMake: Configure (Debug)",
             "type": "shell",
-            "command": "if not exist build mkdir build && cd build && qmake .. -spec win32-g++",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
+            "command": "if not exist build_debug mkdir build_debug && cd build_debug && qmake .. -spec win32-g++ CONFIG+=debug CONFIG-=release",
+            "options": { "cwd": "${workspaceFolder}" },
             "problemMatcher": [],
-            "detail": "自动创建build目录并生成Makefile(qmake适配MinGW),无需手动指定Qt路径"
+            "detail": "创建debug目录，仅生成Debug模式的Makefile"
         },
+        // 2. 配置 Release 版本（仅生成 Release 的 Makefile）
         {
-            "label": "QMake: Build",
+            "label": "QMake: Configure (Release)",
             "type": "shell",
-            "command": "cd build && mingw32-make -j${env:NUMBER_OF_PROCESSORS}",
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "command": "if not exist build_release mkdir build_release && cd build_release && qmake .. -spec win32-g++ CONFIG+=release CONFIG-=debug",
+            "options": { "cwd": "${workspaceFolder}" },
+            "problemMatcher": [],
+            "detail": "创建release目录，仅生成Release模式的Makefile"
+        },
+        // 3. 构建 Debug（断点可用）
+        {
+            "label": "QMake: Build (Debug)",
+            "type": "shell",
+            "command": "cd build_debug && mingw32-make -j${env:NUMBER_OF_PROCESSORS} debug",
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": false },
             "problemMatcher": {
                 "owner": "cpp",
                 "fileLocation": "absolute",
                 "pattern": {
                     "regexp": "^(.*?)(\\((\\d+),(\\d+)\\))?:\\s+(error|warning):\\s+(.*)$",
-                    "file": 1,
-                    "line": 3,
-                    "column": 4,
-                    "severity": 5,
-                    "message": 6
+                    "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
                 }
             },
-            "dependsOn": "QMake: Configure",
-            "detail": "多核编译项目(自动适配CPU核心数),依赖qmake配置步骤"
+            "dependsOn": "QMake: Configure (Debug)",
+            "detail": "仅编译Debug版本（带调试信息，断点生效）"
         },
+        // 4. 构建 Release（自动打包）
         {
-            "label": "QMake: Clean",
+            "label": "QMake: Build (Release)",
             "type": "shell",
-            "command": "if exist build (cd build && mingw32-make clean) && rmdir /s /q build",
-            "options": {
-                "cwd": "${workspaceFolder}"
+            "command": "cd build_release && mingw32-make -j${env:NUMBER_OF_PROCESSORS} release",
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": { "kind": "build", "isDefault": false },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*?)(\\((\\d+),(\\d+)\\))?:\\s+(error|warning):\\s+(.*)$",
+                    "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
+                }
             },
+            "dependsOn": "QMake: Configure (Release)",
+            "detail": "仅编译Release版本（自动打包，无调试信息）"
+        },
+        // 5. 清理所有版本
+        {
+            "label": "QMake: Clean All",
+            "type": "shell",
+            "command": "if exist build_debug (cd build_debug && mingw32-make clean) && rmdir /s /q build_debug && if exist build_release (cd build_release && mingw32-make clean) && rmdir /s /q build_release",
+            "options": { "cwd": "${workspaceFolder}" },
             "problemMatcher": [],
-            "detail": "先清理编译产物,再删除build目录,彻底重置构建环境"
+            "detail": "清理Debug/Release所有产物和目录"
         }
     ]
 }

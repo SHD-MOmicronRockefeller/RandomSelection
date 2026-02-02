@@ -39,7 +39,8 @@ class CustomTitleBar : public QFrame
     public:    void onMidBtnClicked_clicked(int tab_index); 
 
     //自定义函数
-    protected: void setMainWindowMaximized(); // 设置主窗口
+    public: void setMainWindowMaximized(); // 设置主窗口
+    public: void setMainWindowUNMaximized(); // 设置主窗口
     protected: void setMainWindowminimized(); // 设置主窗口最小化;
     
     // 重写父类函数

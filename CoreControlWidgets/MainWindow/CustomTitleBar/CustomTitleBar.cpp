@@ -195,20 +195,59 @@ QIcon CustomTitleBar::setIconColor(QIcon icon, QColor color)
 
 void CustomTitleBar::onMinimizeClicked()
 {
-    this->window()->showMinimized();
+    this->setMainWindowminimized();
 }
 
 void CustomTitleBar::onSettingClicked()
 {
-    if (GlobalVariables::getInstance()->is_mini_window_showed)
+    GlobalVariables *gv = GlobalVariables::getInstance();
+
+    if (not gv->is_mini_window_showed){
+        gv->old_window_is_max = this->m_isMaximized;
+    }
+
+    if (gv->is_mini_window_showed){
         MY_FUNC::setMainWindow();
-    else
-        MY_FUNC::setMinWindow();
+        if (gv->old_window_is_max){
+            this->setMainWindowMaximized();
+        }
+        return;
+    }
+
+    if (this->m_isMaximized){
+        this->setMainWindowUNMaximized();
+    }
+    MY_FUNC::setMinWindow();
+
+    if (gv->is_max_window_showed){
+        QScreen* screen = gv->main_window_shell->screen();
+        if (!screen) screen = QGuiApplication::primaryScreen();
+        QRect screenRect = screen->availableGeometry();
+
+        int screenCenterX = screenRect.x() + screenRect.width() / 2;
+        int screenCenterY = screenRect.y() + screenRect.height() / 2;
+
+        int windowWidth = gv->main_window_shell->width();
+        int windowHeight = gv->main_window_shell->height();
+        int windowX = screenCenterX - windowWidth / 2;
+        int windowY = screenCenterY - windowHeight / 2;
+
+        gv->main_window_shell->move(windowX, windowY);
+    }
+
 }
 
 void CustomTitleBar::onMaximizeClicked()
 {
-    this->window()->showMaximized();
+    GlobalVariables *gv = GlobalVariables::getInstance();
+    if (gv->is_mini_window_showed)
+        onSettingClicked();
+    if (this->m_isMaximized){
+        this->setMainWindowUNMaximized();
+    } else {
+        this->setMainWindowMaximized();
+    }
+    gv->is_max_window_showed = this->m_isMaximized;
 }
 
 void CustomTitleBar::onCloseClicked()
@@ -329,21 +368,20 @@ void CustomTitleBar::onMidBtnClicked_help()
 
 void CustomTitleBar::setMainWindowMaximized()
 {
+    this->m_windowSize = this->window()->size();
+    this->window()->showMaximized();
+    this->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonM.png"));
+    this->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonM.png"));
+    this->m_isMaximized = true;
+}
 
-
-    if (this->m_isMaximized){
-        this->window()->showNormal();
-        this->window()->resize(this->m_windowSize);
-        this->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
-        this->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonN.png"));
-        this->m_isMaximized = false;
-    } else {
-        this->m_windowSize = this->window()->size();
-        this->window()->showMaximized();
-        this->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonM.png"));
-        this->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonM.png"));
-        this->m_isMaximized = true;
-    }
+void CustomTitleBar::setMainWindowUNMaximized()
+{
+    this->window()->showNormal();
+    this->window()->resize(this->m_windowSize);
+    this->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
+    this->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonN.png"));
+    this->m_isMaximized = false;
 }
 
 void CustomTitleBar::setMainWindowminimized()

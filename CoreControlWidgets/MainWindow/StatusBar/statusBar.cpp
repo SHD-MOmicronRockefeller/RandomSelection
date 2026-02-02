@@ -10,7 +10,7 @@ CoreControlWidgets::MainWindow::StatusBar::StatusBar(QWidget* parent) : QWidget(
 
     this->setStyleSheet(R"(
         QWidget#StatusBar{
-            background-color: rgba(13, 255, 182, 1);
+            background-color: rgba(248, 249, 250, 1);
         }
     )");
     

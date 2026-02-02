@@ -5,33 +5,44 @@
             "name": "Qt Debug (MinGW GDB)",
             "type": "cppdbg",
             "request": "launch",
-            // 核心修改：适配 qmake 编译的程序路径（release 目录下的同名 exe）
-            "program": "${workspaceFolder}/build/release/${workspaceFolderBasename}.exe",
+            // 核心：精准指向 Debug 产物路径（匹配 build_debug/debug/ 目录）
+            "program": "${workspaceFolder}/build_debug/debug/${workspaceFolderBasename}_Debug.exe",
             "args": [],
-            "stopAtEntry": false,
+            "stopAtEntry": false, // 想在 main 函数断点启动，可改为 true
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true,
-            // 关键：关联 qmake 的 Build 任务，调试前自动编译
-            //"preLaunchTask": "QMake: Build",
+            // 关键：添加 Qt 运行环境，避免找不到动态库
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "D:/DownApp/Qt/6.10.1/mingw_64/bin;${env:PATH}" // 适配你的 Qt 6.10.1 路径
+                }
+            ],
+            "externalConsole": true, // 保留独立控制台，方便查看输出
+            // 关联 Debug 编译任务，调试前自动编译最新代码
+            // "preLaunchTask": "QMake: Build (Debug)",
             "MIMode": "gdb",
+            // 适配你的 MinGW GDB 路径（Qt 工具链自带）
             "miDebuggerPath": "D:/DownApp/Qt/Tools/mingw1310_64/bin/gdb.exe",
             "setupCommands": [
                 {
-                    "description": "Enable pretty-printing for gdb",
+                    "description": "启用 GDB 美化打印",
                     "text": "-enable-pretty-printing",
                     "ignoreFailures": true
                 },
                 {
-                    "description": "将反汇编风格设置为 Intel",
+                    "description": "反汇编风格改为 Intel",
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
                 }
             ],
-            // 新增：调试时自动加载符号，定位源码更准确
             "symbolLoadInfo": {
-                "loadAll": true,
+                "loadAll": true, // 加载所有调试符号，断点更精准
                 "exceptionList": ""
+            },
+            // 源码映射：解决 GDB 无法定位本地源码的问题
+            "sourceFileMap": {
+                "/build_debug": "${workspaceFolder}/build_debug",
+                "/build_release": "${workspaceFolder}/build_release"
             }
         }
     ]

@@ -1,6 +1,6 @@
 #include "listSet.h"
 
-CoreControlWidgets::SelectTab_NS::ListSet_Page::ListSet_Page(QWidget *parent)
+CoreControlWidgets::SelectTab_NS::ListSet_Page::ListSet_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
     this->m_centerLayout->setContentsMargins(0, 0, 0, 0);

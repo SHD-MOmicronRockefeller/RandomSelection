@@ -43,7 +43,12 @@ class GlobalVariables {
     public: const int main_window_height = 350 + 30; // 30为状态栏高度
     public: const double mid_window_porportion = 3.0 / 1.0; // 主窗口中部窗口的比例
 
+    public: bool is_max_window_showed = false; // 是否最大化窗口
+
     public: unsigned int tab_index = 0; // 当前标签页索引
+
+    public: int window_size[2] = {0, 0}; // 窗口大小  用于 min 与 main 切换
+    public: bool old_window_is_max = false; // 记录旧窗口是否最大化 用于 min 与 main 切换
 
     // 数据库信息
     // public: ApplicationClass::ApplicationShell* applicationShell = nullptr;
