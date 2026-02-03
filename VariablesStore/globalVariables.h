@@ -13,6 +13,7 @@
 #include "CoreControlWidgets/AboutTab/aboutTab.h"
 #include "CoreControlWidgets/MainWindow/CustomTitleBar/CustomTitleBar.h"
 #include "CoreControlWidgets/MinWindowShell/minWindowShell.h"
+#include "BaseWidgets/BaseCoreWidget/MessageTipWidget.h"
 
 
 class GlobalVariables {
@@ -94,6 +95,9 @@ class GlobalVariables {
 
     // 迷你窗口
     public: bool is_mini_window_showed = false;
+
+    // 消息提示框
+    // public: BaseWidgets::MessageTipWidget* message_tip_widget                    = nullptr;
 
 
 };

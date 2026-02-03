@@ -254,6 +254,11 @@ void CustomTitleBar::onSettingClicked()
         gv->main_window_shell->move(windowX, windowY);
     }
 
+    MessageTipWidget *tip = MessageTipManager::instance().addMessage("正在打开 迷你化 窗口...", false);
+    QPushButton *closeBtn = tip->addButton("关闭");
+    connect(closeBtn, &QPushButton::clicked, tip, [tip]() {
+        tip->setHandled(true);
+    });
 }
 
 void CustomTitleBar::onMaximizeClicked()

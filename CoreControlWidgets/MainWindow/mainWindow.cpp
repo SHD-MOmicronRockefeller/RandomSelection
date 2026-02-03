@@ -70,3 +70,14 @@ CoreControlWidgets::MainWindowShell::~MainWindowShell()
     this->m_titleLayout = nullptr;
 }
 
+void CoreControlWidgets::MainWindowShell::moveEvent(QMoveEvent *event)
+{
+    QMainWindow::moveEvent(event);
+    emit windowChanged();
+}
+
+void CoreControlWidgets::MainWindowShell::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+    emit windowChanged();
+}

@@ -12,6 +12,8 @@ namespace BaseWidgets {
     }
 } // namespace BaseWidgets
 
+class MessageTipWidget;
+class MessageTipManager;
 
 namespace CoreControlWidgets{
     class AboutTab;

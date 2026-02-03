@@ -8,6 +8,7 @@
 int main(int argc, char* argv[]){
     ApplicationClass::ApplicationShell* app = new ApplicationClass::ApplicationShell(argc, argv);
     GlobalVariables::getInstance()->application_shell = app;
+    app = nullptr;
     
     // 初始化变量
     Initialization::initialize_values();

@@ -40,7 +40,7 @@ void initialize_settings()
         gv->window_stack->addWidget(gv->main_window_widget);   // 索引0：主窗口
         gv->window_stack->addWidget(gv->min_window_widget);    // 索引1：迷你窗口
     }
-        gv->main_window_shell->setCentralWidget(gv->window_stack);
+    gv->main_window_shell->setCentralWidget(gv->window_stack);
     // 默认显示主窗口
     gv->window_stack->setCurrentIndex(0);
     gv->main_window_shell->show();
@@ -63,6 +63,9 @@ void initialize_settings()
 
     // 设置迷你窗口图标
     gv->min_custom_title_bar->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonM.png"));
+
+    // 初始化消息管理器
+    MessageTipManager::instance().init(gv->main_window_shell);
 
 
     // 后续 ///////////////////////////

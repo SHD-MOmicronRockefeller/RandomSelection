@@ -28,6 +28,12 @@ class MainWindowShell : public QMainWindow{
     public: QVBoxLayout *m_titleLayout = nullptr;
 
     public: CoreControlWidgets::SelectTab* m_selectTab = nullptr;
+
+    // 重写
+    protected: void moveEvent(QMoveEvent *event) override;
+    protected: void resizeEvent(QResizeEvent *event) override;
+
+    signals: void windowChanged();
 };
 
 } // namespace CoreControlWidgets
