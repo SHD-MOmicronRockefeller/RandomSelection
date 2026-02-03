@@ -21,7 +21,7 @@
         },
         // 3. 构建 Debug（断点可用）
         {
-            "label": "QMake: Build (Debug)",
+            "label": "QMake: Build (Debug Application)",
             "type": "shell",
             "command": "cd build_debug && mingw32-make -j${env:NUMBER_OF_PROCESSORS} debug",
             "options": { "cwd": "${workspaceFolder}" },
@@ -34,12 +34,12 @@
                     "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
                 }
             },
-            "dependsOn": "QMake: Configure (Debug)",
-            "detail": "仅编译Debug版本（带调试信息，断点生效）"
+            "dependsOn": "QMake: Configure (Debug Application)",
+            "detail": "仅编译Debug版本[-O0](你De你老m阿，又出新Bug了？还不赶紧修复！)"
         },
         // 4. 构建 Release（自动打包）
         {
-            "label": "QMake: Build (Release)",
+            "label": "QMake: Build (Release Application)",
             "type": "shell",
             "command": "cd build_release && mingw32-make -j${env:NUMBER_OF_PROCESSORS} release",
             "options": { "cwd": "${workspaceFolder}" },
@@ -52,8 +52,8 @@
                     "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
                 }
             },
-            "dependsOn": "QMake: Configure (Release)",
-            "detail": "仅编译Release版本（自动打包，无调试信息）"
+            "dependsOn": "QMake: Configure (Release Application)",
+            "detail": "仅编译Release版本[-O2](写好了吗你就发布？出Bug了又在那叫叫叫！)"
         },
         // 5. 清理所有版本
         {
