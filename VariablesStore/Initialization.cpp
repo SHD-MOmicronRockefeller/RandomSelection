@@ -65,7 +65,7 @@ void initialize_settings()
     gv->min_custom_title_bar->m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonM.png"));
 
     // 初始化消息管理器
-    MessageTipManager::instance().init(gv->main_window_shell);
+    MessageTipManager::getInstance().init(gv->main_window_shell);
 
 
     // 后续 ///////////////////////////
@@ -90,6 +90,13 @@ void initialize_settings()
 
     gv->main_window_shell->move(windowX, windowY);
 
+}
+
+void after_event_loop_started()
+{
+    QTimer::singleShot(200, []() {
+        // MessageTipManager::getInstance().addMessage("欢饮，欢迎使用RandomSelection！", false);
+    });
 }
 
 } // namespace Initialization
