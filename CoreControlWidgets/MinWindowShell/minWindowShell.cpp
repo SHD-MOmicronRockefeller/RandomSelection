@@ -27,6 +27,14 @@ MinWindow::MinWindowShell::MinWindowShell(QWidget *parent): QWidget(parent)
     this->m_aspectRatioWidget->setContentWidget(this->m_midWidget); // 设置中间比例容器的内容为中间控件
 
     this->m_centralLayout->addWidget(this->m_aspectRatioWidget); // 添加宽高比控件
+
+    this->setObjectName("MinWindowShell");
+    // this->setStyleSheet("background-color: rgb(211, 229, 247);"); // 设置背景颜色
+    this->setStyleSheet(R"(
+        QWidget#MinWindowShell{
+            background-color: rgb(211, 229, 247);
+        }
+    )");
 }
 
 } // namespace CoreControlWidgets

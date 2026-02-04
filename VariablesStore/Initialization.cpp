@@ -94,8 +94,10 @@ void initialize_settings()
 
 void after_event_loop_started()
 {
-    QTimer::singleShot(200, []() {
-        // MessageTipManager::getInstance().addMessage("欢饮，欢迎使用RandomSelection！", false);
+    QTimer::singleShot(0, []() {
+        MessageTipManager::getInstance().addMessage(QString("欢迎使用 Random Selection [别急，我马上走]"), false)
+            ->setBackgroundColor(MorandiPink)
+            ->setTextColor(FontColor1);
     });
 }
 

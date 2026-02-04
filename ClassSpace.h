@@ -10,6 +10,8 @@ namespace BaseWidgets {
     namespace BaseElements {
         class ControlList;
     }
+    class AutoFitLabel;
+    class AutoFitButton;
 } // namespace BaseWidgets
 
 class MessageTipWidget;

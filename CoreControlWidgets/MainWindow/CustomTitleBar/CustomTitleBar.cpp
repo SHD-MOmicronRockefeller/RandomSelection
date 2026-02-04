@@ -254,7 +254,9 @@ void CustomTitleBar::onSettingClicked()
         gv->main_window_shell->move(windowX, windowY);
     }
 
-    MessageTipManager::getInstance().addMessage(QString("正在打开 迷你化 窗口..."), false, 1000);
+    MessageTipManager::getInstance().addMessage(QString("正在打开 迷你化 窗口..."), false, 1000)
+        ->setBackgroundColor(LuxuryCyan)
+        ->setTextColor(FontColor1);
 }
 
 void CustomTitleBar::onMaximizeClicked()
