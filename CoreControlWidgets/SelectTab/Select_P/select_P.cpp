@@ -6,6 +6,8 @@
 
 #include "VariablesStore/globalVariables.h"
 
+#include "CoreControlWidgets/ModWidgets/ToggleTopmost.h"
+
 CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
@@ -36,12 +38,16 @@ CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWi
     // ========== 4. 构建下层固定区域 ==========
     m_downWidget = new QWidget();
     m_downWidget->setObjectName("SelectTab_BottomWidget");
+    m_downWidget->setAutoFillBackground(true);
+    m_downWidget->setAttribute(Qt::WA_StyledBackground, true);
     m_downWidget->setStyleSheet("QWidget#SelectTab_BottomWidget{background: rgba(179, 214, 255, 1); min-height: 50px;}");
+
     QHBoxLayout *bottomLayout = new QHBoxLayout(m_downWidget);
-    bottomLayout->setContentsMargins(10, 0, 10, 0);
-    bottomLayout->addWidget(new QLabel("下层固定区域"));
+    bottomLayout->setContentsMargins(5, 0, 5, 0);
+    bottomLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    
+    bottomLayout->addWidget(new ::ModWidgets::ToggleTopmost());
     bottomLayout->addStretch();
-    bottomLayout->addWidget(new QPushButton("下层按钮"));
 
     // ========== 5. 把上/中/下添加到BaseTab的中心布局 ==========
     this->m_centerLayout->setContentsMargins(0, 0, 0, 0);

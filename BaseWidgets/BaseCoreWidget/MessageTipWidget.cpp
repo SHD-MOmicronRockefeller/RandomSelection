@@ -641,6 +641,9 @@ MessageTipWidget *MessageTipManager::addMessage(bool persistent, int stayTimeMs)
     }
     // 持久化时，不执行任何自动关闭逻辑（忽略滞留时间）
 
+    tip->setBackgroundColor(LuxuryCyan);
+    tip->setTextColor(FontColor1);
+
     return tip;
 }
 

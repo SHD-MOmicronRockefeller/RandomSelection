@@ -6,6 +6,8 @@
 
 #include "CoreCalculation/Application/rs_version.h"
 
+#include "CoreCalculation/Application/SignalSource.h"
+
 namespace Initialization {
 
 void initialize_values()
@@ -100,8 +102,17 @@ void after_event_loop_started()
 {
     QTimer::singleShot(0, []() {
         MessageTipManager::getInstance().addMessage(QString("欢迎使用 Random Selection [别急，我马上走]"), false)
-            ->setBackgroundColor(MorandiPink)
-            ->setTextColor(FontColor1);
+        ->setBackgroundColor(MorandiPink)
+        ->setTextColor(FontColor1);
+        
+        emit SignalSource::getInstance()->WindowTopmostToggled(); // 发售更信号，更新btn样式
+        // auto tip = MessageTipManager::getInstance().addMessage(QString("欢迎使用 Random Selection [我是测试，我不走]"), true);
+        // auto btn = tip->addButton("关闭", Qt::AlignRight);//->setFixedSize(100, 30);
+        // QObject::connect(btn, &QPushButton::clicked, tip, [tip]() {
+        //     tip->setHandled(true);
+        // });
+        // tip->addLabel("测试", Qt::AlignLeft);
+        // tip->addWidget(new QSlider(Qt::Horizontal), Qt::AlignLeft)->setFixedSize(200, 30);
     });
 }
 

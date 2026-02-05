@@ -47,9 +47,13 @@ namespace CoreControlWidgets{
         class MinWindowShell;
     } // namespace MinWindow
 
-
+    
+    
 } // namespace CoreControlWidgets
 
+namespace ModWidgets {
+    class ToggleTopmost;    
+} // namespace ModWidgets
 
 
 
