@@ -3,13 +3,16 @@
 #include "BaseWidgets/BaseTab/ControlList.h"
 #include "BaseWidgets/BaseTab/BaseTab.h"
 
+#include "Hello_P/hello.h"
 #include "Select_P/select_P.h"
 #include "SelectFile_P/selectFile.h"
 #include "ListSet_P/listSet.h"
 #include "BasicSet_P/basicSet.h"
 
+
 CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab(parent)
 {
+    this->hello_page = new SelectTab_NS::Hello_Page();
     this->select_page = new SelectTab_NS::Select_Page();
     this->selectFile_page = new SelectTab_NS::SelectFile_Page();
     this->listSet_page = new SelectTab_NS::ListSet_Page();  
@@ -17,6 +20,12 @@ CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab
 
     // ========== 1. 原有controlList逻辑（保留） ==========
     this->controlList->pushLable(new QLabel("选择："));
+
+    QPushButton* helloButton = new QPushButton("Hello");
+    connect(helloButton, &QPushButton::clicked, this, [=, this](){
+        this->setPage(this->hello_page);
+    });
+    this->controlList->pushButton(helloButton);
 
     // 选择按钮
     QPushButton* randomSelectButton = new QPushButton("随机选择");

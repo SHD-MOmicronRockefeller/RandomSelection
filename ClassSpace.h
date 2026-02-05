@@ -33,6 +33,8 @@ namespace CoreControlWidgets{
         
         class ListSet_Page;
         class BasicSet_Page;
+
+        class Hello_Page;
     }
 
     class MainWindowShell;

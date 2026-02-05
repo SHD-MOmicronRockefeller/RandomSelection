@@ -53,7 +53,7 @@ QPushButton * BaseWidgets::BaseElements::ControlList::pushButton(QPushButton *bt
         color:black;
         border:none;
         padding:5px;
-        font-size:14px;
+        font-size:16px;
         padding-left:12px;
         padding-right:12px;
     }

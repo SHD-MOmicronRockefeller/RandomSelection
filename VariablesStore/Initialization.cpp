@@ -4,15 +4,14 @@
 
 #include "CoreCalculation/TitleFunc/titleFunc.h"
 
+#include "CoreCalculation/Application/rs_version.h"
+
 namespace Initialization {
 
 void initialize_values()
 {
-    return;
-}
+    RS_Version::getInstance()->setVersion() << "3.0.0"; // 版本号
 
-void initialize_settings()
-{
     GlobalVariables* gv = GlobalVariables::getInstance();
     
     // 分步初始化UI成员（确保在QApplication就绪后）
@@ -41,6 +40,11 @@ void initialize_settings()
         gv->window_stack->addWidget(gv->min_window_widget);    // 索引1：迷你窗口
     }
     gv->main_window_shell->setCentralWidget(gv->window_stack);
+}
+
+void initialize_settings()
+{
+    GlobalVariables* gv = GlobalVariables::getInstance();
     // 默认显示主窗口
     gv->window_stack->setCurrentIndex(0);
     gv->main_window_shell->show();

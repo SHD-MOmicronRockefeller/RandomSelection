@@ -13,6 +13,7 @@ class SelectTab : public BaseWidgets::BaseTab{
     public: SelectTab(QWidget *parent = nullptr);
     public: ~SelectTab();
 
+    public: SelectTab_NS::Hello_Page *hello_page = nullptr;
     public: SelectTab_NS::Select_Page *select_page = nullptr;
     public: SelectTab_NS::SelectFile_Page *selectFile_page = nullptr;
     public: SelectTab_NS::ListSet_Page *listSet_page = nullptr;
