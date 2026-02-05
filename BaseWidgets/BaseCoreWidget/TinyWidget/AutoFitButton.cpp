@@ -85,14 +85,12 @@ void AutoFitButton::adjustFontSize()
         font.setPointSize(fontSize);
         QFontMetrics fm(font);
 
-        // ========== 核心修正：改用boundingRect（支持rect+flags+text） ==========
         QRect textRect = fm.boundingRect(
             btnContentRect,
             Qt::AlignCenter | Qt::TextWordWrap,
             text()
         );
 
-        // ========== 中文适配：去掉额外空白（模拟tight效果） ==========
         textRect = textRect.adjusted(2, 2, -2, -2); // 向内缩2px
 
         // 95%阈值，避免中文偏小/溢出

@@ -37,14 +37,13 @@ class RS_Version {
     public: static RS_Version* getInstance();
     public: static RS_Version& getVersion();
     public: static std::string getVersionStr();
-    // 安全销毁接口声明
     public: static void deleteInstance();
 
     private: static RS_Version* m_instance;
 
     private: _vs::_vs m_version;
 
-    // 私有构造、析构、拷贝、赋值（仅声明）
+    // 私有构造、析构、拷贝、赋值
     private: RS_Version() = default;
     private: ~RS_Version() = default;
     private: RS_Version(const RS_Version&) = delete;

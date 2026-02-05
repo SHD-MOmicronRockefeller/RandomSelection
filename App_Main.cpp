@@ -7,6 +7,7 @@
 
 int main(int argc, char* argv[]){
     // system("chcp 65001 > nul"); // 设置编码为UTF-8
+    
 //  Initialization ApplicationShell
     {
         ApplicationClass::ApplicationShell* app = new ApplicationClass::ApplicationShell(argc, argv);

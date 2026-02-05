@@ -19,7 +19,7 @@
             "problemMatcher": [],
             "detail": "创建release目录，仅生成Release模式的Makefile"
         },
-        // 3. 构建 Debug（断点可用）
+        // 3. 构建 
         {
             "label": "QMake: Build (Debug)",
             "type": "shell",

@@ -151,7 +151,6 @@ void MessageTipWidget::setHandled(bool handled)
     
     if (handled) {
         emit tipHandled();
-        // ========== 新增：退出动画完成后触发重排 ==========
         MessageTipManager::getInstance().animateTipOut(this);
     }
 }
@@ -291,21 +290,21 @@ QPoint MessageTipManager::calculateTipPos(int slotIndex)
     if (slotIndex < 0 || slotIndex >= MAX_TIP_COUNT) return QPoint(0, 0);
     if (!m_mainWindow) return QPoint(0, 0);
 
-    // 主窗口客户区（centralWidget优先）
+    // 主窗口客户区
     QRect clientRect = m_mainWindow->rect();
     const int margin = 10; // 消息与主窗口边缘的间距
     const int spacing = 10; // 消息之间的间距
 
-    // X坐标：主窗口右侧内边距（固定）
+    // X坐标：主窗口右侧内边距
     int x = clientRect.right() - MessageTipWidget::WIDTH - margin;
 
     int totalHeightOffset = 0;
-    // 先计算前面slot的总高度（含间距）
+    // 先计算前面slot的总高度
     for (int i = 0; i < slotIndex; ++i) {
         if (m_tipSlots[i] && !m_tipSlots[i]->isHandled() && !m_tipSlots[i]->isHiddenByPush()) {
             totalHeightOffset += m_tipSlots[i]->height() + spacing;
         } else {
-            // 占位高度（无消息时用默认值，避免位置错乱）
+            // 占位高度
             totalHeightOffset += 60 + spacing;
         }
     }
@@ -385,11 +384,11 @@ void MessageTipManager::animateTipOut(MessageTipWidget *tip)
     tip->layout()->activate();
     tip->adjustSize();
 
-    // 退出动画起始位置（当前显示位置）
+    // 退出动画起始位置
     QPoint startPos = tip->pos();
-    // 目标位置：主窗口右侧外（完全滑出可视区域）
+    // 目标位置：主窗口右侧外
     QPoint endPos = QPoint(m_mainWindow->width() + 50, startPos.y());
-    // 轻微弹性过度位置（先向左滑一点，再向右滑出）
+    // 轻微弹性过度位置
     QPoint elasticPos = QPoint(startPos.x() + 8, startPos.y());
 
     const int totalDuration = ANIM_DURATION; // 与入场动画时长一致（300ms）
@@ -426,7 +425,6 @@ void MessageTipManager::animateTipOut(MessageTipWidget *tip)
     exitAnimGroup->addAnimation(posAnimGroup);
     exitAnimGroup->addAnimation(opacityAnim);
 
-    // ========== 核心修改：动画结束后执行「填充持久化消息 + 重排位置」 ==========
     connect(exitAnimGroup, &QParallelAnimationGroup::finished, this, [this, tip]() {
         // 步骤1：安全删除窗口
         if (tip && !tip->isHidden()) {
@@ -434,10 +432,10 @@ void MessageTipManager::animateTipOut(MessageTipWidget *tip)
         }
         tip->deleteLater();
 
-        // 步骤2：填充持久化消息（如有）
+        // 步骤2：填充持久化消息
         this->checkPersistentTips();
 
-        // 步骤3：重排所有消息位置（向下对齐填补空位，适配动态高度）
+        // 步骤3：重排所有消息位置
         this->rearrangeAllTips();
     });
 
@@ -449,19 +447,19 @@ void MessageTipManager::rearrangeAllTips()
 {
     if (!m_mainWindow) return;
 
-    // 步骤1：收集所有活跃消息（未处理、未被顶掉），并强制更新高度
+    // 步骤1：收集所有活跃消息，并强制更新高度
     QList<QPointer<MessageTipWidget>> activeTips;
     for (int slot = 0; slot < MAX_TIP_COUNT; ++slot) {
         auto tip = m_tipSlots[slot];
         if (tip && !tip->isHandled() && !tip->isHiddenByPush()) {
-            // 强制更新布局，确保高度是最新的（动态高度关键）
+            // 强制更新布局，确保高度是最新的
             tip->layout()->activate();
             tip->adjustSize();
             activeTips.append(tip);
         }
     }
 
-    // 步骤2：清空原有slot（准备重新分配）
+    // 步骤2：清空原有slot
     for (int slot = 0; slot < MAX_TIP_COUNT; ++slot) {
         m_tipSlots[slot] = nullptr;
     }
@@ -471,21 +469,21 @@ void MessageTipManager::rearrangeAllTips()
     const int spacing = 10; // 消息之间的间距
     QRect clientRect = m_mainWindow->rect();
     
-    // 起始Y坐标：主窗口底部 - 边距（向下对齐的基准点）
+    // 起始Y坐标：主窗口底部 - 边距
     int currentY = clientRect.bottom() - margin;
 
-    // 反向遍历：从最后一条消息（最上方）开始，向上计算位置，保证最下方消息紧贴主窗口底部
+    // 反向遍历：从最后一条消息开始，向上计算位置，保证最下方消息紧贴主窗口底部
     for (int i = activeTips.size() - 1; i >= 0; --i) {
         auto tip = activeTips[i];
         if (!tip) continue;
 
-        // 步骤4：重新计算每个消息的位置（适配动态高度）
+        // 步骤4：重新计算每个消息的位置
         int tipWidth = MessageTipWidget::WIDTH;
         int tipHeight = tip->height(); // 动态高度，非固定值
 
-        // 向上偏移当前消息的高度（向下对齐核心）
+        // 向上偏移当前消息的高度
         currentY -= tipHeight;
-        // 计算最终位置（X固定，Y为当前偏移）
+        // 计算最终位置
         QPoint tipPos(
             clientRect.right() - tipWidth - margin, // X坐标：主窗口右侧内边距
             currentY // Y坐标：向下对齐后的位置
@@ -496,14 +494,14 @@ void MessageTipManager::rearrangeAllTips()
             tipPos.setY(margin);
         }
 
-        // 步骤5：重新分配slot + 更新位置（平滑移动，可选）
+        // 步骤5：重新分配slot + 更新位置
         int newSlot = activeTips.size() - 1 - i; // 最下方消息对应slot0
         if (newSlot < MAX_TIP_COUNT) {
             tip->setSlotIndex(newSlot);
             m_tipSlots[newSlot] = tip;
         }
 
-        // 可选：添加位置过渡动画（避免瞬移，更流畅）
+        // 添加位置过渡动画
         QPropertyAnimation *posAnim = new QPropertyAnimation(tip, "pos", this);
         posAnim->setDuration(200); // 过渡动画时长
         posAnim->setStartValue(tip->pos());
@@ -546,10 +544,9 @@ void MessageTipManager::rearrangeAllTips()
 //     tip->show();
 //     tip->raise();
 
-//     // 绑定高度变化信号 → 重排位置（动态高度适配）
+//     // 绑定高度变化信号 → 重排位置
 //     connect(tip, &MessageTipWidget::sizeChanged, this, &MessageTipManager::rearrangeAllTips);
 
-//     // ========== 核心修改：仅清空slot，重排逻辑移到动画结束后 ==========
 //     connect(tip, &MessageTipWidget::tipHandled, this, [this, tip]() {
 //         int slot = tip->slotIndex();
 //         if (slot >= 0 && slot < MAX_TIP_COUNT) {
@@ -559,7 +556,7 @@ void MessageTipManager::rearrangeAllTips()
 //     });
 
 //     m_tipSlots[emptySlot] = tip;
-//     // 延迟启动入场动画（给布局渲染留时间）
+//     // 延迟启动入场动画
 //     QTimer::singleShot(10, this, [this, tip]() {
 //         tip->setOpacity(0.0);
 //         animateTipIn(tip);
@@ -575,7 +572,7 @@ void MessageTipManager::rearrangeAllTips()
 //     return tip;
 // }
 
-// 重载的 addMessage 函数无需修改（会调用上面的基础函数）
+// 重载的 addMessage 函数无需修改
 MessageTipWidget *MessageTipManager::addMessage(const QString &text, bool persistent)
 {
     auto tip = addMessage(persistent);
@@ -629,9 +626,8 @@ MessageTipWidget *MessageTipManager::addMessage(bool persistent, int stayTimeMs)
         animateTipIn(tip);
     });
 
-    // ========== 核心逻辑：非持久化时使用滞留时间，持久化忽略 ==========
     if (!persistent) {
-        // 校验滞留时间（避免传入0或负数，默认用5000ms）
+        // 校验滞留时间
         int actualStayTime = (stayTimeMs > 0) ? stayTimeMs : MessageTipWidget::AUTO_CLOSE_DURATION;
         // 按滞留时间设置自动关闭
         QTimer::singleShot(actualStayTime, this, [this, tip]() {
@@ -639,7 +635,7 @@ MessageTipWidget *MessageTipManager::addMessage(bool persistent, int stayTimeMs)
             tip->setHandled(true); // 触发退出动画
         });
     }
-    // 持久化时，不执行任何自动关闭逻辑（忽略滞留时间）
+    // 持久化时，不执行任何自动关闭逻辑
 
     tip->setBackgroundColor(LuxuryCyan);
     tip->setTextColor(FontColor1);
@@ -665,7 +661,7 @@ void MessageTipManager::checkPersistentTips()
                                           }),
                            m_persistentTips.end());
 
-    // 步骤2：填充持久化消息到空位置（仅当有持久化消息时）
+    // 步骤2：填充持久化消息到空位置
     if (!m_persistentTips.isEmpty()) {
         int emptySlot = findFirstEmptySlot();
         if (emptySlot != -1) {

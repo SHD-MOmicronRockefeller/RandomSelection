@@ -22,14 +22,14 @@ RESOURCES = $$files(*.qrc, true)
 
 # ========== Debug/Release 模式配置（关闭同时编译） ==========
 CONFIG += debug_and_release  # 支持两种模式，但不自动同时编译
-# 移除 CONFIG += build_all （关键：避免同时编译Debug/Release）
+# 移除 CONFIG += build_all 
 
-# Debug 模式：保留调试信息，关闭优化（断点必备）
+# Debug 模式：保留调试信息，关闭优化
 CONFIG(debug, debug|release) {
     TARGET = Application_Debug
     DEFINES += QT_DEBUG
     QMAKE_CXXFLAGS += -g -O0  # 断点生效核心：-g生成调试信息，-O0关闭优化
-    QMAKE_LFLAGS += -g        # 链接时也保留调试信息（新增，确保断点可用）
+    QMAKE_LFLAGS += -g        # 链接时也保留调试信息
 }
 
 # Release 模式：优化编译，自动打包
@@ -45,7 +45,7 @@ CONFIG(release, debug|release) {
     }
 }
 
-# ========== 其他基础配置（不变） ==========
+# ========== 其他基础配置 ==========
 QT += core widgets gui
 
 # Windows 控制台
@@ -59,7 +59,7 @@ win32-g++ {
     QMAKE_CXXFLAGS += -fexec-charset=utf-8 -finput-charset=utf-8 
 }
 
-# 多核编译（修复：避免空值问题）
+# 多核编译
 win32 { 
     CPU_CORES = $$system(powershell -Command "(Get-CimInstance Win32_Processor).NumberOfLogicalProcessors") 
 }

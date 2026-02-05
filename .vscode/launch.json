@@ -5,7 +5,7 @@
             "name": "Qt Debug (MinGW GDB)",
             "type": "cppdbg",
             "request": "launch",
-            // 核心：精准指向 Debug 产物路径（匹配 build_debug/debug/ 目录）
+            // 核心：精准指向 Debug 产物路径
             "program": "${workspaceFolder}/build_debug/debug/Application_Debug.exe",
             "args": [],
             "stopAtEntry": false, // 想在 main 函数断点启动，可改为 true
@@ -21,7 +21,7 @@
             // 关联 Debug 编译任务，调试前自动编译最新代码
             // "preLaunchTask": "QMake: Build (Debug)",
             "MIMode": "gdb",
-            // 适配你的 MinGW GDB 路径（Qt 工具链自带）
+            // 适配你的 MinGW GDB 路径
             "miDebuggerPath": "D:/DownApp/Qt/Tools/mingw1310_64/bin/gdb.exe",
             "setupCommands": [
                 {

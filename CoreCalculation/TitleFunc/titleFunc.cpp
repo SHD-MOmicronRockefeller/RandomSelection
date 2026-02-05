@@ -11,7 +11,7 @@ void setMinWindow() //700 280
 {
     GlobalVariables* gv = GlobalVariables::getInstance();
     
-    // 空指针安全检查（避免崩溃）
+    // 空指针安全检查
     if (!gv || !gv->window_stack || !gv->min_window_widget) {
         qWarning() << "迷你窗口初始化失败，无法切换";
         return;
@@ -26,7 +26,7 @@ void setMinWindow() //700 280
     int old_height = gv->main_window_shell->height();
     int old_x = gv->main_window_shell->x();
     int old_y = gv->main_window_shell->y();
-    // 2. 计算原窗口的中心坐标（关键！）
+    // 2. 计算原窗口的中心坐标
     int center_x = old_x + old_width / 2;
     int center_y = old_y + old_height / 2;
 

@@ -12,8 +12,8 @@ namespace BaseWidgets
 
 class AutoFitButton : public QPushButton
 {
-    Q_OBJECT  // Qt控件标准宏，支持信号槽（后续可扩展）
-    // 构造函数：支持传入文字和父控件，兼容原有QPushButton使用方式
+    Q_OBJECT
+
     public: explicit AutoFitButton(const QString& text, QWidget* parent = nullptr);
     public: explicit AutoFitButton(QWidget* parent = nullptr); // 重载无文字构造
 
