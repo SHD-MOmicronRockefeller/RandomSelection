@@ -69,3 +69,4 @@ else {
 isEmpty(CPU_CORES) { CPU_CORES = 4 }
 win32 { MAKEFLAGS += -j$$CPU_CORES }
 else { QMAKE_MAKEFLAGS += -j$$CPU_CORES }
+#CPU_CORES = 20

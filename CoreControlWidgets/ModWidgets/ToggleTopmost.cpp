@@ -8,7 +8,7 @@
 
 ModWidgets::ToggleTopmost::ToggleTopmost(QWidget *parent): QPushButton(parent)
 {
-    connect(this, QPushButton::clicked, this, [this](){
+    connect(this, &QPushButton::clicked, this, [this](){
         this->changeWindowTopmost();
         if (GlobalVariables::getInstance()->is_settop_window)
             MessageTipManager::getInstance().addMessage(QString("窗口已 置顶"), false, 1000);
@@ -21,7 +21,7 @@ ModWidgets::ToggleTopmost::ToggleTopmost(QWidget *parent): QPushButton(parent)
             this->setEnabled(true);
         });
     });
-    connect(SignalSource::getInstance(), SignalSource::WindowTopmostToggled, this, [this](){
+    connect(SignalSource::getInstance(), &SignalSource::WindowTopmostToggled, this, [this](){
         this->changeColor();
     });
 

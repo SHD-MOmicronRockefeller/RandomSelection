@@ -14,7 +14,7 @@
             "environment": [
                 {
                     "name": "PATH",
-                    "value": "D:/DownApp/Qt/6.10.1/mingw_64/bin;${env:PATH}" // 适配你的 Qt 6.10.1 路径
+                    "value": "D:\\DownApp\\QtManager\\6.10.2\\mingw_64\\bin;${env:PATH}" // 适配你的 Qt 6.10.1 路径
                 }
             ],
             "externalConsole": true, // 保留独立控制台，方便查看输出
@@ -22,7 +22,7 @@
             // "preLaunchTask": "QMake: Build (Debug)",
             "MIMode": "gdb",
             // 适配你的 MinGW GDB 路径
-            "miDebuggerPath": "D:/DownApp/Qt/Tools/mingw1310_64/bin/gdb.exe",
+            "miDebuggerPath": "D:\\DownApp\\QtManager\\Tools\\mingw1310_64\\bin\\gdb.exe",
             "setupCommands": [
                 {
                     "description": "启用 GDB 美化打印",

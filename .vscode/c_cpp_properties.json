@@ -5,10 +5,11 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 // 替换为你本地的 Qt 路径！
-                "D:\\DownApp\\Qt\\6.10.1\\mingw_64\\include\\**"
+                "D:\\DownApp\\QtManager\\6.10.2\\mingw_64\\include\\**"
+                // "D:\\DownApp\\QtManager\\Tools\\mingw1310_64\\x86_64-w64-mingw32\\include\\**"
             ],
             "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
-            "compilerPath": "D:\\DownApp\\Qt\\Tools\\mingw1310_64\\bin\\g++.exe",
+            "compilerPath": "D:\\DownApp\\QtManager\\Tools\\mingw1310_64\\bin\\g++.exe",
             "cStandard": "c23",
             "cppStandard": "c++20",
             "intelliSenseMode": "windows-gcc-x64"

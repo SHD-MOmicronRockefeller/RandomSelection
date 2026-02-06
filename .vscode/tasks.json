@@ -23,6 +23,7 @@
         {
             "label": "QMake: Build (Debug)",
             "type": "shell",
+            // "command": "cd build_debug && mingw32-make -j${env:NUMBER_OF_PROCESSORS} debug",
             "command": "cd build_debug && mingw32-make -j${env:NUMBER_OF_PROCESSORS} debug",
             "options": { "cwd": "${workspaceFolder}" },
             "group": { "kind": "build", "isDefault": false },
