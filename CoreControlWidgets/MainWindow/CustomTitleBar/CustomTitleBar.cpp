@@ -4,7 +4,7 @@
 
 #include "CoreControlWidgets/MainWindow/mainWindow.h"
 
-#include "CoreCalculation/TitleFunc/titleFunc.h"
+#include "BaseWidgets/TitleFunc/titleFunc.h"
 
 namespace CoreControlWidgets {
 

@@ -2,7 +2,7 @@
 
 #include "VariablesStore/globalVariables.h"
 
-#include "CoreCalculation/Application/SignalSource.h"
+#include "ApplicationClass/Application/SignalSource.h"
 
 #include "BaseWidgets/BaseCoreWidget/MessageTipWidget.h"
 

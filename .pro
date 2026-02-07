@@ -1,7 +1,7 @@
 # ========== 基础配置（修复核心） ==========
 isEmpty(TARGET_NAME) { TARGET_NAME = RandomSelection }  # 兜底项目名
 TEMPLATE = app
-CONFIG += c++20
+CONFIG += c++23
 CODECFORTR = UTF-8
 CODECFORSRC = UTF-8
 

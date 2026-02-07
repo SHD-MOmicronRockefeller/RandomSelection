@@ -2,11 +2,11 @@
 
 #include "VariablesStore/globalVariables.h"
 
-#include "CoreCalculation/TitleFunc/titleFunc.h"
+#include "BaseWidgets/TitleFunc/titleFunc.h"
 
-#include "CoreCalculation/Application/rs_version.h"
+#include "ApplicationClass/Application/rs_version.h"
 
-#include "CoreCalculation/Application/SignalSource.h"
+#include "ApplicationClass/Application/SignalSource.h"
 
 namespace Initialization {
 
