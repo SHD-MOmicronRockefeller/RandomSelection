@@ -16,9 +16,6 @@ namespace SelectTab_NS
 class IPT_Base : public QWidget
 {
     Q_OBJECT
-    
-    signals: void dragEntered();  // 子控件进入拖拽
-    signals: void dragLeaved();   // 子控件离开拖拽
 
     public: IPT_Base(QString _ObjectName, std::function<void(QString)> _func, QWidget *parent = 0);
 

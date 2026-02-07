@@ -10,21 +10,21 @@ CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFile_Page(QWidget *pare
     this->m_centerLayout->addLayout(this->m_topWidget, 1);
 
     this->IPT_FileToSelect = new IPT_Base("IPT_FileToSelect", this->ImportFileToSelect);
-    IPT_FileToSelect->setDefaultText("> 导入到 选择区 <");
-    IPT_FileToSelect->setTargetText("> 松开文件 进行选择 <");
+    IPT_FileToSelect->setDefaultText("< 直接进行选择 >");
+    IPT_FileToSelect->setTargetText ("> 直接进行选择 <");
     this->m_topWidget->addWidget(IPT_FileToSelect, 1);
 
     this->IPT_FileToList = new IPT_Base("IPT_FileToList", this->ImportFileToList);
-    IPT_FileToList->setDefaultText("> 导入到 列表区 <");
-    IPT_FileToList->setTargetText("> 松开文件 加入列表 <");
+    IPT_FileToList->setDefaultText("< 加入临时列表 >");
+    IPT_FileToList->setTargetText ("> 加入临时列表 <");
     this->m_topWidget->addWidget(IPT_FileToList, 1);
 
     this->IPT_BouthDouble = new IPT_Base("IPT_BouthDouble", [this](QString filePath){
         this->ImportFileToSelect(filePath);
         this->ImportFileToList(filePath);
     });
-    IPT_BouthDouble->setDefaultText("> 导入到 选择区 和 列表区 <");
-    IPT_BouthDouble->setTargetText("> 加入列表 进行选择 <");
+    IPT_BouthDouble->setDefaultText("< 加入列表 进行选择 >");
+    IPT_BouthDouble->setTargetText ("> 加入列表 进行选择 <");
     this->m_centerLayout->addWidget(IPT_BouthDouble, 1);
 }
 

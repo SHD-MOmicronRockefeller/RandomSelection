@@ -21,17 +21,11 @@ class SelectTab : public BaseWidgets::BaseTab{
     public: SelectTab_NS::ListSet_Page *listSet_page = nullptr;
     public: SelectTab_NS::BasicSet_Page *basicSet_page = nullptr;
 
-    private: QWidget *m_oldPage = nullptr; // 处理拖拽事件时，记录上一个页面
-    private: bool m_hasChildDragging = false;  // 标记是否有子控件在拖拽
-    private: QTimer *m_dragLeaveTimer = nullptr;  // 延迟切回定时器
-
-    private slots: void onChildDragEntered();  // 子控件进入拖拽
-    private slots: void onChildDragLeaved();   // 子控件离开拖拽
-    private slots: void onDragLeaveTimeout();  // 延迟切回逻辑
-
+    public: QWidget *m_oldPage = nullptr; // 处理拖拽事件时，记录上一个页面
     protected: void dragEnterEvent(QDragEnterEvent *event) override; // 拖拽事件：文件拖入
     protected: void dragLeaveEvent (QDragLeaveEvent *event) override; // 拖拽事件：文件离开
 
+    public: bool m_isInDrag = false;
     protected: void dropEvent(QDropEvent *event) override; // 拖拽事件：文件释放
 };
 
