@@ -28,8 +28,11 @@
 #include <QDir>
 #include <QDockWidget>
 #include <QDoubleSpinBox>
-#include <QDrag>
 #include <QDropEvent>
+#include <QDrag>
+#include <QDragEnterEvent>
+#include <QDragLeaveEvent>
+#include <QDragMoveEvent>
 #include <QElapsedTimer>
 #include <QErrorMessage>
 #include <QFile>
@@ -65,6 +68,7 @@
 #include <QMenuBar>
 #include <QMessageBox>
 #include <QMetaObject>
+#include <QMimeData>
 #include <QMouseEvent>
 #include <QMovie>
 #include <QMutex>

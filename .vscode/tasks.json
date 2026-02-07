@@ -27,14 +27,14 @@
             "command": "cd build_debug && mingw32-make -j${env:NUMBER_OF_PROCESSORS} debug",
             "options": { "cwd": "${workspaceFolder}" },
             "group": { "kind": "build", "isDefault": false },
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": "absolute",
-                "pattern": {
-                    "regexp": "^(.*?)(\\((\\d+),(\\d+)\\))?:\\s+(error|warning):\\s+(.*)$",
-                    "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
-                }
-            },
+            // "problemMatcher": {
+            //     "owner": "cpp",
+            //     "fileLocation": "absolute",
+            //     "pattern": {
+            //         "regexp": "^(.*?)(\\((\\d+),(\\d+)\\))?:\\s+(error|warning):\\s+(.*)$",
+            //         "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
+            //     }
+            // },
             "dependsOn": "QMake: Configure (Debug)",
             "detail": "仅编译Debug版本（带调试信息，断点生效）"
         },
@@ -45,14 +45,14 @@
             "command": "cd build_release && mingw32-make -j${env:NUMBER_OF_PROCESSORS} release",
             "options": { "cwd": "${workspaceFolder}" },
             "group": { "kind": "build", "isDefault": false },
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": "absolute",
-                "pattern": {
-                    "regexp": "^(.*?)(\\((\\d+),(\\d+)\\))?:\\s+(error|warning):\\s+(.*)$",
-                    "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
-                }
-            },
+            // "problemMatcher": {
+            //     "owner": "cpp",
+            //     "fileLocation": "absolute",
+            //     "pattern": {
+            //         "regexp": "^(.*?)(\\((\\d+),(\\d+)\\))?:\\s+(error|warning):\\s+(.*)$",
+            //         "file": 1, "line": 3, "column": 4, "severity": 5, "message": 6
+            //     }
+            // },
             "dependsOn": "QMake: Configure (Release)",
             "detail": "仅编译Release版本（自动打包，无调试信息）"
         },

@@ -35,6 +35,10 @@ namespace CoreControlWidgets{
         class BasicSet_Page;
 
         class Hello_Page;
+
+        class ImportFile_Page;
+
+        class IPT_Base;
     }
 
     class MainWindowShell;

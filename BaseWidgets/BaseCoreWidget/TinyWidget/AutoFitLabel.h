@@ -13,9 +13,14 @@ class AutoFitLabel : public QLabel
 {
     Q_OBJECT
 
+    // 减少的尺寸
+    private: int m_subSize;
+    // 新增：最小字体尺寸（避免字体过小不可见）
+    private: static const int MIN_FONT_SIZE = 8;
+
     // 构造函数：兼容QLabel的使用方式
-    public: explicit AutoFitLabel(const QString& text, QWidget* parent = nullptr);
-    public: explicit AutoFitLabel(QWidget* parent = nullptr);
+    public: explicit AutoFitLabel(const QString& text, int _subSize = 0, QWidget* parent = nullptr);
+    public: explicit AutoFitLabel(QWidget* parent = nullptr, int _subSize = 0);
 
     // 重写尺寸变化事件：标签缩放时自动调整字体
     protected: void resizeEvent(QResizeEvent* event) override;

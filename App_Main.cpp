@@ -18,7 +18,6 @@ int main(int argc, char* argv[]){
     // 初始化变量
     Initialization::initialize_values();
 
-    
     // 初始化设置
     Initialization::initialize_settings();
 
