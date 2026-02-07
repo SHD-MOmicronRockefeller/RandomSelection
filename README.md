@@ -133,6 +133,11 @@ cd RandomSelection
 ```
 RandomSelection/
 ├── ApplicationClass/
+│   ├── Application/
+│   │   ├── SignalSource.cpp
+│   │   ├── SignalSource.h
+│   │   ├── rs_version.cpp
+│   │   └── rs_version.h
 │   ├── applicationShell.cpp
 │   └── applicationShell.h
 ├── BaseWidgets/
@@ -146,20 +151,21 @@ RandomSelection/
 │   │   ├── AspectRatioWidget.h
 │   │   ├── MessageTipWidget.cpp
 │   │   └── MessageTipWidget.h
-│   └── BaseTab/
-│       ├── BaseTab.cpp
-│       ├── BaseTab.h
-│       ├── ControlList.cpp
-│       └── ControlList.h
-├── CoreCalculation/
-│   ├── Application/
-│   │   ├── SignalSource.cpp
-│   │   ├── SignalSource.h
-│   │   ├── rs_version.cpp
-│   │   └── rs_version.h
+│   ├── BaseTab/
+│   │   ├── BaseTab.cpp
+│   │   ├── BaseTab.h
+│   │   ├── ControlList.cpp
+│   │   └── ControlList.h
 │   └── TitleFunc/
 │       ├── titleFunc.cpp
 │       └── titleFunc.h
+├── CoreCalculation/
+│   ├── FileEditFunc/
+│   └── SelectTabFunc/
+│       ├── ClassType/
+│       │   ├── OptionGroup.hpp
+│       │   └── OptionItem.hpp
+│       └── ImportFile.hpp
 ├── CoreControlWidgets/
 │   ├── AboutTab/
 │   │   ├── aboutTab.cpp
