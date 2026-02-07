@@ -1,73 +1,221 @@
+# RandomSelection（随机选择器）
+> 一个可以自定义的选择器，或许不是最好的:(
+>
+> 一个开发者努力做到最好的选择器，也许永远不会被人看到:)
+
 [TOC]
 
-- [RandomSelection](#randomselection)
-  - [介绍](#介绍)
-- [基础操作](#基础操作)
-  - [文件格式](#文件格式)
-  - [基础编写](#基础编写)
-  - [导入文件](#导入文件)
-  - [选择](#选择)
-  - [选择界面都是些啥？](#选择界面都是些啥)
-- [不想写了，自己研究吧](#不想写了自己研究吧)
 
 
+## 项目介绍
+RandomSelection 是一款基于 Qt 框架开发的跨平台随机选择工具，旨在提供灵活、可定制的随机选择能力。你可以通过它实现带权重的随机抽取、分组选择、平衡抽取（避免重复高频选中）等场景，满足日常决策、随机分配、抽奖等多种使用需求。
 
-# RandomSelection
- 一个可以自定义的选择器:) 或许不是最好的:(
-## 介绍
-这是一个可以自定义的选择器，你可以通过它来随机选择你想要的东西。
-支持 `权重`，`平衡抽取`，`分组`
+### 技术栈
+- 编译环境：MinGW 13.1.0
+- 开发语言：C++20
+- UI 框架：Qt 6.10.2
+- 构建工具：QMake 3.1
 
-<!-- # 如何使用
-## 下载
-你可以从[这里](https://github.com/SHD-MOmicronRockefeller/RandomSelection/tree/main/DownApplication)下载最新版本的程序。
-(如果链接失效，那就请等待开发者更新)
+## 核心功能
+✅ **自定义选择列表**：自由添加、删除、编辑待选择项，支持导入/导出列表  
+✅ **权重配置**：为不同选项设置自定义权重，权重越高被选中概率越大  
+✅ **平衡抽取**：可选开启「平衡模式」，降低高频选中项的重复选中概率，保证抽取公平性  
+✅ **分组选择**：支持将选项分组管理，可针对指定分组执行随机选择  
+✅ **跨平台兼容**：基于 Qt 6 开发，理论支持 Windows/macOS/Linux 系统（当前优先适配 Windows）  
 
-这可能需要一些库，我会[放在这里](https://github.com/SHD-MOmicronRockefeller/RandomSelection/tree/main/lib)，尽管你不能很方便的下载他们
+## 环境依赖
+### 编译环境（必装）
+1. MinGW 13.1.0（或兼容的 MinGW-w64 版本）
+2. Qt 6.10.2（需包含 Qt Core/Qt Widgets 模块）
+3. QMake 3.1（Qt 自带，无需单独安装）
+4. CMake（可选，若需替换构建工具）
 
-## 运行?
-确保你已经配置好了库，然后双击运行程序。 -->
+### 运行环境（用户侧）
+- Windows：需安装 Qt 6.10.2 对应的运行时库（`Qt6Core.dll`、`Qt6Widgets.dll`、`libgcc_s_seh-1.dll` 等），或打包为独立可执行文件。
+- Windows：或者等待开发者打包release版本，无需额外安装运行环境。
+- macOS/Linux：需安装 Qt 6 运行时依赖（如 `libQt6Core.so.6`、`libQt6Widgets.so.6`）。
 
-# 基础操作
-## 文件格式
-1. 你需要一个 `.stulist`(或许程序让你别无选择)文件来处理你的选择。它通常是UTF-8编码的，每行一个选项。
-2. 注意：以`__ignore.stulist`结尾的文件在文件夹相关导入时会被忽略。
-   
-## 基础编写
-1. 你可以在文件中添加选项，每行一个。他的格式为`选项名[都行]  权重[int]`。
-   例如：
+## 编译 & 运行
+### 步骤 1：克隆代码
+```bash
+git clone https://github.com/SHD-MOmicronRockefeller/RandomSelection.git
+cd RandomSelection
+```
+
+### 步骤 2：配置 QMake 工程
+1. 打开 Qt Creator，导入项目根目录的 `RandomSelection.pro` 文件
+2. 在 Qt Creator 中选择「构建套件」：确认编译器为 MinGW 13.1.0，Qt 版本为 6.10.2
+
+### 步骤 3：编译项目
+- 方式 1（Qt Creator）：点击「构建」按钮（锤子图标），等待编译完成
+- 方式 2（命令行）：
+  ```bash
+  # 生成 Makefile
+  qmake .pro -spec win32-g++ CONFIG+=release
+  # 编译
+  mingw32-make -j4
+  ```
+
+### 步骤 4：运行程序
+- Qt Creator 中点击「运行」按钮（绿色三角图标）
+- 或直接运行编译产物目录（如 `release/RandomSelection.exe`）
+
+## 使用指南
+### 基础使用流程
+1. ...
+
+### 高级功能
+- ...
+
+
+### 开发规范
+- 代码遵循 C++20 标准，尽量使用 Qt 原生接口，减少第三方依赖
+- 新增功能需附带简单测试用例，保证核心逻辑稳定
+- 界面风格保持统一，遵循 Qt 设计规范
+
+## 许可证
+本项目暂采用 MIT 许可证。
+
+## 待办事项（开发中）
+- [ ] 完善「平衡抽取」算法的边界条件处理
+- [ ] 支持列表批量导入/导出（Excel/CSV 格式）
+- [ ] 增加历史选择记录的可视化统计
+- [ ] 打包为免安装的独立可执行文件
+- [ ] 适配 macOS/Linux 系统
+
+## 致谢
+感谢 Qt 框架提供的跨平台能力，以及开源社区的各类参考资料。  
+如果你有任何问题、建议或 Bug 反馈，欢迎提交 Issue 或联系开发者。
+
+## 无脑本地部署
+1. Qt社区版下载链接：[https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-windows-x64-4.10.0.exe](https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-windows-x64-4.10.0.exe)
+2. 登陆后，选择安装路径，点击下一步，选择安装组件，勾选 Qt 6.10.2 MinGW 13.1.0 编译器，点击下一步，等待安装完成。
+ 
+   > Qt一般安装比较慢，可换源
+    ```bash
+    qt-unified-windows-x64.exe --mirror https://mirrors.tuna.tsinghua.edu.cn/qt
     ```
-    选项1 1
-    选项2 2
-    我是标签 666
-    瓘塔·史娜格 3
-    永远选不到我
+3. 需要环境变量：
+    ```bash
+    ...\6.10.2\mingw_64
+    ...\6.10.2\mingw_64\bin
+    ...\Tools\CMake_64\bin
+    ...\Tools\Ninja
+    ...\Tools\QtCreator\bin
     ```
-    “入锅”你只是输入了选项名，则选择器会进行忽略
-2. 选择的标签与权重之间必须留有空格。姓名不能有空格。权重必须是整数`< 2^64-1`。
-3. 你可以使用记事本打开`.stulist`文件，也可以使用其他编辑器(比如程序自带的`编辑器`)。
-4. 你可以在文件中添加注释，但必须以`//`开头。
-5. 不要妄想使用`/* ... */`来注释，因为选择器不会识别此类注释。
+4. 需要VS Code：
+    [https://code.visualstudio.com/](https://code.visualstudio.com/)
+5. 通过VS Code打开项目，编译运行。
 
-## 导入文件
-1. 你可以通过拖入文件到选择器窗口中来导入一个`.stulist`文件，选择器会自动读取它，并直接读取做好选择准备。
-2. 也可以通过拖入`文件夹`到选择器窗口中来导入一个文件夹，选择器会骂他是个文件夹。骂完之后，选择器会自动读取文件夹中根目录的所有`.stulist`文件，并放入一个列表中供你选择。
-3. 选择器还会自动导入选择器所在文件夹中的`.stulist`文件。
-4. 凡是文件夹的导入，选择器都会忽略`.*__ignore.stulist`文件，除非你手动导入。
 
-## 选择
-1. 选择器会随机选择一个选项，并显示在窗口中。
-2. 你可以通过点击`选择`按钮来重新选择一个选项。
-3. 选择器会始终记住选择，直到列表发生变化。包括但不限于：`重新选择文件`，`更改选择列表`，`手动清理记录`。
-4. 列表设置：你可以通过`组单元管理器`来调整列表的内容(基于你选择的`.stulist`文件)。
-5. 你可以通过`手动清理记录`来清除选择器的记录，这样你就只能从头开始了。
-
-## 选择界面都是些啥？
-1. 最上面是`文件名`和`文件路径`，显示了你导入的文件名和路径。
-2. 中间是选择的地方，显示了你当前选择的选项。
-3. 最下面是快捷设置
-4. 中间：
-   1. 上方显示了`当前选择的选项的序号`以及`总共的选项数量` NUM> (第N个选项)/(共M个选项)。
-   2. 下面显示了选择的对象，`权重`（权重/当前列表总权重/总权重），`概率`（在当前列表概率/在总列表概率），以及`次数`（当前选项被抽取的次数/总次数）。
-
-# 不想写了，自己研究吧
+## 项目结构（参考）
+```
+RandomSelection/
+├── ApplicationClass/
+│   ├── applicationShell.cpp
+│   └── applicationShell.h
+├── BaseWidgets/
+│   ├── BaseCoreWidget/
+│   │   ├── TinyWidget/
+│   │   │   ├── AutoFitButton.cpp
+│   │   │   ├── AutoFitButton.h
+│   │   │   ├── AutoFitLabel.cpp
+│   │   │   └── AutoFitLabel.h
+│   │   ├── AspectRatioWidget.cpp
+│   │   ├── AspectRatioWidget.h
+│   │   ├── MessageTipWidget.cpp
+│   │   └── MessageTipWidget.h
+│   └── BaseTab/
+│       ├── BaseTab.cpp
+│       ├── BaseTab.h
+│       ├── ControlList.cpp
+│       └── ControlList.h
+├── CoreCalculation/
+│   ├── Application/
+│   │   ├── SignalSource.cpp
+│   │   ├── SignalSource.h
+│   │   ├── rs_version.cpp
+│   │   └── rs_version.h
+│   └── TitleFunc/
+│       ├── titleFunc.cpp
+│       └── titleFunc.h
+├── CoreControlWidgets/
+│   ├── AboutTab/
+│   │   ├── aboutTab.cpp
+│   │   └── aboutTab.h
+│   ├── FileTab/
+│   │   ├── fileTab.cpp
+│   │   └── fileTab.h
+│   ├── MainWindow/
+│   │   ├── CustomTitleBar/
+│   │   │   ├── CustomTitleBar.cpp
+│   │   │   └── CustomTitleBar.h
+│   │   ├── StatusBar/
+│   │   │   ├── statusBar.cpp
+│   │   │   └── statusBar.h
+│   │   ├── mainWindow.cpp
+│   │   └── mainWindow.h
+│   ├── MinWindowShell/
+│   │   ├── minWindowShell.cpp
+│   │   └── minWindowShell.h
+│   ├── ModWidgets/
+│   │   ├── ToggleTopmost.cpp
+│   │   └── ToggleTopmost.h
+│   ├── SelectTab/
+│   │   ├── BasicSet_P/
+│   │   │   ├── basicSet.cpp
+│   │   │   └── basicSet.h
+│   │   ├── Hello_P/
+│   │   │   ├── hello.cpp
+│   │   │   └── hello.h
+│   │   ├── ImportFile_P/
+│   │   │   ├── IPT_base.cpp
+│   │   │   ├── IPT_base.h
+│   │   │   ├── importFile.cpp
+│   │   │   └── importFile.h
+│   │   ├── ListSet_P/
+│   │   │   ├── listSet.cpp
+│   │   │   └── listSet.h
+│   │   ├── SelectFile_P/
+│   │   │   ├── selectFile.cpp
+│   │   │   └── selectFile.h
+│   │   ├── Select_P/
+│   │   │   ├── select_P.cpp
+│   │   │   ├── select_P.h
+│   │   │   ├── slc_midWidget.cpp
+│   │   │   └── slc_midWidget.h
+│   │   ├── selectTab.cpp
+│   │   └── selectTab.h
+│   └── SettingTab/
+│       ├── settingTab.cpp
+│       └── settingTab.h
+├── VariablesStore/
+│   ├── Initialization.cpp
+│   ├── Initialization.h
+│   ├── globalVariables.cpp
+│   └── globalVariables.h
+├── icons/
+│   ├── MainTabIcons/
+│   │   ├── AboutTabIcon.png
+│   │   ├── FileEditTabIcon.png
+│   │   ├── RandomSelectTabIcon.png
+│   │   └── SettingTabIcon.png
+│   ├── TitleIcons/
+│   │   ├── _CloseButton.png
+│   │   ├── _MaximizeButtonM.png
+│   │   ├── _MaximizeButtonN.png
+│   │   ├── _MinWindowButtonM.png
+│   │   ├── _MinWindowButtonN.png
+│   │   └── _MinimizeButton.png
+│   ├── ApplicationIcon.png
+│   └── ApplicationIconIco.ico
+├── App_Main.cpp
+├── ClassSpace.h
+├── FileTree.py
+├── HowUse.md
+├── MakeBagTarget.evb
+├── QtPrecompiled.h
+├── README.md
+├── log.txt
+└── resources.qrc
+```
