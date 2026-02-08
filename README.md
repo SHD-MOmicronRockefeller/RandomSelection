@@ -163,9 +163,11 @@ RandomSelection/
 │   ├── FileEditFunc/
 │   └── SelectTabFunc/
 │       ├── ClassType/
-│       │   ├── OptionGroup.hpp
-│       │   └── OptionItem.hpp
-│       └── ImportFile.hpp
+│       │   ├── OptionItem.hpp
+│       │   └── word.hpp
+│       ├── ImportFile.hpp
+│       ├── OptionList.hpp
+│       └── StringCodec.hpp
 ├── CoreControlWidgets/
 │   ├── AboutTab/
 │   │   ├── aboutTab.cpp

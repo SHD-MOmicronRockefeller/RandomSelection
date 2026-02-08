@@ -9,6 +9,7 @@
 #include <QBrush>
 #include <QButtonGroup>
 #include <QCalendarWidget>
+#include <QChar>
 #include <QCheckBox>
 #include <QClipboard>
 #include <QColor>
@@ -102,6 +103,7 @@
 #include <QStatusBar>
 #include <QString>
 #include <QStringList>
+#include <QStringView>
 #include <QStyle>
 #include <QStyleFactory>
 #include <QStyleOption>

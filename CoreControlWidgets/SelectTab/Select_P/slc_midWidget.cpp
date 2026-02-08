@@ -146,8 +146,8 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setDownLayout()
     this->m_downLayout->setContentsMargins(0, 0, 0, 0);
     this->m_downLayout->setSpacing(0);
 
-    BaseWidgets::AutoFitLabel *label = new BaseWidgets::AutoFitLabel("选择对象：人人人人\n权重：xxxx/xxxxxx/xxxxxx | 概率：xxx.xxx%/xxx.xxx% | 抽取次数：xxxx/xxxxx");
-    //QLabel *label = new QLabel("Lower Widget 长长长长长长长长长长长长长长长长长长长长长长长长长长长长长长");
+    BaseWidgets::AutoFitLabel *label = new BaseWidgets::AutoFitLabel(
+        "选择对象：人人人人  序号：xxx\n权重：xxxx/xxxxxx/xxxxxx | 概率：xxx.xxx%/xxx.xxx% | 抽取次数：xxxx/xxxxx");
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     label->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     this->m_downLayout->addWidget(label);
