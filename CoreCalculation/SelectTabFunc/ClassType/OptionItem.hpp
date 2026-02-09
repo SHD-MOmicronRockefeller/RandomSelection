@@ -2,6 +2,11 @@
 
 #include "StringCodec.hpp"
 
+
+namespace CoreCalculation{
+
+namespace Base {
+
 class Group{
     private: QString _groupName = "__UNDEFINED__";
     // public: QString operator()() const { return _groupName; }
@@ -100,3 +105,7 @@ class OptionItem {
     public: OptionItem& operator=(OptionItem&& other)               = default;
     public: ~OptionItem()                                           = default;
 };
+
+} // namespace Base
+
+} // namespace CoreCalculation

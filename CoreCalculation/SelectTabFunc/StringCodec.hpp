@@ -13,6 +13,9 @@
 #error "StringCodec requires C++20 or later! Add CONFIG += c++20 to .pro."
 #endif
 
+namespace CoreCalculation{
+
+
 class StringCodec{
     public: inline QString operator()(const QString& input) const{  
         return encode(input);
@@ -148,5 +151,7 @@ inline StringCodec&& operator>>(StringCodec&& codec, QString& input){
     input = codec.getEncodeText();
     return std::move(codec);
 }
+
+} // namespace CoreCalculation
 
 #endif // STRINGCODEC_HPP

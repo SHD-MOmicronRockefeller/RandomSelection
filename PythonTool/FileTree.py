@@ -1,9 +1,8 @@
 import os
 
 # ===================== 核心配置项（你可以根据需要修改） =====================
-# 要扫描的目标路径（绝对路径/相对路径都可以）
-TARGET_PATH = "."
-# 要忽略的文件夹名（完全匹配）
+TARGET_PATH = ".."
+# 要忽略的文件夹名
 IGNORE_FOLDERS = ["build_debug", "build_release",".cache", "DLL"]
 # 要忽略的文件后缀（比如.pyc、.log）
 IGNORE_SUFFIXES = []
@@ -15,7 +14,7 @@ def print_file_tree(start_path, prefix=""):
     :param start_path: 当前遍历的路径
     :param prefix: 层级前缀（控制树形符号）
     """
-    # 获取当前路径下的所有文件/文件夹，过滤掉隐藏的.开头文件（可选）
+    # 获取当前路径下的所有文件/文件夹，过滤掉隐藏的.开头文件
     items = [item for item in os.listdir(start_path) if not item.startswith(".")]
     # 按文件夹在前、文件在后排序，保证结构整洁
     items.sort(key=lambda x: (not os.path.isdir(os.path.join(start_path, x)), x))

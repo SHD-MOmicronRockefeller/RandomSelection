@@ -1,0 +1,139 @@
+C++项目
+
+
+#import "target.rsol"
+#ifndef target.rsol
+#define target.rsol
+
+#replace "new" -> "create"
+#replace "," -> " "
+#replace "，" -> " "
+#replace "{" -> "create_make"
+#replace "}" -> "create_end"
+
+create_group list A0 A T B C
+
+{ // 张三
+    张三, weight=100, index=1, isEnable=true
+    joinGroup(list, A0)
+}
+
+{ //李四
+    李四 weight=80, index=2, isEnable=true
+    joinGroup(list A T)
+}
+
+王五 60
+
+#endif
+================================================================
+"第一步：处理导入文件 + 预处理"
+"""
+1.处理 // 注释
+2.处理#开头的
+#import "target.rsol" 
+i 检测是否是相对路劲，如果是，则将路径补全（加上当前文件路劲）  ->  D:\Base_Desktop\Desktop\RandomSelection\CoreCalculation\DoubleFileClass\ReadFile\target.rsol
+ii 将文件内容粘贴到当前文件中
+iii 删除#import "target.rsol"
+#ifndef target.rsol
+#define target.rsol
+#endif 
+i.和c++中的#ifndef #define #endif 类似，用来防止重复导入文件，可以自定义按空格区分的标识符，如target.rsol是一个
+#replace "new" -> "create"
+i  将new替换为create，完整替换，替换后在两边加上空格
+"""
+
+create_group list A0 A T B C
+
+create_make 
+    张三  weight=100  index=1  isEnable=true
+    joinGroup(list  A0)
+ create_end
+
+create_make 
+    李四 index=2 weight=80    isEnable=true
+    joinGroup(list A T)
+ create_end  
+
+王五 60
+================================================================
+"第二步:格式化"
+"""
+1.将多个空格替换为一个空格
+2.把create_make，create_end之间的内容合并成一行
+create_make,create_end与内容可能在同一行，也可能不在同一行，需要处理
+create_make 
+    张三  weight=100  index=1  isEnable=true
+    joinGroup(list  A0)create_end
+
+->
+create_make 张三  weight=100  index=1  isEnable=true joinGroup(list  A0) create_end
+->
+张三  weight=100  index=1  isEnable=true joinGroup(list  A0)
+
+3.王五 60 对于这种没有提示的，默认60是权重，并加上weight,并且从1开时，需要加上index，index不能重复，index肯很大，但也从1开始，为没有index加上index
+王五 60 index=3 这种就不用加了，也不用判读是否重复，语句检查留在后面
+
+"""
+PATTERN += group 
+
+__GROUP__ list A0 A T B C
+
+张三  weight 100 index 1 isEnable 1 joinGroup (list  A0)
+李四 index 2 weight 80 isEnable 1 joinGroup (list A T)
+王五 weight 60 index 3
+================================================================
+"第三步：生成机器代码"
+"""
+需要为每一个语句生成机器代码，并将其加入到一个列表中，最后将列表输出到文件中
+
+__GROUP__ __BASELIST__ //即使不设置组名，也需要生成一个组名，用来作为所有option，每一个option都要加入到这个组中
+__INDEX__ [unsigned int] // 创建一个option，并设置其index为int
+__OPTION__ [string] // 创建一个option，并设置其内容为string
+__ISENABLE__ [bool] // 创建一个option，并设置其是否启用为bool
+__WEIGHT__ [int] // 创建一个option，并设置其权重为int
+__JOINGROUP__ [string] // 将option加入到组中，并设置其组名为string
+__END__ // 结束生成,退出生成机器代码模式
+"""
+__GROUP__ __BASELIST__
+__GROUP__ list
+__GROUP__ A0
+__GROUP__ A
+__GROUP__ T
+__GROUP__ B
+__GROUP__ C
+
+__INDEX__ 1
+__OPTION__ 1 张三
+__ISENABLE__ 1 1
+__WEIGHT__ 1 100
+__JOINGROUP__ 1 __BASELIST__
+__JOINGROUP__ 1 list
+__JOINGROUP__ 1 A0
+
+__INDEX__ 2
+__OPTION__ 2 李四
+__WEIGHT__ 2 80
+__ISENABLE__ 2 1
+__JOINGROUP__ 2 __BASELIST__
+__JOINGROUP__ 2 list
+__JOINGROUP__ 2 A
+__JOINGROUP__ 2 T
+
+_index 3
+__OPTION__ 3 王五
+__WEIGHT__ 3 60
+
+__END__
+
+
+///////////////////////////////
+环境Qt6.10.2 c++20
+要用QString代替string
+写一个类，分3个文件，test.h,tet.cpp,main.cpp
+这个类有一个成员变量是DEBUGMODE，用来控制是否在当前前目录下生成debug.txt文件，默认false
+需要把每一个步骤的输出都写到debug.txt文件中
+不用考虑长度为问题，不只是大步骤，每一步都要写到文件中，方便调试
+
+提供一个getCode(QString _filePath)函数，返回一个QVector<QString>，里面包含所有生成的机器代码
+在你测试无误后，就发给我

@@ -3,6 +3,10 @@
 #include <QString>
 #include <QVector>
 
+namespace CoreCalculation{
+
+namespace Base {
+
 class Word{
     public: Word(QString _word, unsigned int _begin) {
         this->word = _word;
@@ -18,3 +22,7 @@ class Word{
         return end - begin;
     }
 };
+
+}// namespace Base
+
+} // namespace CoreCalculation

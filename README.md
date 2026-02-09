@@ -160,12 +160,18 @@ RandomSelection/
 │       ├── titleFunc.cpp
 │       └── titleFunc.h
 ├── CoreCalculation/
+│   ├── DoubleFileClass/
+│   │   ├── ErrorCheck/
+│   │   │   └── CutString.h
+│   │   └── ReadFile/
+│   │       ├── ImportFile.cpp
+│   │       ├── ImportFile.h
+│   │       └── target.rsol
 │   ├── FileEditFunc/
 │   └── SelectTabFunc/
 │       ├── ClassType/
 │       │   ├── OptionItem.hpp
 │       │   └── word.hpp
-│       ├── ImportFile.hpp
 │       ├── OptionList.hpp
 │       └── StringCodec.hpp
 ├── CoreControlWidgets/
@@ -218,6 +224,9 @@ RandomSelection/
 │   └── SettingTab/
 │       ├── settingTab.cpp
 │       └── settingTab.h
+├── PythonTool/
+│   ├── FileTree.py
+│   └── FindClass.py
 ├── VariablesStore/
 │   ├── Initialization.cpp
 │   ├── Initialization.h
@@ -240,11 +249,9 @@ RandomSelection/
 │   └── ApplicationIconIco.ico
 ├── App_Main.cpp
 ├── ClassSpace.h
-├── FileTree.py
 ├── HowUse.md
 ├── MakeBagTarget.evb
 ├── QtPrecompiled.h
 ├── README.md
-├── log.txt
 └── resources.qrc
 ```
