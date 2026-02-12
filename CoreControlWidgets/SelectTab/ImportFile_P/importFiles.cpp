@@ -10,6 +10,7 @@
 #include "Console/console.h"
 #include "VariablesStore/globalVariables.h"
 
+
 CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFile_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout(this);
@@ -43,23 +44,43 @@ void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToSelect(QStri
 
     Task task_1 = newTask;
     // 创建新任务并发送到后台线程
-    PushTask( 
+    PushTask([=]() mutable {
         // 读取文件并发送结果
         const auto optionList = CoreCalculation::RsolProcessor().readOptionList(filePath);
         SendResult(task_1, optionList);
-    );
+    });
     // 接受结果并显示
-    ReturnTask(task_1,[=](){
+    ReturnTask(task_1,[=]() mutable {
         // 读取结果并显示
         const auto gv = GlobalVariables::getInstance();
-        gv->base_option_list = GetResult(CoreCalculation::OptionList);
-        gv->base_option_list.print();
+        gv->active_option_list = GetResult(CoreCalculation::OptionList);
+        gv->active_option_list.print();
         gv->is_import_file = true;
     });
 }
 
 void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToList(QString filePath)
 {
-    qDebug() << "ImportFileToList: " << filePath;
-    CoreCalculation::RsolProcessor().readOptionList(filePath).print();
+    Task task_1 = newTask;
+    Task task_2 = newTask;
+    PushTask([=]() mutable {
+        const auto optionList = CoreCalculation::RsolProcessor().readOptionList(filePath);
+
+        QThread::msleep(3000);
+        qDebug() << "发送第一次任务";
+        SendResult(task_1, optionList);
+
+        QThread::msleep(3000);
+        qDebug() << "发送第二次任务";
+        SendResult(task_1, optionList);
+        SendResult(task_2, optionList);
+    });
+
+    ReturnTask(task_1,[=]() mutable {
+        qDebug() << "任务1完成";
+    });
+
+    ReturnTask(task_2,[=]() mutable {
+        qDebug() << "任务2完成";
+    });
 }

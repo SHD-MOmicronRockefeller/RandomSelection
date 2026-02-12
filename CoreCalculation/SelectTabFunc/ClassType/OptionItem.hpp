@@ -68,9 +68,9 @@ namespace CoreCalculation::Base
     public: inline void setContent(const QString& content) { this->_content = content; }
 
         // 单元权重
-    private: long double _weight = 0;
-    public: inline long double getWeight() const { return _weight; }
-    public: inline void setWeight(const long double weight) { this->_weight = weight; }
+    private: unsigned long long _weight = 0;
+    public: inline unsigned long long getWeight() const { return _weight; }
+    public: inline void setWeight(const unsigned long long weight) { this->_weight = weight; }
 
         // 单元是否被选取
     private: bool _isSelected = true;

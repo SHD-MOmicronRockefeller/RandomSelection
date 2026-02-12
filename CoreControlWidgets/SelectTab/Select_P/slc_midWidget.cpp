@@ -3,6 +3,11 @@
 #include "BaseWidgets/BaseCoreWidget/TinyWidget/AutoFitButton.h"
 #include "BaseWidgets/BaseCoreWidget/TinyWidget/AutoFitLabel.h"
 
+#include "CoreCalculation/SelectTabFunc/RandomSelectOption.hpp"
+#include "Console/console.h"
+
+#include <QDebug>
+
 #define ButtonSize 1
 #define LabelSize 6
 
@@ -131,6 +136,18 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
             outline: none; /* 去除默认焦点框 */
         }
     )");
+    QObject::connect(button, &QPushButton::clicked, label, [label]() {
+        Task task = newTask;
+        PushTask([task]() mutable {
+            const auto result = CoreCalculation::RandomSelectOption().RS_Balance(GlobalVariables::getInstance()->active_option_list, 0.5, 3);
+            SendResultFinally(task, result);
+        });
+        ReturnTask(task, [=]() mutable {
+            const auto result =  GetResult(CoreCalculation::Base::OptionItem);
+            qDebug() << result.getContent();
+            label->setText(result.getContent());
+        });
+    });
     this->m_midLayout->addWidget(button);
     this->m_midLayout->setStretchFactor(button, ButtonSize);
     

@@ -5,7 +5,6 @@
 #include <QQueue>
 #include <functional>
 #include <QVariant>
-#include <QDebug>
 #include <limits>
 #include <QAtomicInteger>
 #include <QMetaObject>
@@ -15,19 +14,26 @@
 #define Task const unsigned long long
 #define newTask Console::getInstance()->buyTaskId()
 
-#define PushTask(task) Console::getInstance()->addTask([=]() mutable {\
-        task\
-})
+#define PushTask(task) Console::getInstance()->addTask(task)
 
-#define SendResult(taskId, result) Console::getInstance()->sendResult(taskId, QVariant::fromValue(result))
+#define SendResult(taskId, result) Console::getInstance()->sendResult(taskId, QVariant::fromValue(result), false)
+#define SendResultFinally(taskId, result) Console::getInstance()->sendResult(taskId, QVariant::fromValue(result), true)
 
 #define GetResult(dataType) _result.value<dataType>()
 
-#define ReturnTask(taskId, handle_Func) QObject::connect(Console::getInstance(), &Console::taskResultReturned, [=](unsigned long long _taskId, QVariant _result) {\
-    if (_taskId == taskId) { \
-        handle_Func();\
-    } \
-})
+#define ReturnTask(taskId, handle_Func) \
+    do { \
+        auto connPtr = std::make_shared<QMetaObject::Connection>(); \
+        *connPtr = QObject::connect(Console::getInstance(), &Console::taskResultReturned, QApplication::instance(), \
+            [=](const unsigned long long _taskId, const QVariant& _result, bool _isFinally) { \
+                if (_taskId == taskId) { \
+                    handle_Func(); \
+                    if (_isFinally) \
+                        {QObject::disconnect(*connPtr); } \
+                } } \
+        ); \
+    } while (0)
+
 
 
 class Console;
@@ -40,7 +46,8 @@ class ResultSender
     private: QVariant m_result;                     // 任务结果
 
             // 构造函数：绑定Console和任务ID
-    public: ResultSender(Console* console, unsigned long long taskId, QVariant result = QVariant());
+    public: explicit ResultSender(Console* console);
+    public: ResultSender& operator()(unsigned long long taskId, const QVariant& result, bool isFinally);
 
             // 重载<<运算符，支持非数组类型
     public: template <typename T>
@@ -73,7 +80,7 @@ class Console : public QObject
     private: Console& operator=(const Console&) = delete;
 
     signals: void mainThreadReady();                       // 主线程准备就绪信号（由外部手动发送）
-    signals: void taskResultReturned(unsigned long long taskId, QVariant result); // 任务结果信号
+    signals: void taskResultReturned(unsigned long long taskId, QVariant result, bool isFinally); // 任务结果信号
 
     private slots: void onMainThreadReady();               // 主线程就绪槽
     private slots: void onProcessTasks();                  // 处理任务队列
@@ -83,12 +90,22 @@ class Console : public QObject
     public: unsigned long long buyTaskId();
     public: Console* addTask(std::function<void()> task);
     public: Console& operator<<(std::function<void()> task);
-    public: ResultSender sendResult(unsigned long long taskId, QVariant result = QVariant());
+    public: ResultSender sendResult(unsigned long long taskId, const QVariant& result, bool isFinally);
 };
 
 // ===================== ResultSender 实现 =====================
-inline ResultSender::ResultSender(Console* console, unsigned long long taskId, QVariant result)
-    : m_console(console), m_taskId(taskId), m_result(result) {}
+inline ResultSender::ResultSender(Console* console)
+    : m_console(console) {}
+
+inline ResultSender& ResultSender::operator()(unsigned long long taskId, const QVariant& result, bool isFinally) {
+    if (m_console && taskId > 0) {
+        QMetaObject::invokeMethod(QApplication::instance(),
+            [m_console = m_console, taskId = taskId, result = result, isFinally = isFinally]() {
+                emit m_console->taskResultReturned(taskId, result, isFinally);
+            },Qt::QueuedConnection);
+    }
+    return *this;
+}
 
 template <typename T>
 typename std::enable_if<!std::is_array<T>::value, ResultSender&>::type
@@ -113,11 +130,6 @@ inline ResultSender& ResultSender::operator<<(const char* value) {
 }
 
 inline ResultSender::~ResultSender() {
-    if (m_console && m_result.isValid() && m_taskId > 0) {
-        QMetaObject::invokeMethod(m_console, [m_console = m_console, taskId = m_taskId, result = m_result]() {
-            emit m_console->taskResultReturned(taskId, result);
-        }, Qt::QueuedConnection);
-    }
 }
 
 
@@ -125,9 +137,7 @@ inline ResultSender::~ResultSender() {
 inline Console* Console::getInstance() {
     if (m_instance == nullptr) {
         QMutexLocker locker(&m_mutex);
-        if (m_instance == nullptr) {
-            m_instance = new Console();
-        }
+        m_instance = new Console();
     }
     return m_instance;
 }
@@ -183,7 +193,7 @@ inline void Console::onProcessTasks() {
             QThread::msleep(0);
         } catch (...) {
             // 异常捕获，发送错误结果
-            ResultSender(this, std::numeric_limits<unsigned long long>::max()) << "计算任务执行出错";
+            ResultSender(this)(std::numeric_limits<unsigned long long>::max(), "程序执行出错", true);
         }
     }
 
@@ -220,6 +230,6 @@ inline Console& Console::operator<<(std::function<void()> task) {
     return *this;
 }
 
-inline ResultSender Console::sendResult(unsigned long long taskId, QVariant result) {
-    return ResultSender(this, taskId, result);
+inline ResultSender Console::sendResult(unsigned long long taskId, const QVariant& result, bool isFinally) {
+    return ResultSender(this)(taskId, result, isFinally);
 }
