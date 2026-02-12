@@ -1,0 +1,7 @@
+build_debug/
+build_release/
+
+.cache/
+DLL/
+
+log.txt
