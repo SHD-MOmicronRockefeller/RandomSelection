@@ -1,12 +1,14 @@
 #include "importFiles.h"
 
+#include <windows.h>
+
 #include "IPT_base.h"
 
 #include "CoreCalculation/DoubleFileClass/ReadFile/ImportFile.h"
 #include "CoreCalculation/SelectTabFunc/OptionList.hpp"
 
 #include "Console/console.h"
-
+#include "VariablesStore/globalVariables.h"
 
 CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFile_Page(QWidget *parent): QWidget(parent)
 {
@@ -43,14 +45,16 @@ void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToSelect(QStri
     // 创建新任务并发送到后台线程
     PushTask( 
         // 读取文件并发送结果
-        auto optionList = CoreCalculation::RsolProcessor().readOptionList(filePath);
+        const auto optionList = CoreCalculation::RsolProcessor().readOptionList(filePath);
         SendResult(task_1, optionList);
     );
     // 接受结果并显示
     ReturnTask(task_1,[=](){
         // 读取结果并显示
-        auto optionList = GetResult(CoreCalculation::OptionList);
-        optionList.print();
+        const auto gv = GlobalVariables::getInstance();
+        gv->base_option_list = GetResult(CoreCalculation::OptionList);
+        gv->base_option_list.print();
+        gv->is_import_file = true;
     });
 }
 

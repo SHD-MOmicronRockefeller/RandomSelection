@@ -65,6 +65,9 @@ class GlobalVariables {
 
     public: CoreCalculation::Base::OptionItem current_option_item; // 当前选项项
 
+    // 文件操作
+    public: bool is_import_file = false; // 是否导入文件
+
     public: CoreCalculation::OptionList base_option_list;    // 基础选项列表
     public: CoreCalculation::OptionList current_option_list; // 当前选项列表
     public: CoreCalculation::OptionList active_option_list;  // 活动选项列表
