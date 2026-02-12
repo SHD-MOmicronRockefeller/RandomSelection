@@ -139,7 +139,8 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
     QObject::connect(button, &QPushButton::clicked, label, [label]() {
         Task task = newTask;
         PushTask([task]() mutable {
-            const auto result = CoreCalculation::RandomSelectOption().RS_Balance(GlobalVariables::getInstance()->active_option_list, 0.5, 3);
+            const auto result = CoreCalculation::RandomSelectOption().RS_Balance(
+                GlobalVariables::getInstance()->active_option_list, 0.5, 3);
             SendResultFinally(task, result);
         });
         ReturnTask(task, [=]() mutable {
