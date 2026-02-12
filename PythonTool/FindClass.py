@@ -7,7 +7,7 @@ DEBUG_MODE = False
 DEBUG_FILE_PATH = "debug.txt"
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 INCLUDE_SUFFIX = (".h", ".hpp")
-EXCLUDE_DIRS = {"build_debug", "build_release"}
+EXCLUDE_DIRS = {"cmake-build-debug", "cmake-build-release","PythonTool", "DLL"}
 EXCLUDE_FILES = {"ClassSpace.h"}#
 # ===================== 调试工具 =====================
 def write_debug(content: str, is_new_file: bool = False):
