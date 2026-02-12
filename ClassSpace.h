@@ -25,6 +25,7 @@ namespace BaseWidgets {
 } // namespace BaseWidgets
 namespace CoreCalculation {
     class OptionList;
+    class RandomSelectOption;
     class RsolProcessor;
     class StringCodec;
 

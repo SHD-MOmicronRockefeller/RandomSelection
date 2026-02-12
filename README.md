@@ -175,6 +175,8 @@ RandomSelection/
 │       │   ├── OptionItem.hpp
 │       │   └── word.hpp
 │       ├── OptionList.hpp
+│       ├── RandomSelectOption.hpp
+│       ├── RandomSelectOption.md
 │       └── StringCodec.hpp
 ├── CoreControlWidgets/
 │   ├── AboutTab/
@@ -226,10 +228,6 @@ RandomSelection/
 │   └── SettingTab/
 │       ├── settingTab.cpp
 │       └── settingTab.h
-├── PythonTool/
-│   ├── FileTree.py
-│   ├── FindClass.py
-│   └── lineStatistics.py
 ├── VariablesStore/
 │   ├── Initialization.cpp
 │   ├── Initialization.h
@@ -251,6 +249,7 @@ RandomSelection/
 │   ├── ApplicationIcon.png
 │   └── ApplicationIconIco.ico
 ├── App_Main.cpp
+├── CMakeLists.txt
 ├── ClassSpace.h
 ├── HowUse.md
 ├── MakeBagTarget.evb
@@ -258,6 +257,3 @@ RandomSelection/
 ├── README.md
 └── resources.qrc
 ```
-
-
-# 验证

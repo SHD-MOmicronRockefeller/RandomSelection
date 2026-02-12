@@ -3,7 +3,7 @@ import os
 # ===================== 核心配置项（你可以根据需要修改） =====================
 TARGET_PATH = ".."
 # 要忽略的文件夹名
-IGNORE_FOLDERS = ["build_debug", "build_release",".cache", "DLL"]
+IGNORE_FOLDERS = ["cmake-build-debug", "cmake-build-release","PythonTool", "DLL"]
 # 要忽略的文件后缀（比如.pyc、.log）
 IGNORE_SUFFIXES = []
 # ==========================================================================
@@ -46,6 +46,7 @@ def print_file_tree(start_path, prefix=""):
             print(f"{prefix}{symbol}{item}")
 
 if __name__ == "__main__":
+    print()
     # 检查目标路径是否存在
     if not os.path.exists(TARGET_PATH):
         print(f"错误：目标路径 {TARGET_PATH} 不存在！")

@@ -3,23 +3,28 @@
 #include <QString>
 #include <QVector>
 
-namespace CoreCalculation::Base
+namespace CoreCalculation
 {
 
-    class Word{
+namespace Base
+{
+
+class Word{
     public: Word(QString _word, unsigned int _begin) {
-            this->word = _word;
-            this->begin = _begin;
-            this->end = _begin + _word.size();
-        }
+        this->word = _word;
+        this->begin = _begin;
+        this->end = _begin + _word.size();
+    }
 
     public: QString word = "";
     public: unsigned int begin = 0;
     public: unsigned int end = 0;
-    
-    public: unsigned int size() {
-            return end - begin;
-        }
-    };
 
-}// namespace CoreCalculation::Base
+    public: unsigned int size() {
+        return end - begin;
+    }
+};
+
+}// namespace Base
+
+}  // namespace CoreCalculation
