@@ -43,7 +43,7 @@ class CustomTitleBar : public QFrame
     
     // 重写父类函数
     protected: void mousePressEvent(QMouseEvent *event) override; // 鼠标按下事件
-    protected: void mouseMoveEvent(QMouseEvent *event) override; // 鼠标移动事件
+    // protected: void windowStateChanged(Qt::WindowStates oldState, Qt::WindowStates newState) override;
     protected: void mouseReleaseEvent(QMouseEvent *event) override; // 鼠标释放事件
     protected: void paintEvent(QPaintEvent *event) override; // 绘制事件
     protected: void mouseDoubleClickEvent(QMouseEvent *event) override; // 鼠标双击事件

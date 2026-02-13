@@ -18,15 +18,15 @@ class BasicSet_Page : public QWidget
     public: QVBoxLayout *m_centerLayout = nullptr;
 
 
-    protected: QWidget *m_topWidget = nullptr;    // 上层固定区域
-
-    protected: QWidget *m_midWidget = nullptr;     // 中层可变区域
+    protected: QScrollArea *m_setListScrollArea = nullptr;     // 中层可变区域
 
     protected: QWidget *m_downWidget = nullptr; // 下层固定区域
 
+    private: void setSelectMod(QWidget *parent);
+    private: void setSelectFunc(QWidget *parent);
+
 
 };
-
 
 
 } // namespace SelectTab_NS

@@ -32,6 +32,7 @@ class MainWindowShell : public QMainWindow{
     // 重写
     protected: void moveEvent(QMoveEvent *event) override;
     protected: void resizeEvent(QResizeEvent *event) override;
+    protected: void changeEvent(QEvent *event) override;
 
     signals: void windowChanged();
 };

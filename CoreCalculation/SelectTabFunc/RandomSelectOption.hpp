@@ -31,16 +31,48 @@ class RandomSelectOption
     }
 
     public: inline static Base::OptionItem _Ordinary(const OptionList& optionList){
-        // 构造权重向量
+        // 1. 构造权重向量，并过滤无效权重（负数/0）
         std::vector<double> weights;
         weights.reserve(optionList.size());
-        for (const auto& option : optionList){
-            weights.push_back(option.getWeight());
+        std::vector<Base::OptionItem> validOptions; // 存储有效选项
+        for (const auto& option : optionList) {
+            double w = option.getWeight();
+            if (w > 0) { // 只保留正权重
+                weights.push_back(w);
+                validOptions.push_back(option);
+            }
         }
-        // 随机选择
-        static std::mt19937 gen(std::random_device{}());
+
+        // 所有权重无效时，随机选一个原始选项
+        if (weights.empty()) {
+            static thread_local std::mt19937 fallbackGen = []() {
+                std::random_device rd;
+                std::seed_seq seq{
+                    static_cast<std::uint32_t>(rd()),
+                    static_cast<std::uint32_t>(std::chrono::steady_clock::now().time_since_epoch().count()),
+                    static_cast<std::uint32_t>(std::hash<std::thread::id>{}(std::this_thread::get_id()))
+                };
+                return std::mt19937(seq);
+            }();
+            std::uniform_int_distribution<size_t> dist(0, optionList.size() - 1);
+            return optionList[dist(fallbackGen)];
+        }
+
+        // 2. 线程本地存储的随机生成器
+        static thread_local std::mt19937 gen = []() {
+            std::random_device rd;
+            std::seed_seq seq{
+                static_cast<std::uint32_t>(rd()),
+                static_cast<std::uint32_t>(std::chrono::high_resolution_clock::now().time_since_epoch().count()),
+                static_cast<std::uint32_t>(std::hash<std::thread::id>{}(std::this_thread::get_id()))
+            };
+            return std::mt19937(seq);
+        }();
+
+        // 3. 按权重分布随机选择
         std::discrete_distribution<size_t> dist(weights.begin(), weights.end());
-        return optionList[dist(gen)];
+        size_t selectedIdx = dist(gen);
+        return validOptions[selectedIdx];
     }
 
     public: inline static Base::OptionItem RS_Balance(const OptionList& optionList,

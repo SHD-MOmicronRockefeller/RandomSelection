@@ -81,3 +81,22 @@ void CoreControlWidgets::MainWindowShell::resizeEvent(QResizeEvent *event)
     QMainWindow::resizeEvent(event);
     emit windowChanged();
 }
+
+void CoreControlWidgets::MainWindowShell::changeEvent(QEvent* event) {
+    QMainWindow::changeEvent(event);
+    // 判断是否是窗口状态变化事件
+    if (event->type() == QEvent::WindowStateChange)
+    {
+        // 转换为窗口状态变化事件，获取新旧状态
+        QWindowStateChangeEvent *stateEvent = static_cast<QWindowStateChangeEvent*>(event);
+        Qt::WindowStates oldState = stateEvent->oldState();
+        Qt::WindowStates newState = this->windowState();
+
+        // 检测「全屏 → 正常窗口」的场景
+        if ((oldState & Qt::WindowFullScreen) && !(newState & Qt::WindowFullScreen)){
+            auto gv = GlobalVariables::getInstance();
+            gv->custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
+            gv->min_custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
+        }
+    }
+}

@@ -6,6 +6,8 @@
 
 #include "BaseWidgets/TitleFunc/titleFunc.h"
 
+#include <windows.h>
+
 namespace CoreControlWidgets {
 
 namespace MainWindow {
@@ -399,44 +401,48 @@ void CustomTitleBar::setMainWindowminimized()
 
 void CustomTitleBar::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton){
-        m_isDragging = true;
-        m_dragStartPos = event->pos();
-        m_dragStartGlobalPos = event->globalPosition().toPoint();
+    if (event->button() == Qt::LeftButton) {
+        // 关键：告诉系统，这是标题栏拖动
+        ReleaseCapture();
+        SendMessage(HWND(this->window()->winId()),
+                    WM_NCLBUTTONDOWN, HTCAPTION, 0);
+        event->accept();
     }
     QWidget::mousePressEvent(event);
 }
 
-void CustomTitleBar::mouseMoveEvent(QMouseEvent *event)
-{
-    if (!m_isDragging){
-        QFrame::mouseMoveEvent(event);
-        return;
-    }
-    // 窗口最大化时，移动窗口
-    if (GlobalVariables::getInstance()->is_max_window_showed){
-        MY_FUNC::setWindowReMaximized();
-        double screenWidth = this->window()->screen()->size().width();
-        double windowWidth = this->window()->width();
-        int newX = static_cast<int>(m_dragStartGlobalPos.x() / screenWidth * windowWidth);
-        QPoint newTitleBarPos = QPoint(newX, m_dragStartPos.y());// 新的相对向量
 
-        QPoint mouseMovePoint = event->globalPosition().toPoint() - m_dragStartGlobalPos;// 鼠标移动的向量
 
-        QPoint newWindowGlobalPos = m_dragStartGlobalPos + mouseMovePoint - newTitleBarPos;// 新的全局向量
-        this->window()->move(newWindowGlobalPos);
-
-        return;
-    } else {
-        // 窗口非最大化时，移动窗口
-        QPoint mouseMovePoint = event->globalPosition().toPoint() - m_dragStartGlobalPos;
-        QPoint newPos = this->window()->pos() + mouseMovePoint;
-        this->window()->move(newPos);
-    }
-    m_dragStartPos = event->pos();
-    m_dragStartGlobalPos = event->globalPosition().toPoint();
-    QFrame::mouseMoveEvent(event);
-}
+// void CustomTitleBar::mouseMoveEvent(QMouseEvent *event)
+// {
+//     if (!m_isDragging){
+//         QFrame::mouseMoveEvent(event);
+//         return;
+//     }
+//     // 窗口最大化时，移动窗口
+//     if (GlobalVariables::getInstance()->is_max_window_showed){
+//         MY_FUNC::setWindowReMaximized();
+//         double screenWidth = this->window()->screen()->size().width();
+//         double windowWidth = this->window()->width();
+//         int newX = static_cast<int>(m_dragStartGlobalPos.x() / screenWidth * windowWidth);
+//         QPoint newTitleBarPos = QPoint(newX, m_dragStartPos.y());// 新的相对向量
+//
+//         QPoint mouseMovePoint = event->globalPosition().toPoint() - m_dragStartGlobalPos;// 鼠标移动的向量
+//
+//         QPoint newWindowGlobalPos = m_dragStartGlobalPos + mouseMovePoint - newTitleBarPos;// 新的全局向量
+//         this->window()->move(newWindowGlobalPos);
+//
+//         return;
+//     } else {
+//         // 窗口非最大化时，移动窗口
+//         QPoint mouseMovePoint = event->globalPosition().toPoint() - m_dragStartGlobalPos;
+//         QPoint newPos = this->window()->pos() + mouseMovePoint;
+//         this->window()->move(newPos);
+//     }
+//     m_dragStartPos = event->pos();
+//     m_dragStartGlobalPos = event->globalPosition().toPoint();
+//     QFrame::mouseMoveEvent(event);
+// }
 
 void CustomTitleBar::mouseReleaseEvent(QMouseEvent *event)
 {
