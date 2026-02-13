@@ -127,7 +127,7 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectMod(QWidget* pare
     selectModTip->setWordWrap(true);
     selectModTip->setFont(QFont("微软雅黑", 8));
     selectModMainLayout->addWidget(selectModTip);
-    QObject::connect(selectModTabBar, &QTabBar::tabBarClicked, [selectModTip, selectModTipText_1, selectModTipText_2](int index) {
+    QObject::connect(selectModTabBar, &QTabBar::tabBarClicked, [=](int index) {
         if (index == 0) {
             selectModTip->setText(selectModTipText_1);
         } else {
@@ -140,20 +140,20 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectMod(QWidget* pare
 void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* parent) {
     // 1 选择方法
     // 1.0 选择卡片
-    QVBoxLayout *selectModMainLayout = new QVBoxLayout();
-    parent->setLayout(selectModMainLayout);
+    QVBoxLayout *selectFuncMainLayout = new QVBoxLayout();
+    parent->setLayout(selectFuncMainLayout);
     // 1.1 布局
-    QHBoxLayout* selectModLayout = new QHBoxLayout();
-    selectModLayout->setContentsMargins(0, 0, 0, 0);
-    selectModLayout->setSpacing(10);
-    selectModLayout->setAlignment(Qt::AlignLeft);
+    QHBoxLayout* selectFuncLayout = new QHBoxLayout();
+    selectFuncLayout->setContentsMargins(0, 0, 0, 0);
+    selectFuncLayout->setSpacing(10);
+    selectFuncLayout->setAlignment(Qt::AlignLeft);
     // 1.2 laybal
-    QLabel* selectModLabel = new QLabel("选择方法");
-    selectModLabel->setFont(QFont("微软雅黑", 12));
-    selectModLayout->addWidget(selectModLabel);
+    QLabel* selectFuncLabel = new QLabel("选择方法");
+    selectFuncLabel->setFont(QFont("微软雅黑", 12));
+    selectFuncLayout->addWidget(selectFuncLabel);
     // 1.3 选项卡
-    QTabBar *selectModTabBar = new QTabBar();
-    selectModTabBar->setStyleSheet(R"(
+    QTabBar *selectFuncTabBar = new QTabBar();
+    selectFuncTabBar->setStyleSheet(R"(
         QTabBar {
             background-color: #eff7ff;
             border-radius: 15px;
@@ -176,31 +176,191 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
             margin-top: 2px;
         }
     )");
-    selectModTabBar->addTab("轮盘赌 随机抽取");
-    selectModTabBar->addTab("移位因子平衡 随机抽取");
-    selectModLayout->addWidget(selectModTabBar);
-    selectModMainLayout->addLayout(selectModLayout);
+    selectFuncTabBar->addTab("轮盘赌 随机抽取");
+    selectFuncTabBar->addTab("移位因子平衡 随机抽取");
+    selectFuncLayout->addWidget(selectFuncTabBar);
+    selectFuncMainLayout->addLayout(selectFuncLayout);
     // 1.4 提示信息
-    QString selectModTipText_1 = "   轮盘赌 随机抽取\n"
+    QString selectFuncTipText_1 = "   轮盘赌 随机抽取\n"
                                "   基于 轮盘赌选择法（Roulette Wheel Selection） 随机抽取";
-    QString selectModTipText_2 = "   移位因子平衡 随机抽取\n"
+    QString selectFuncTipText_2 = "   移位因子平衡 随机抽取\n"
                                "   基于 移位因子平衡算法 + 轮盘赌选择法 随机抽取";
-    QLabel *selectModTip = new QLabel(selectModTipText_1);
-    selectModTip->setStyleSheet(R"(
+    QLabel *selectFuncTip = new QLabel(selectFuncTipText_1);
+    selectFuncTip->setStyleSheet(R"(
         QLabel {
             background-color: #eff7ff;
             border-radius: 16px;
             border: 1px solid #cee1f5;
         }
     )");
-    selectModTip->setWordWrap(true);
-    selectModTip->setFont(QFont("微软雅黑", 8));
-    selectModMainLayout->addWidget(selectModTip);
-    QObject::connect(selectModTabBar, &QTabBar::tabBarClicked, [selectModTip, selectModTipText_1, selectModTipText_2](int index) {
+    selectFuncTip->setWordWrap(true);
+    selectFuncTip->setFont(QFont("微软雅黑", 8));
+    selectFuncMainLayout->addWidget(selectFuncTip);
+
+    // 移位因子平衡算法 参数设置
+    QFrame *selectFuncFrame = new QFrame();
+    selectFuncFrame->setFrameShape(QFrame::NoFrame);
+    QVBoxLayout *selectFuncFrameLayout = new QVBoxLayout();
+    selectFuncFrameLayout->setContentsMargins(0, 0, 0, 0);
+    selectFuncFrameLayout->setSpacing(10);
+    selectFuncFrameLayout->setAlignment(Qt::AlignLeft);
+    selectFuncFrame->setLayout(selectFuncFrameLayout);
+
+    // 链接 参数设置
+    QObject::connect(selectFuncTabBar, &QTabBar::tabBarClicked, [=](int index) {
         if (index == 0) {
-            selectModTip->setText(selectModTipText_1);
+            selectFuncTip->setText(selectFuncTipText_1);
+            selectFuncMainLayout->removeWidget(selectFuncFrame);
         } else {
-            selectModTip->setText(selectModTipText_2);
+            selectFuncTip->setText(selectFuncTipText_2);
+            selectFuncMainLayout->addWidget(selectFuncFrame);
         }
     });
+
+    // 分隔符
+    QFrame *separator = new QFrame();
+    separator->setStyleSheet(R"(
+        QFrame {
+            border: none;
+            border-radius: 1px;
+            background: #98c8fa;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
+    })");
+    separator->setFixedHeight(13);
+    selectFuncFrameLayout->addWidget(separator);
+
+    //  移位因子平衡算法 参数设置
+    // 标签
+    QLabel *weightLabel = new QLabel("移位因子平衡算法 参数设置");
+    weightLabel->setFont(QFont("微软雅黑", 12, QFont::Bold));
+    selectFuncFrameLayout->addWidget(weightLabel);
+
+    // 分隔符
+    QFrame *separator_1 = new QFrame();
+    separator_1->setStyleSheet("QFrame {background: transparent;}");
+    separator_1->setFixedHeight(5);
+    selectFuncFrameLayout->addWidget(separator_1);
+
+    // top量影响因子
+    QHBoxLayout *topLayout = new QHBoxLayout();
+    topLayout->setContentsMargins(0, 0, 0, 0);
+    topLayout->setSpacing(10);
+    topLayout->setAlignment(Qt::AlignLeft);
+        // 标签
+    QLabel *topLabel = new QLabel("top量影响因子");
+    topLabel->setFont(QFont("微软雅黑", 12));
+    topLayout->addWidget(topLabel);
+        // 滑动条
+    QSlider *topSlider = new QSlider();
+    topSlider->setObjectName("whiteSlider");
+    topSlider->setFixedHeight(22);
+    topSlider->setOrientation(Qt::Horizontal);
+    topSlider->setMinimum(0);
+    topSlider->setMaximum(3000);
+    topSlider->setValue(1000);
+    topLayout->addWidget(topSlider);
+        // 数值标签
+    QLabel *topValueLabel = new QLabel("1.000");
+    topValueLabel->setFont(QFont("微软雅黑", 12));
+    topLayout->addWidget(topValueLabel);
+        // 滑动条 数值标签同步
+    selectFuncFrameLayout->addLayout(topLayout);
+    connect(topSlider, &QSlider::valueChanged, [=](int value) {
+        topValueLabel->setText(QString::number(value / 1000.0, 'f', 3));
+    });
+
+    QFrame *separator_2 = new QFrame();
+    separator_2->setStyleSheet("QFrame {background: transparent;}");
+    separator_2->setFixedHeight(5);
+    selectFuncFrameLayout->addWidget(separator_2);
+
+    //幂倍率 标签
+    QHBoxLayout *powerLayout = new QHBoxLayout();
+    powerLayout->setContentsMargins(0, 0, 0, 0);
+    powerLayout->setSpacing(10);
+    selectFuncFrameLayout->addLayout(powerLayout);
+        // 标签
+    QLabel *powerLabel = new QLabel("幂倍率");
+    powerLabel->setFont(QFont("微软雅黑", 12));
+    powerLayout->addWidget(powerLabel);
+        // 弹簧
+    powerLayout->addStretch();
+        // 数值
+    QLabel *powerValueLabel = new QLabel("1.000");
+    powerValueLabel->setFont(QFont("微软雅黑", 12));
+    powerLayout->addWidget(powerValueLabel);
+
+    // 幂倍率-整数部分-标签
+    QHBoxLayout *powerLayout_coarse = new QHBoxLayout();
+    powerLayout_coarse->setContentsMargins(0, 0, 0, 0);
+    powerLayout_coarse->setSpacing(10);
+    powerLayout_coarse->setAlignment(Qt::AlignLeft);
+    selectFuncFrameLayout->addLayout(powerLayout_coarse);
+        // 标签
+    QLabel *powerLabel_coarse = new QLabel("    幂倍率-整数");
+    powerLabel_coarse->setFont(QFont("微软雅黑", 12));
+    powerLayout_coarse->addWidget(powerLabel_coarse);
+        // 滑动条
+    QSlider *powerSlider_coarse = new QSlider();
+    powerSlider_coarse->setObjectName("whiteSlider");
+    powerSlider_coarse->setFixedHeight(22);
+    powerSlider_coarse->setOrientation(Qt::Horizontal);
+    powerSlider_coarse->setMinimum(0);
+    powerSlider_coarse->setMaximum(19);
+    powerSlider_coarse->setValue(1);
+    powerLayout_coarse->addWidget(powerSlider_coarse);
+
+
+    // 幂倍率-小数部分-标签
+    QHBoxLayout *powerLayout_fine = new QHBoxLayout();
+    powerLayout_fine->setContentsMargins(0, 0, 0, 0);
+    powerLayout_fine->setSpacing(10);
+    powerLayout_fine->setAlignment(Qt::AlignLeft);
+    selectFuncFrameLayout->addLayout(powerLayout_fine);
+        // 标签
+    QLabel *powerLabel_fine = new QLabel("    幂倍率-小数");
+    powerLabel_fine->setFont(QFont("微软雅黑", 12));
+    powerLayout_fine->addWidget(powerLabel_fine);
+        // 滑动条
+    QSlider *powerSlider_fine = new QSlider();
+    powerSlider_fine->setObjectName("whiteSlider");
+    powerSlider_fine->setFixedHeight(22);
+    powerSlider_fine->setOrientation(Qt::Horizontal);
+    powerSlider_fine->setMinimum(0);
+    powerSlider_fine->setMaximum(1000);
+    powerSlider_fine->setValue(0);
+    powerLayout_fine->addWidget(powerSlider_fine);
+
+    auto setPower = [=]() {
+        powerValueLabel->setText(QString::number(
+            powerSlider_coarse->value() + (powerSlider_fine->value() / 1000.0),'f', 3));
+    };
+
+    connect(powerSlider_coarse, &QSlider::valueChanged, setPower);
+    connect(powerSlider_fine, &QSlider::valueChanged, setPower);
+
+    setStyleSheet(R"(
+        QSlider#whiteSlider::groove:horizontal {
+            background: #d3e5f7;
+            height: 8px;
+            border-radius: 4px;
+        }
+        QSlider#whiteSlider::sub-page:horizontal {
+            background: #328de7;
+            border-radius: 4px;
+        }
+        QSlider#whiteSlider::handle:horizontal {
+            background: #cee1f5;
+            border: 1px solid #1170d0;
+            width: 20px;
+            height: 16px;
+            margin: -5px 0;
+            border-radius: 8px;
+        }
+        QSlider#whiteSlider::handle:horizontal:hover {
+            transform: scale(1.1);
+        }
+    )");
 }
