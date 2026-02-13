@@ -1,7 +1,6 @@
 #include "basicSet.h"
 
 #include "CoreControlWidgets/ModWidgets/ToggleTopmost.h"
-#include <QGraphicsDropShadowEffect>
 #include "BaseWidgets/BaseCoreWidget/LayoutWidget.h"
 CoreControlWidgets::SelectTab_NS::BasicSet_Page::BasicSet_Page(QWidget *parent): QWidget(parent)
 {
