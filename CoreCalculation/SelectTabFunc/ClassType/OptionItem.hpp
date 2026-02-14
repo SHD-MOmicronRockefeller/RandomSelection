@@ -74,7 +74,7 @@ class OptionItem {
     public: inline unsigned long long getWeight() const { return _weight; }
     public: inline void setWeight(const unsigned long long weight) { this->_weight = weight; }
 
-    // 单元是否被选取
+    // 单元是否被选中参与列表
     private: bool _isSelected = true;
     public: inline bool getIsSelected() const { return _isSelected; }
     public: inline void setIsSelected(bool isSelected) { this->_isSelected = isSelected; }

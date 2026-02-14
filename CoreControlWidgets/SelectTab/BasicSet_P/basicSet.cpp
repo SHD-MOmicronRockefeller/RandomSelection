@@ -2,6 +2,9 @@
 
 #include "CoreControlWidgets/ModWidgets/ToggleTopmost.h"
 #include "BaseWidgets/BaseCoreWidget/LayoutWidget.h"
+#include "ApplicationClass/Application/SignalSource.h"
+#include "BaseWidgets/BaseCoreWidget/MessageTipWidget.h"
+#include "VariablesStore/globalVariables.h"
 CoreControlWidgets::SelectTab_NS::BasicSet_Page::BasicSet_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
@@ -15,7 +18,7 @@ CoreControlWidgets::SelectTab_NS::BasicSet_Page::BasicSet_Page(QWidget *parent):
     m_setListScrollArea->setWidgetResizable(true);
     m_setListScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     m_setListScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    m_setListScrollArea->setStyleSheet("QScrollArea{background: #d3e5f7; min-height: 50px;}");
+    m_setListScrollArea->setStyleSheet("QScrollArea{background: #cee8f6; min-height: 50px;}");
     QWidget *setListWidget = new QWidget();
     setListWidget->setStyleSheet("QWidget{background: transparent;}");
     setListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -39,28 +42,57 @@ CoreControlWidgets::SelectTab_NS::BasicSet_Page::BasicSet_Page(QWidget *parent):
     this->setSelectFunc(selectFuncWidget);
     setListLayout->addWidget(selectFuncWidget);
 
+    // 3. 百宝盒子
+    LayoutWidget *widgetBox = new LayoutWidget();
+    this->setBaibaoBox(widgetBox);
+    setListLayout->addWidget(widgetBox);
+
 
     setListWidget->adjustSize();
     m_setListScrollArea->setWidget(setListWidget);
 
-    // ========== 4. 构建下层固定区域 ==========
-    m_downWidget = new QWidget();
-    m_downWidget->setObjectName("BasicSetTab_BottomWidget");
-    m_downWidget->setAutoFillBackground(true);
-    m_downWidget->setAttribute(Qt::WA_StyledBackground, true);
-    m_downWidget->setStyleSheet("QWidget#BasicSetTab_BottomWidget{background: rgba(179, 214, 255, 1); min-height: 50px;}");
-    QHBoxLayout *bottomLayout = new QHBoxLayout(m_downWidget);
-    bottomLayout->setContentsMargins(5, 0, 5, 0);
-    bottomLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    // // ========== 4. 构建下层固定区域 ==========
+    // m_downWidget = new QWidget();
+    // m_downWidget->setObjectName("BasicSetTab_BottomWidget");
+    // m_downWidget->setAutoFillBackground(true);
+    // m_downWidget->setAttribute(Qt::WA_StyledBackground, true);
+    // m_downWidget->setStyleSheet("QWidget#BasicSetTab_BottomWidget{background: rgba(179, 214, 255, 1); min-height: 50px;}");
+    // QHBoxLayout *bottomLayout = new QHBoxLayout(m_downWidget);
+    // bottomLayout->setContentsMargins(5, 0, 5, 0);
+    // bottomLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    //
+    // bottomLayout->addWidget(new ::ModWidgets::ToggleTopmost());
+    // bottomLayout->addStretch();
 
-    bottomLayout->addWidget(new ::ModWidgets::ToggleTopmost());
-    bottomLayout->addStretch();
+    setStyleSheet(styleSheet() + R"(
+        QTabBar#doubleSLCT {
+            background-color: #eff7ff;
+            border-radius: 15px;
+            border: none;
+        }
+        QTabBar#doubleSLCT::tab {
+            background-color: transparent;
+            color: #666666;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 16px;
+            margin-left: 6px;
+            margin-right: 6px;
+        }
+        QTabBar#doubleSLCT::tab:selected {
+            background-color: #1170d0;
+            color: #ffffff;
+        }
+        QTabBar#doubleSLCT::tab:!selected {
+            margin-top: 2px;
+        }
+    )");
 
     // ========== 5. 把上/中/下添加到BaseTab的中心布局 ==========
     this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
     this->m_centerLayout->setSpacing(0);
     this->m_centerLayout->addWidget(m_setListScrollArea, 1); // 中间（占剩余空间，比例固定）
-    this->m_centerLayout->addWidget(m_downWidget);       // 下层（固定）
+    // this->m_centerLayout->addWidget(m_downWidget);       // 下层（固定）
 }
 
 CoreControlWidgets::SelectTab_NS::BasicSet_Page::~BasicSet_Page()
@@ -83,29 +115,7 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectMod(QWidget* pare
     selectModLayout->addWidget(selectModLabel);
     // 1.3 选项卡
     QTabBar *selectModTabBar = new QTabBar();
-    selectModTabBar->setStyleSheet(R"(
-        QTabBar {
-            background-color: #eff7ff;
-            border-radius: 15px;
-            border: none;
-        }
-        QTabBar::tab {
-            background-color: transparent;
-            color: #666666;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 16px;
-            margin-left: 6px;
-            margin-right: 6px;
-        }
-        QTabBar::tab:selected {
-            background-color: #1170d0;
-            color: #ffffff;
-        }
-        QTabBar::tab:!selected {
-            margin-top: 2px;
-        }
-    )");
+    selectModTabBar->setObjectName("doubleSLCT");
     selectModTabBar->addTab("按 单元 选取");
     selectModTabBar->addTab("按 分组 选取");
     selectModLayout->addWidget(selectModTabBar);
@@ -152,29 +162,7 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
     selectFuncLayout->addWidget(selectFuncLabel);
     // 1.3 选项卡
     QTabBar *selectFuncTabBar = new QTabBar();
-    selectFuncTabBar->setStyleSheet(R"(
-        QTabBar {
-            background-color: #eff7ff;
-            border-radius: 15px;
-            border: none;
-        }
-        QTabBar::tab {
-            background-color: transparent;
-            color: #666666;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 16px;
-            margin-left: 6px;
-            margin-right: 6px;
-        }
-        QTabBar::tab:selected {
-            background-color: #1170d0;
-            color: #ffffff;
-        }
-        QTabBar::tab:!selected {
-            margin-top: 2px;
-        }
-    )");
+    selectFuncTabBar->setObjectName("doubleSLCT");
     selectFuncTabBar->addTab("轮盘赌 随机抽取");
     selectFuncTabBar->addTab("移位因子平衡 随机抽取");
     selectFuncLayout->addWidget(selectFuncTabBar);
@@ -340,7 +328,7 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
     connect(powerSlider_coarse, &QSlider::valueChanged, setPower);
     connect(powerSlider_fine, &QSlider::valueChanged, setPower);
 
-    setStyleSheet(R"(
+    setStyleSheet(styleSheet() + R"(
         QSlider#whiteSlider::groove:horizontal {
             background: #d3e5f7;
             height: 8px;
@@ -362,4 +350,48 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
             transform: scale(1.1);
         }
     )");
+}
+
+void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setBaibaoBox(QWidget* parent) {
+    // 1 置顶
+    // 1.0 选择卡片
+    QVBoxLayout *selectModMainLayout = new QVBoxLayout();
+    parent->setLayout(selectModMainLayout);
+    // 1.1 布局
+    QHBoxLayout* selectModLayout = new QHBoxLayout();
+    selectModLayout->setContentsMargins(0, 0, 0, 0);
+    selectModLayout->setSpacing(10);
+    selectModLayout->setAlignment(Qt::AlignLeft);
+    // 1.2 laybal
+    QLabel* selectModLabel = new QLabel("窗口置顶");
+    selectModLabel->setFont(QFont("微软雅黑", 12));
+    selectModLayout->addWidget(selectModLabel);
+    // 1.3 选项卡
+    QTabBar *selectModTabBar = new QTabBar();
+    selectModTabBar->setObjectName("doubleSLCT");
+    selectModTabBar->addTab("关闭 置顶");
+    selectModTabBar->addTab("开启 置顶");
+    selectModLayout->addWidget(selectModTabBar);
+    selectModMainLayout->addLayout(selectModLayout);
+
+    QObject::connect(selectModTabBar, &QTabBar::tabBarClicked, [=](int index) {
+        GlobalVariables* gv = GlobalVariables::getInstance();
+        if (index == 0) {
+            gv->is_settop_window = false;
+            gv->main_window_shell->windowHandle()->setFlag(Qt::WindowStaysOnTopHint, false);
+            emit SignalSource::getInstance()->WindowTopmostToggled();
+        } else {
+            gv->is_settop_window = true;
+            gv->main_window_shell->windowHandle()->setFlag(Qt::WindowStaysOnTopHint, true);
+            emit SignalSource::getInstance()->WindowTopmostToggled();
+        }
+    });
+    connect(SignalSource::getInstance(), &SignalSource::WindowTopmostToggled, selectModTabBar, [=](){
+        GlobalVariables* gv = GlobalVariables::getInstance();
+        if (gv->is_settop_window) {
+            selectModTabBar->setCurrentIndex(1);
+        } else {
+            selectModTabBar->setCurrentIndex(0);
+        }
+    });
 }

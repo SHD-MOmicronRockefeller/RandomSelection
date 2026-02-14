@@ -22,7 +22,7 @@ CoreControlWidgets::SelectTab_NS::SelectFile_Page::SelectFile_Page(QWidget *pare
     // ========== 3. 构建中层可变区域 ==========
     m_midWidget = new QWidget();
     m_midWidget->setObjectName("SelectFileTab_MidWidget");
-    m_midWidget->setStyleSheet("QWidget#SelectFileTab_MidWidget{background: #FF9933; min-height: 50px;}");
+    m_midWidget->setStyleSheet("QWidget#SelectFileTab_MidWidget{background: #cee8f6; min-height: 50px;}");
     QHBoxLayout *midLayout = new QHBoxLayout(m_midWidget);
     midLayout->setContentsMargins(10, 10, 10, 10);
     midLayout->setSpacing(10);

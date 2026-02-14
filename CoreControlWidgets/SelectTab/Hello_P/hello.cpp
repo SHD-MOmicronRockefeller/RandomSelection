@@ -22,7 +22,7 @@ CoreControlWidgets::SelectTab_NS::Hello_Page::Hello_Page(QWidget *parent): QWidg
     // ========== 3. 构建中层可变区域 ==========
     m_midWidget = new QWidget();
     m_midWidget->setObjectName("ListSetTab_MidWidget");
-    m_midWidget->setStyleSheet("QWidget#ListSetTab_MidWidget{background: rgba(211, 229, 247, 1); min-height: 50px;}");
+    m_midWidget->setStyleSheet("QWidget#ListSetTab_MidWidget{background: #cee8f6; min-height: 50px;}");
     QHBoxLayout *midLayout = new QHBoxLayout(m_midWidget);
     midLayout->setContentsMargins(10, 10, 10, 10);
     midLayout->setSpacing(10);
@@ -30,7 +30,7 @@ CoreControlWidgets::SelectTab_NS::Hello_Page::Hello_Page(QWidget *parent): QWidg
     // ========== 4. 构建下层固定区域 ==========
     m_downWidget = new QWidget();
     m_downWidget->setObjectName("ListSetTab_DownWidget");
-    m_downWidget->setStyleSheet("QWidget#ListSetTab_DownWidget{background: rgba(211, 229, 247, 1); min-height: 50px;}");
+    m_downWidget->setStyleSheet("QWidget#ListSetTab_DownWidget{background: #cee8f6; min-height: 50px;}");
     QHBoxLayout *bottomLayout = new QHBoxLayout(m_downWidget);
     bottomLayout->setContentsMargins(10, 0, 10, 0);
     bottomLayout->addWidget(new QLabel("下层固定区域"));

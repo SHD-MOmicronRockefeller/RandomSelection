@@ -1,6 +1,7 @@
 #ifndef BASIC_SET_H
 #define BASIC_SET_H
 #include "QtPrecompiled.h"
+#include <QPointer>
 
 
 namespace CoreControlWidgets
@@ -24,6 +25,7 @@ class BasicSet_Page : public QWidget
 
     private: void setSelectMod(QWidget *parent);
     private: void setSelectFunc(QWidget *parent);
+    private: void setBaibaoBox(QWidget *parent);
 
 
 };

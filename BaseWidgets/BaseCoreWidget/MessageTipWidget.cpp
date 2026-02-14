@@ -146,6 +146,7 @@ bool MessageTipWidget::isHandled() const
 
 void MessageTipWidget::setHandled(bool handled)
 {
+    if (!isWidgetType()) return;
     if (m_isHandled == handled) return;
     m_isHandled = handled;
     
@@ -378,7 +379,7 @@ void MessageTipManager::animateTipIn(MessageTipWidget *tip)
 
 void MessageTipManager::animateTipOut(MessageTipWidget *tip)
 {
-    if (!tip || !m_mainWindow || tip->isHidden()) return;
+    if (!tip || !tip->isWidgetType() || !m_mainWindow || tip->isHidden()) return;
 
     // 强制更新布局，获取真实高度
     tip->layout()->activate();
@@ -600,6 +601,12 @@ MessageTipWidget *MessageTipManager::addMessage(bool persistent, int stayTimeMs)
 
     auto tip = new MessageTipWidget(persistent, m_mainWindow);
     tip->setSlotIndex(emptySlot);
+    // tip销毁时自动清空对应的slot，避免野指针
+    connect(tip, &QObject::destroyed, this, [this, emptySlot]() {
+        if (emptySlot >= 0 && emptySlot < MAX_TIP_COUNT) {
+            m_tipSlots[emptySlot] = nullptr; // tip销毁时立即清空slot
+        }
+    });
     tip->setOpacity(1.0);
     
     // 强制更新布局，确保高度正确
@@ -629,10 +636,17 @@ MessageTipWidget *MessageTipManager::addMessage(bool persistent, int stayTimeMs)
     if (!persistent) {
         // 校验滞留时间
         int actualStayTime = (stayTimeMs > 0) ? stayTimeMs : MessageTipWidget::AUTO_CLOSE_DURATION;
-        // 按滞留时间设置自动关闭
+        // 按滞留时间设置自动关闭（修复QPointer构造崩溃）
         QTimer::singleShot(actualStayTime, this, [this, tip]() {
-            if (!tip || tip->isPersistent() || tip->isHandled()) return;
-            tip->setHandled(true); // 触发退出动画
+            // 第一步：先判断裸指针是否为空，避免构造QPointer时访问野指针
+            if (!tip) return;
+
+            // 第二步：构造QPointer（此时tip非空，QPointer会安全检查有效性）
+            QPointer<MessageTipWidget> safeTip = tip;
+
+            // 第三步：检查safeTip有效性，再执行逻辑
+            if (!safeTip || safeTip->isPersistent() || safeTip->isHandled()) return;
+            safeTip->setHandled(true); // 触发退出动画
         });
     }
     // 持久化时，不执行任何自动关闭逻辑

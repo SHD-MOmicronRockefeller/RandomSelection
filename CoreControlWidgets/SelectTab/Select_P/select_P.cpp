@@ -30,7 +30,7 @@ CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWi
     // 初始化比例容器（示例：4:3的宽高比）
     m_aspectMidWidget = new BaseWidgets::AspectRatioWidget(nullptr, GlobalVariables::getInstance()->mid_window_proportion);
     m_aspectMidWidget->setObjectName("SelectTab_AspectMidWidget");
-    m_aspectMidWidget->setStyleSheet("QWidget#SelectTab_AspectMidWidget{background: rgba(211, 229, 247, 1);}");
+    m_aspectMidWidget->setStyleSheet("QWidget#SelectTab_AspectMidWidget{background: #cee8f6;}");
     // 包裹原有MidWidget
     m_midWidget = new MidWidget();
     m_aspectMidWidget->setContentWidget(m_midWidget);

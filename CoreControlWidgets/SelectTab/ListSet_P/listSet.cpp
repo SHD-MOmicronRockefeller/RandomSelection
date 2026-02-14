@@ -22,7 +22,7 @@ CoreControlWidgets::SelectTab_NS::ListSet_Page::ListSet_Page(QWidget *parent): Q
     // ========== 3. 构建中层可变区域 ==========
     m_midWidget = new QWidget();
     m_midWidget->setObjectName("ListSetTab_MidWidget");
-    m_midWidget->setStyleSheet("QWidget#ListSetTab_MidWidget{background: #FF9933; min-height: 50px;}");
+    m_midWidget->setStyleSheet("QWidget#ListSetTab_MidWidget{background: #cee8f6; min-height: 50px;}");
     QHBoxLayout *midLayout = new QHBoxLayout(m_midWidget);
     midLayout->setContentsMargins(10, 10, 10, 10);
     midLayout->setSpacing(10);

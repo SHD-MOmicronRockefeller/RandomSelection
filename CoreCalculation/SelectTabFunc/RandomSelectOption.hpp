@@ -86,14 +86,14 @@ class RandomSelectOption
         return result;
     }
 
-    // 2
+    // 平衡随机抽取算法
     public: inline static Base::OptionItem _Balance(const OptionList& optionList,
         const long double smoothing_factor, const long double power_factor){
         // long double 18 位有效
         //  常量定义
         constexpr long double EPS = 1e-16L;          // 精度补偿值
         constexpr long double BASE_OFFSET = 1.0L;   // top_count基础偏移量
-        constexpr long double MIN_TOP_COUNT = 1e-16L;// top_count最小阈值
+        constexpr long double MIN_TOP_COUNT = 1e-18L;// top_count最小阈值
         constexpr long double MAX_TOP_COUNT = 1e18L; // top_count最大阈值
 
         //  1. 过滤活跃选项
