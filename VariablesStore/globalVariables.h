@@ -63,7 +63,12 @@ class GlobalVariables {
     public: unsigned int total_select_count = 0; // 总的抽取的数量
     public: unsigned int current_select_index = 0; // 显示抽取的索引
 
+    public: unsigned long long total_weight = 0; // 总的权重
+    public: unsigned long long current_weight = 0; // 当前权重
+
     public: CoreCalculation::Base::OptionItem current_option_item; // 当前选项项
+    public: CoreControlWidgets::SelectTab_NS::MidWidget* main_mid_widget; // 当前选项信息
+    public: CoreControlWidgets::SelectTab_NS::MidWidget* min_mid_widget; // 当前选项信息
 
     // 文件操作
     public: bool is_import_file = false; // 是否导入文件

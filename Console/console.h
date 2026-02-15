@@ -25,14 +25,31 @@
     do { \
         auto connPtr = std::make_shared<QMetaObject::Connection>(); \
         *connPtr = QObject::connect(Console::getInstance(), &Console::taskResultReturned, QApplication::instance(), \
-            [=](const unsigned long long _taskId, const QVariant& _result, bool _isFinally) { \
-                if (_taskId == taskId) { \
-                    handle_Func(); \
-                    if (_isFinally) \
-                        {QObject::disconnect(*connPtr); } \
-                } } \
-        ); \
+        [=](const unsigned long long _taskId, const QVariant& _result, bool _isFinally) { \
+            if (_taskId == taskId) { \
+                QMetaObject::invokeMethod(QApplication::instance(), [=]() {\
+                    handle_Func();\
+                }, Qt::QueuedConnection);\
+                if (_isFinally && connPtr) {\
+                    QObject::disconnect(*connPtr);\
+                }\
+            } \
+        }); \
     } while (0)
+
+// #define ReturnTask(taskId, handle_Func) \
+//     do { \
+//         auto connPtr = std::make_shared<QMetaObject::Connection>(); \
+//         *connPtr = QObject::connect(Console::getInstance(), &Console::taskResultReturned, \
+//         [=](const unsigned long long _taskId, const QVariant& _result, bool _isFinally) { \
+//             if (_taskId == taskId) {  \
+//                 handle_Func();\
+//                 if (_isFinally && connPtr) {\
+//                     QObject::disconnect(*connPtr);\
+//                 }\
+//             } \
+//         }); \
+//     } while (0)
 
 
 

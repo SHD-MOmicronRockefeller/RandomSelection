@@ -15,12 +15,36 @@ CoreControlWidgets::SelectTab_NS::BasicSet_Page::BasicSet_Page(QWidget *parent):
 
     // ========== 3. 构建中层可变区域 ==========
     m_setListScrollArea = new QScrollArea();
+    m_setListScrollArea->setFrameShape(QFrame::NoFrame);
     m_setListScrollArea->setWidgetResizable(true);
     m_setListScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     m_setListScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    m_setListScrollArea->setStyleSheet("QScrollArea{background: #cee8f6; min-height: 50px;}");
-    QWidget *setListWidget = new QWidget();
-    setListWidget->setStyleSheet("QWidget{background: transparent;}");
+    m_setListScrollArea->setStyleSheet(R"(
+        QScrollArea {
+            border: none;
+            background-color: #cee8f6;
+        }
+        QScrollBar:vertical {
+            border: none;
+            background: #cee8f6;
+            width: 8px;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical {
+            background: #55a5f5;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background: #98c8fa;
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            border: none;
+            background: none;
+        }
+    )");
+    QFrame *setListWidget = new QFrame();
+    setListWidget->setObjectName("BasicSetTab_SetListWidget");
+    setListWidget->setStyleSheet("QFrame#BasicSetTab_SetListWidget{background: transparent;}");
     setListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     QVBoxLayout *setListLayout = new QVBoxLayout(setListWidget);
     setListLayout->setAlignment(Qt::AlignTop);
@@ -357,24 +381,24 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setBaibaoBox(QWidget* pare
     // 1.0 选择卡片
     QVBoxLayout *selectModMainLayout = new QVBoxLayout();
     parent->setLayout(selectModMainLayout);
-    // 1.1 布局
-    QHBoxLayout* selectModLayout = new QHBoxLayout();
-    selectModLayout->setContentsMargins(0, 0, 0, 0);
-    selectModLayout->setSpacing(10);
-    selectModLayout->setAlignment(Qt::AlignLeft);
+// 窗口置顶
+    QHBoxLayout* windowTopLayout = new QHBoxLayout();
+    windowTopLayout->setContentsMargins(0, 0, 0, 0);
+    windowTopLayout->setSpacing(10);
+    windowTopLayout->setAlignment(Qt::AlignLeft);
     // 1.2 laybal
-    QLabel* selectModLabel = new QLabel("窗口置顶");
-    selectModLabel->setFont(QFont("微软雅黑", 12));
-    selectModLayout->addWidget(selectModLabel);
+    QLabel* windowTopLabel = new QLabel("窗口置顶");
+    windowTopLabel->setFont(QFont("微软雅黑", 12));
+    windowTopLayout->addWidget(windowTopLabel);
     // 1.3 选项卡
-    QTabBar *selectModTabBar = new QTabBar();
-    selectModTabBar->setObjectName("doubleSLCT");
-    selectModTabBar->addTab("关闭 置顶");
-    selectModTabBar->addTab("开启 置顶");
-    selectModLayout->addWidget(selectModTabBar);
-    selectModMainLayout->addLayout(selectModLayout);
+    QTabBar *windowTopTabBar = new QTabBar();
+    windowTopTabBar->setObjectName("doubleSLCT");
+    windowTopTabBar->addTab("关闭 置顶");
+    windowTopTabBar->addTab("开启 置顶");
+    windowTopLayout->addWidget(windowTopTabBar);
+    selectModMainLayout->addLayout(windowTopLayout);
 
-    QObject::connect(selectModTabBar, &QTabBar::tabBarClicked, [=](int index) {
+    QObject::connect(windowTopTabBar, &QTabBar::tabBarClicked, [=](int index) {
         GlobalVariables* gv = GlobalVariables::getInstance();
         if (index == 0) {
             gv->is_settop_window = false;
@@ -386,12 +410,36 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setBaibaoBox(QWidget* pare
             emit SignalSource::getInstance()->WindowTopmostToggled();
         }
     });
-    connect(SignalSource::getInstance(), &SignalSource::WindowTopmostToggled, selectModTabBar, [=](){
+    connect(SignalSource::getInstance(), &SignalSource::WindowTopmostToggled, windowTopTabBar, [=](){
         GlobalVariables* gv = GlobalVariables::getInstance();
         if (gv->is_settop_window) {
-            selectModTabBar->setCurrentIndex(1);
+            windowTopTabBar->setCurrentIndex(1);
         } else {
-            selectModTabBar->setCurrentIndex(0);
+            windowTopTabBar->setCurrentIndex(0);
+        }
+    });
+
+// 十连抽
+    QHBoxLayout* tenSlcLayout = new QHBoxLayout();
+    tenSlcLayout->setContentsMargins(0, 0, 0, 0);
+    tenSlcLayout->setSpacing(10);
+    tenSlcLayout->setAlignment(Qt::AlignLeft);
+    // 1.2 laybal
+    QLabel* tenSlcLabel = new QLabel("单次抽取数量");
+    tenSlcLabel->setFont(QFont("微软雅黑", 12));
+    tenSlcLayout->addWidget(tenSlcLabel);
+    // 1.3 选项卡
+    QTabBar *tenSlcTabBar = new QTabBar();
+    tenSlcTabBar->setObjectName("doubleSLCT");
+    tenSlcTabBar->addTab("一次");
+    tenSlcTabBar->addTab("十连抽（实验）");
+    tenSlcLayout->addWidget(tenSlcTabBar);
+    selectModMainLayout->addLayout(tenSlcLayout);
+    QObject::connect(tenSlcTabBar, &QTabBar::tabBarClicked, [=](int index) {
+        if (index == 0) {
+            return;
+        } else {
+            return;
         }
     });
 }

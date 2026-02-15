@@ -57,6 +57,7 @@ namespace CoreControlWidgets {
         class MidWidget;
         class SelectFile_Page;
         class Select_Page;
+        class Memory_Page;
     } // namespace SelectTab_NS
 } // namespace CoreControlWidgets
 namespace ModWidgets {

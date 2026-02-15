@@ -20,6 +20,7 @@ class SelectTab : public BaseWidgets::BaseTab{
     public: SelectTab_NS::SelectFile_Page *selectFile_page = nullptr;
     public: SelectTab_NS::ListSet_Page *listSet_page = nullptr;
     public: SelectTab_NS::BasicSet_Page *basicSet_page = nullptr;
+    public: SelectTab_NS::Memory_Page *memory_page = nullptr;
 
     public: QWidget *m_oldPage = nullptr; // 处理拖拽事件时，记录上一个页面
     protected: void dragEnterEvent(QDragEnterEvent *event) override; // 拖拽事件：文件拖入

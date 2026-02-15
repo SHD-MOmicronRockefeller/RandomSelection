@@ -33,6 +33,7 @@ CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWi
     m_aspectMidWidget->setStyleSheet("QWidget#SelectTab_AspectMidWidget{background: #cee8f6;}");
     // 包裹原有MidWidget
     m_midWidget = new MidWidget();
+    GlobalVariables::getInstance()->main_mid_widget = m_midWidget;
     m_aspectMidWidget->setContentWidget(m_midWidget);
 
     // ========== 4. 构建下层固定区域 ==========

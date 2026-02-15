@@ -8,7 +8,6 @@
 #include <ranges>
 #include <vector>
 #include <algorithm>
-#include <map>
 
 namespace CoreCalculation
 {
@@ -20,14 +19,25 @@ class RandomSelectOption
         return true;
     }
 
-    public: inline static Base::OptionItem RS_Ordinary(const OptionList& optionList){
+    private: inline static Base::OptionItem _RS_Base(const OptionList& optionList, bool isBalance,
+                                                     long double smoothing_factor = 1.0L, long double power_factor = 1.0L){
         if (not _checkList(optionList)) return Base::OptionItem();
-        // 随机选择一个选项
-        Base::OptionItem result = _Ordinary(optionList);
-        // 增加选中次数
-        GlobalVariables::getInstance()->active_option_list.findByIndex(result.getIndex())->selectedTimes()++;
-        // 返回结果
+        Base::OptionItem result = isBalance ? _Ordinary(optionList) : _Balance(optionList, smoothing_factor, power_factor);
+        if (result.getContent() == "__UNDEFINED__") return result;
+        GlobalVariables* gv = GlobalVariables::getInstance();
+        gv->active_option_list.addOptionSelectedTimes(result);
+        gv->current_option_item = result;
+        gv->total_select_count++;
         return result;
+    }
+
+    public: inline static Base::OptionItem RS_Ordinary(const OptionList& optionList){
+        return _RS_Base(optionList, true);
+    }
+
+    public: inline static Base::OptionItem RS_Balance(const OptionList& optionList,
+                                                      const long double smoothing_factor, const long double power_factor){
+        return _RS_Base(optionList, false, smoothing_factor, power_factor);
     }
 
     public: inline static Base::OptionItem _Ordinary(const OptionList& optionList){
@@ -75,17 +85,6 @@ class RandomSelectOption
         return validOptions[selectedIdx];
     }
 
-    public: inline static Base::OptionItem RS_Balance(const OptionList& optionList,
-        const long double smoothing_factor, const long double power_factor){
-        if (not _checkList(optionList)) return Base::OptionItem();
-        // 随机选择一个选项
-        Base::OptionItem result = _Balance(optionList, smoothing_factor, power_factor);
-        // 增加选中次数
-        GlobalVariables::getInstance()->active_option_list.findByIndex(result.getIndex())->selectedTimes()++;
-        // 返回结果
-        return result;
-    }
-
     // 平衡随机抽取算法
     public: inline static Base::OptionItem _Balance(const OptionList& optionList,
         const long double smoothing_factor, const long double power_factor){
@@ -112,11 +111,12 @@ class RandomSelectOption
         }
 
         //  2. 提取核心数据
-        std::vector<long double> active_weights;
-        std::vector<long double> selected_times;
+        std::vector<long double> active_weights; // 活跃选项权重
+        std::vector<long double> selected_times; // 选项被抽取次数
         active_weights.reserve(active_options.size());
         selected_times.reserve(active_options.size());
 
+        // 提取权重和被抽取次数
         for (const auto& opt : active_options | std::views::values) {
             active_weights.push_back(static_cast<long double>(opt.getWeight()));
             selected_times.push_back(static_cast<long double>(opt.getSelectedTimes()));
@@ -137,10 +137,10 @@ class RandomSelectOption
         }
 
         //  5. 计算统计量（max/avg/std）
-        const long double max_count = *std::ranges::max_element(dynamic_scores);
+        const long double max_count = *std::ranges::max_element(dynamic_scores); // 最大被抽取次数
         const long double total_count = std::accumulate(
-            dynamic_scores.begin(), dynamic_scores.end(), 0.0L);
-        const long double avg_count = total_count / dynamic_scores.size();
+            dynamic_scores.begin(), dynamic_scores.end(), 0.0L); // 被抽取次数总和
+        const long double avg_count = total_count / dynamic_scores.size(); // 平均被抽取次数
 
         // 计算标准差
         long double std_sum = 0.0L;
@@ -165,8 +165,8 @@ class RandomSelectOption
         }
 
         const long double total_deviation = std::accumulate(
-            degree_of_deviation.begin(), degree_of_deviation.end(), 0.0L);
-        const long double avg_deviation = total_deviation / degree_of_deviation.size();
+            degree_of_deviation.begin(), degree_of_deviation.end(), 0.0L); // 总偏差
+        const long double avg_deviation = total_deviation / degree_of_deviation.size(); // 平均偏差
 
         std::vector<long double> shift_factors;
         shift_factors.reserve(active_options.size());

@@ -4,7 +4,7 @@
 
 #include "IPT_base.h"
 
-#include "CoreCalculation/DoubleFileClass/ReadFile/ImportFile.h"
+#include "CoreCalculation/DoubleFileClass/ReadFile/readFile.h"
 #include "CoreCalculation/SelectTabFunc/OptionList.hpp"
 
 #include "Console/console.h"
@@ -39,48 +39,17 @@ CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFile_Page(QWidget *pare
 
 void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToSelect(QString filePath)
 {
-    qDebug() << "ImportFileToSelect: " << filePath;
-    // CoreCalculation::RsolProcessor().readOptionList(filePath).print();
-
-    Task task_1 = newTask;
-    // 创建新任务并发送到后台线程
     PushTask([=]() mutable {
         // 读取文件并发送结果
-        const auto optionList = CoreCalculation::RsolProcessor().readOptionList(filePath);
-        SendResult(task_1, optionList);
-    });
-    // 接受结果并显示
-    ReturnTask(task_1,[=]() mutable {
-        // 读取结果并显示
-        const auto gv = GlobalVariables::getInstance();
-        gv->active_option_list = GetResult(CoreCalculation::OptionList);
-        gv->active_option_list.print();
-        gv->is_import_file = true;
+        CoreCalculation::readFile().readByPath(filePath);
+        qDebug() << "ImportFileToSelect: " << filePath;
     });
 }
 
 void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToList(QString filePath)
 {
-    Task task_1 = newTask;
-    Task task_2 = newTask;
     PushTask([=]() mutable {
-        const auto optionList = CoreCalculation::RsolProcessor().readOptionList(filePath);
-
-        QThread::msleep(3000);
-        qDebug() << "发送第一次任务";
-        SendResult(task_1, optionList);
-
-        QThread::msleep(3000);
-        qDebug() << "发送第二次任务";
-        SendResult(task_1, optionList);
-        SendResult(task_2, optionList);
-    });
-
-    ReturnTask(task_1,[=]() mutable {
-        qDebug() << "任务1完成";
-    });
-
-    ReturnTask(task_2,[=]() mutable {
-        qDebug() << "任务2完成";
+        CoreCalculation::readFile().readByPath(filePath);
+        qDebug() << "ImportFileToList: " << filePath;
     });
 }

@@ -2,6 +2,7 @@
 #define MIDWIDGET_H
 
 #include "QtPrecompiled.h"
+#include "ClassSpace.h"
 
 namespace CoreControlWidgets
 {
@@ -16,6 +17,10 @@ class MidWidget : public QWidget
     public: ~MidWidget();
 
     // public: static QWidget* createRatioWidget(QWidget* contentWidget, int stretchFactor);
+
+    public: BaseWidgets::AutoFitLabel *m_numList = nullptr;
+    public: BaseWidgets::AutoFitLabel *m_option_content = nullptr;
+    public: BaseWidgets::AutoFitLabel* m_option_information = nullptr;
 
     protected: void resizeEvent(QResizeEvent  *event) override;
     protected: void adjustFontSize();

@@ -11,17 +11,19 @@
 #include "SelectFile_P/selectFile.h"
 #include "ListSet_P/listSet.h"
 #include "BasicSet_P/basicSet.h"
+#include "Memory_P/memory.h"
 
 
 CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab(parent)
 {
-    this->hello_page = new SelectTab_NS::Hello_Page();
     this->importFile_page = new SelectTab_NS::ImportFile_Page();
 
+    this->hello_page = new SelectTab_NS::Hello_Page();
     this->select_page = new SelectTab_NS::Select_Page();
     this->selectFile_page = new SelectTab_NS::SelectFile_Page();
     this->listSet_page = new SelectTab_NS::ListSet_Page();  
     this->basicSet_page = new SelectTab_NS::BasicSet_Page();
+    this->memory_page = new SelectTab_NS::Memory_Page();
 
     //开启拖动
     this->setAcceptDrops(true);
@@ -63,7 +65,12 @@ CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab
         this->setPage(this->basicSet_page);
     });
     this->controlList->pushButton(basicSettingButton);
-    
+
+    QPushButton* memoryButton = new QPushButton("抽取记录");
+    connect(memoryButton, &QPushButton::clicked, this, [=, this](){
+        this->setPage(this->memory_page);
+    });
+    this->controlList->pushButton(memoryButton);
     
     
     this->setPage(this->select_page);

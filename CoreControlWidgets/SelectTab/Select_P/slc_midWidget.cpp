@@ -72,11 +72,11 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setUpLayout()
     this->m_upLayout->setContentsMargins(0, 0, 0, 0);
     this->m_upLayout->setSpacing(0);
 
-    BaseWidgets::AutoFitLabel *label = new BaseWidgets::AutoFitLabel("NUM> 123 / 123");
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    label->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
-    this->m_upLayout->addWidget(label);
-    this->m_upLayout->setStretchFactor(label, LabelSize - 4);
+    m_numList = new BaseWidgets::AutoFitLabel("NUM> 123 / 123");
+    m_numList->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_numList->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+    this->m_upLayout->addWidget(m_numList);
+    this->m_upLayout->setStretchFactor(m_numList, LabelSize - 4);
 
     BaseWidgets::AutoFitLabel *spring = new BaseWidgets::AutoFitLabel("");
     spring->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -111,43 +111,51 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
     this->m_midLayout->setSpacing(0);
     this->m_upLayout->setSizeConstraint(QLayout::SetNoConstraint);
 
-    BaseWidgets::AutoFitLabel *label = new BaseWidgets::AutoFitLabel("你名字六个字");
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->m_midLayout->addWidget(label);
-    this->m_midLayout->setStretchFactor(label, LabelSize);
+    m_option_content = new BaseWidgets::AutoFitLabel("你名字六个字");
+    m_option_content->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->m_midLayout->addWidget(m_option_content);
+    this->m_midLayout->setStretchFactor(m_option_content, LabelSize);
 
     BaseWidgets::AutoFitButton *button = new BaseWidgets::AutoFitButton("选\n择");
     button->setFont(QFont("Microsoft YaHei", 36, QFont::Bold));
     button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    label->setStyleSheet(R"(
+    m_option_content->setStyleSheet(R"(
         QLabel {
-            /* 基础样式 - 白色背景 + 深色文字，和按钮统一色调 */
             background-color: #FFFFFF;
             color: #333333;
-            /* font-size: 14px; */
-            padding: 6px 12px; /* 和按钮内边距一致，对齐布局 */
-            border: 1px solid transparent; /* 透明边框，避免和按钮排版错位 */
-            border-radius: 3px; /* 和按钮圆角一致 */
+            padding: 6px 12px;
+            border: 1px solid transparent;
+            border-radius: 3px;
         }
-
-        /* 可选：给标签添加选中/焦点样式（若需要交互） */
         QLabel:focus {
-            border: 1px solid #E0F0FF; /* 和按钮悬停边框颜色一致 */
-            outline: none; /* 去除默认焦点框 */
+            border: 1px solid #E0F0FF;
+            outline: none;
         }
     )");
-    QObject::connect(button, &QPushButton::clicked, label, [label]() {
+    QObject::connect(button, &QPushButton::clicked, QApplication::instance(), [=]() {
         Task task = newTask;
         PushTask([task]() mutable {
             const auto result = CoreCalculation::RandomSelectOption().RS_Balance(
-                GlobalVariables::getInstance()->active_option_list, 0.5, 3);
+                GlobalVariables::getInstance()->active_option_list, 1, 20);
             SendResultFinally(task, result);
         });
-        ReturnTask(task, [=]() mutable {
+        ReturnTask(task, ([=]() mutable {
+            GlobalVariables* gv = GlobalVariables::getInstance();
             const auto result =  GetResult(CoreCalculation::Base::OptionItem);
             qDebug() << result.getContent();
-            label->setText(result.getContent());
-        });
+            gv->main_mid_widget->m_option_content->setText(result.getContent());
+            gv->main_mid_widget->m_option_information->setText(QString("选择对象：%1  序号：%2\n权重：%3/%4/%5 | 概率：%6/%7 | 抽取次数：%8/%9")
+                    .arg(result.getContent()) // 选择对象
+                    .arg(result.getIndex())   // 序号
+                    .arg(result.getWeight()) // 权重
+                    .arg(gv->total_weight)   // 分权重
+                    .arg(gv->total_weight)   // 总权重
+                    .arg(QString::number(static_cast<double>(result.getWeight())*100/static_cast<double>(gv->total_weight), 'f', 3)) // 分概率
+                    .arg(QString::number(static_cast<double>(result.getWeight())*100/static_cast<double>(gv->total_weight), 'f', 3)) // 总概率
+                    .arg(result.getSelectedTimes() + 1) // 抽取次数
+                    .arg(gv->total_select_count)); // 总抽取次数
+            qDebug() << gv->main_mid_widget->m_option_information->text();
+        }));
     });
     this->m_midLayout->addWidget(button);
     this->m_midLayout->setStretchFactor(button, ButtonSize);
@@ -164,12 +172,14 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setDownLayout()
     this->m_downLayout->setContentsMargins(0, 0, 0, 0);
     this->m_downLayout->setSpacing(0);
 
-    BaseWidgets::AutoFitLabel *label = new BaseWidgets::AutoFitLabel(
-        "选择对象：人人人人  序号：xxx\n权重：xxxx/xxxxxx/xxxxxx | 概率：xxx.xxx%/xxx.xxx% | 抽取次数：xxxx/xxxxx");
-    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    label->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    this->m_downLayout->addWidget(label);
-    this->m_downLayout->setStretchFactor(label, LabelSize);
+    GlobalVariables* gv = GlobalVariables::getInstance();
+    m_option_information = new BaseWidgets::AutoFitLabel(
+        "选择对象：人人人人  序号：xxx\n权重：xxxx/xxxxxx/xxxxxx | 概率：xxx.xxx%/xxx.xxx% | 抽取次数：xxxx/xxxxx", 0,this);
+    m_option_information->setObjectName("OptionInformation_XXX");
+    m_option_information->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_option_information->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    this->m_downLayout->addWidget(m_option_information);
+    this->m_downLayout->setStretchFactor(m_option_information, LabelSize);
 
     BaseWidgets::AutoFitButton *button = new BaseWidgets::AutoFitButton("︾");
     //QPushButton *button = new QPushButton("︾");

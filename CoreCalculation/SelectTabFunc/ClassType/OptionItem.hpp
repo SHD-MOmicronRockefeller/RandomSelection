@@ -83,6 +83,8 @@ class OptionItem {
     private: unsigned int _selectedTimes = 0;
     public: inline unsigned int& selectedTimes() { return _selectedTimes; }
     public: inline unsigned int getSelectedTimes() const { return _selectedTimes; }
+    public: inline void addSelectedTimes(unsigned int selectedTimes) { this->_selectedTimes += selectedTimes; }
+    public: inline void addOneSelectedTimes() { ++this->_selectedTimes; }
     public: inline void setSelectedTimes(unsigned int selectedTimes) { this->_selectedTimes = selectedTimes; }
 
     // 单元所属组

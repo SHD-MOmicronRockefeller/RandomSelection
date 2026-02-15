@@ -1,5 +1,7 @@
 #pragma once
 #include <QMetaType>
+#include <set>
+#include <algorithm>
 
 #include "CoreCalculation/SelectTabFunc/ClassType/OptionItem.hpp"
 
@@ -15,6 +17,13 @@ class OptionList : public QVector<Base::OptionItem>
 
     private: QVector<Base::Group> _groups;
     public:  QVector<Base::Group> getGroups() const { return _groups; }
+
+    public: OptionList() = default;
+    public: OptionList(const OptionList& other) = default;
+    public: OptionList(OptionList&& other) = default;
+    public: OptionList& operator=(const OptionList& other) = default;
+    public: OptionList& operator=(OptionList&& other) = default;
+
 
 
 
@@ -35,7 +44,7 @@ class OptionList : public QVector<Base::OptionItem>
         bool removed = _groups.removeOne(_group);
         if (!removed) return false;
         for (Base::OptionItem item : *this) {
-                item.leaveGroup(_group); } 
+                item.leaveGroup(_group); }
         return true;
     }
 
@@ -51,6 +60,33 @@ class OptionList : public QVector<Base::OptionItem>
         // 若不存在相同的索引，则添加新的Base::OptionItem
         this->QVector<Base::OptionItem>::append(_item);
         return true;}
+    public: inline bool addOptionSort(unsigned int index, QString content = "__UNDEFINED__", unsigned long long weight = 0) {
+        return this->addOptionSort(Base::OptionItem(index, content, weight));}
+    public: inline bool addOptionSort(Base::OptionItem _item) {
+        std::sort(this->begin(), this->end(), [](Base::OptionItem a, Base::OptionItem b) {
+            return a.getIndex() < b.getIndex();
+        });
+        if (findByIndex(_item.getIndex()) != nullptr)
+            return false;
+        unsigned int targetIndex = _item.getIndex();
+        auto insertPos = std::lower_bound(this->begin(), this->end(), targetIndex,
+            [](const Base::OptionItem& item, unsigned int idx) {
+                return item.getIndex() < idx;
+            });
+        this->insert(insertPos, _item);
+        return true;
+    }
+
+    // 增加选中次数
+    public: inline void addOptionSelectedTimes(Base::OptionItem _item) {
+        unsigned int index = _item.getIndex();
+        if (not findByIndex(index)) {
+            this->addOptionSort(_item);
+        }
+        this->findByIndex(index)->addOneSelectedTimes();
+    }
+
+    // 修改Base::OptionItem
     public: inline bool setContent(unsigned int index, QString content) {
         Base::OptionItem* item = this->findByIndex(index);
         if (not item) return false;
@@ -87,11 +123,15 @@ class OptionList : public QVector<Base::OptionItem>
 
     // 获取指定索引的Base::OptionItem
     public: inline Base::OptionItem* findByIndex(unsigned int index) {
-        for (auto it = this->begin(); it!= this->end(); ++it){
-            if (it->getIndex() == index){
-                return &(*it);
-            }
-        }
+        std::sort(this->begin(), this->end(), [](Base::OptionItem a, Base::OptionItem b) {
+            return a.getIndex() < b.getIndex();
+        });
+        auto it = std::lower_bound(this->begin(), this->end(), index,
+            [](const auto& item, unsigned int idx) {
+                return item.getIndex() < idx;
+            });
+        if (it != this->end() && it->getIndex() == index)
+            return &*it;
         return nullptr;
     }
 
@@ -138,7 +178,7 @@ class OptionList : public QVector<Base::OptionItem>
 
     // 打印
     public: void print() const {
-        if (not this->isEmpty()) {
+        if (not _groups.isEmpty()) {
             auto qd = qDebug() << "[" << _groups[0].group();
             for (int i = 1; i < _groups.size(); i++) {
                 qd << ", " << _groups[i].group();

@@ -640,9 +640,14 @@ MessageTipWidget *MessageTipManager::addMessage(bool persistent, int stayTimeMs)
         QTimer::singleShot(actualStayTime, this, [this, tip]() {
             // 第一步：先判断裸指针是否为空，避免构造QPointer时访问野指针
             if (!tip) return;
-
+            QPointer<MessageTipWidget> safeTip = nullptr;
+            try {
+                safeTip = tip;
+            }
+            catch (...) {
+                return;
+            }
             // 第二步：构造QPointer（此时tip非空，QPointer会安全检查有效性）
-            QPointer<MessageTipWidget> safeTip = tip;
 
             // 第三步：检查safeTip有效性，再执行逻辑
             if (!safeTip || safeTip->isPersistent() || safeTip->isHandled()) return;
