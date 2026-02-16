@@ -68,6 +68,13 @@ qt_add_executable(${TARGET_NAME}
         ${RESOURCES}
 )
 
+# 设置生成的可执行文件为WIN32格式（避免控制台窗口）
+set_target_properties(
+        ${TARGET_NAME}
+        PROPERTIES
+        WIN32_EXECUTABLE TRUE
+)
+
 target_link_libraries(${TARGET_NAME} PRIVATE
         Qt::Core
         Qt::Gui
