@@ -399,7 +399,7 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setBaibaoBox(QWidget* pare
     selectModMainLayout->addLayout(windowTopLayout);
 
     QObject::connect(windowTopTabBar, &QTabBar::tabBarClicked, [=](int index) {
-        GlobalVariables* gv = GlobalVariables::getInstance();
+        GlobalVariables* gv = GLOBAL_VARIABLES;
         if (index == 0) {
             gv->is_settop_window = false;
             gv->main_window_shell->windowHandle()->setFlag(Qt::WindowStaysOnTopHint, false);
@@ -411,7 +411,7 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setBaibaoBox(QWidget* pare
         }
     });
     connect(SignalSource::getInstance(), &SignalSource::WindowTopmostToggled, windowTopTabBar, [=](){
-        GlobalVariables* gv = GlobalVariables::getInstance();
+        GlobalVariables* gv = GLOBAL_VARIABLES;
         if (gv->is_settop_window) {
             windowTopTabBar->setCurrentIndex(1);
         } else {

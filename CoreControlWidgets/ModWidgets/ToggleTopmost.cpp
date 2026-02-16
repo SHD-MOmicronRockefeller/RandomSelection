@@ -10,7 +10,8 @@ ModWidgets::ToggleTopmost::ToggleTopmost(QWidget *parent): QPushButton(parent)
 {
     connect(this, &QPushButton::clicked, this, [this](){
         this->changeWindowTopmost();
-        if (GlobalVariables::getInstance()->is_settop_window)
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        if (gv->is_settop_window)
             MessageTipManager::getInstance().addMessage(QString("窗口已 置顶"), false, 1000);
         else 
             MessageTipManager::getInstance().addMessage(QString("窗口已 取消 置顶"), false, 1000);
@@ -33,7 +34,7 @@ ModWidgets::ToggleTopmost::ToggleTopmost(QWidget *parent): QPushButton(parent)
 
 void ModWidgets::ToggleTopmost::changeWindowTopmost()
 {
-    GlobalVariables *gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     if (gv->is_settop_window) {
         gv->is_settop_window = false;
         // 取消置顶
@@ -47,7 +48,8 @@ void ModWidgets::ToggleTopmost::changeWindowTopmost()
 }
 
 void ModWidgets::ToggleTopmost::changeColor(){
-    if (GlobalVariables::getInstance()->is_settop_window) {
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    if (gv->is_settop_window) {
         setGreenColor();
     } else {
         setRedColor();

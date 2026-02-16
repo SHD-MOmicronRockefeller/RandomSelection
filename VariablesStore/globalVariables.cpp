@@ -3,7 +3,6 @@
 GlobalVariables* GlobalVariables::m_instance = nullptr; // 初始化单例指针
 QMutex GlobalVariables::m_mutex;                       // 初始化互斥锁
 
-
 GlobalVariables *GlobalVariables::getInstance(){
     QMutexLocker locker(&GlobalVariables::m_mutex); 
     if (GlobalVariables::m_instance == nullptr) {

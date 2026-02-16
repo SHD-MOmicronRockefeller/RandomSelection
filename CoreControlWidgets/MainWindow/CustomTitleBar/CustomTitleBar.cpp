@@ -26,7 +26,8 @@ CustomTitleBar::CustomTitleBar(QWidget *parent): QFrame(parent)
     // 设置尺寸
     setFixedHeight(40);
     //setFixedWidth(600);
-    move((GlobalVariables::getInstance()->main_window_width - 600)/2, 5);
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    move((gv->main_window_width - 600)/2, 5);
     // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
@@ -121,14 +122,14 @@ void CustomTitleBar::initWidgets()
     m_btnMin->setIconSize(QSize(25, 25));
     m_rightLayout->addWidget(m_btnMin);
     connect(m_btnMin,     &QPushButton::clicked, this, &CoreControlWidgets::MainWindow::CustomTitleBar::onMinimizeClicked);
-    
+
     m_btnSetting = new QPushButton(this);
     m_btnSetting->setObjectName("rightBtn");
     m_btnSetting->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MinWindowButtonN.png"));
     m_btnSetting->setIconSize(QSize(20, 20));
     m_rightLayout->addWidget(m_btnSetting);
     connect(m_btnSetting, &QPushButton::clicked, this, &CoreControlWidgets::MainWindow::CustomTitleBar::onSettingClicked);
-    
+
     m_btnMax = new QPushButton(this);
     m_btnMax->setObjectName("rightBtn");
     m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
@@ -142,15 +143,15 @@ void CustomTitleBar::initWidgets()
     m_btnClose->setIconSize(QSize(20, 20));
     m_rightLayout->addWidget(m_btnClose);
     connect(m_btnClose,   &QPushButton::clicked, this, &CoreControlWidgets::MainWindow::CustomTitleBar::onCloseClicked);
-    
+
 }
 
 void CustomTitleBar::initStyle()//#f8f9fa
 {
     setStyleSheet(R"(
-        #CustomTitleBar { 
-            background-color: rgba(248, 249, 250, 1); 
-            border-bottom: 1px solid rgba(220, 220, 220, 1); 
+        #CustomTitleBar {
+            background-color: rgba(248, 249, 250, 1);
+            border-bottom: 1px solid rgba(220, 220, 220, 1);
             border-radius: 0px;
         }
         QPushButton#midBtn {
@@ -202,7 +203,7 @@ void CustomTitleBar::onMinimizeClicked()
 
 void CustomTitleBar::onSettingClicked()
 {
-    GlobalVariables *gv = GlobalVariables::getInstance();
+    GlobalVariables *gv = GLOBAL_VARIABLES;
 
     if (gv->is_mini_window_showed){
         bool old_is_max = gv->is_max_window_showed;
@@ -261,7 +262,7 @@ void CustomTitleBar::onSettingClicked()
 
 void CustomTitleBar::onMaximizeClicked()
 {
-    GlobalVariables *gv = GlobalVariables::getInstance();
+    GlobalVariables *gv = GLOBAL_VARIABLES;
     // if (gv->is_mini_window_showed)
     //     onSettingClicked();
     if (gv->is_max_window_showed){
@@ -278,9 +279,10 @@ void CustomTitleBar::onCloseClicked()
 
 void CustomTitleBar::closeThisTab()
 {
-    if (GlobalVariables::getInstance()->this_tab_widget == nullptr) return;
-    GlobalVariables::getInstance()->main_window_shell->m_centralLayout->removeWidget(GlobalVariables::getInstance()->this_tab_widget);
-    GlobalVariables::getInstance()->this_tab_widget->hide();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    if (gv->this_tab_widget == nullptr) return;
+    gv->main_window_shell->m_centralLayout->removeWidget(gv->this_tab_widget);
+    gv->this_tab_widget->hide();
 }
 
 void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
@@ -333,30 +335,34 @@ void CustomTitleBar::onMidBtnClicked(QString ObjectName, bool canRun)
 
 void CustomTitleBar::onMidBtnClicked_randomSelect()
 {
-    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->select_tab;
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->this_tab_widget = gv->select_tab;
     this->onMidBtnClicked_help();
-    GlobalVariables::getInstance()->tab_index = 0;
+    gv->tab_index = 0;
 }
 
 void CustomTitleBar::onMidBtnClicked_fileEdit()
 {
-    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->file_tab;
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->this_tab_widget = gv->file_tab;
     this->onMidBtnClicked_help();
-    GlobalVariables::getInstance()->tab_index = 1;
+    gv->tab_index = 1;
 }
 
 void CustomTitleBar::onMidBtnClicked_setting()
 {
-    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->setting_tab;
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->this_tab_widget = gv->setting_tab;
     this->onMidBtnClicked_help();
-    GlobalVariables::getInstance()->tab_index = 2;
+    gv->tab_index = 2;
 }
 
 void CustomTitleBar::onMidBtnClicked_about()
 {
-    GlobalVariables::getInstance()->this_tab_widget = GlobalVariables::getInstance()->about_tab;
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->this_tab_widget = gv->about_tab;
     this->onMidBtnClicked_help();
-    GlobalVariables::getInstance()->tab_index = 3;
+    gv->tab_index = 3;
 }
 
 void CustomTitleBar::onMidBtnClicked_clicked(int tab_index)
@@ -382,8 +388,8 @@ void CustomTitleBar::onMidBtnClicked_clicked(int tab_index)
 
 void CustomTitleBar::onMidBtnClicked_help()
 {
-    GlobalVariables* gv = GlobalVariables::getInstance();
-    gv->main_window_shell->m_centralLayout->addWidget(GlobalVariables::getInstance()->this_tab_widget);
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->main_window_shell->m_centralLayout->addWidget(gv->this_tab_widget);
     gv->this_tab_widget->show();
 }
 

@@ -20,7 +20,7 @@ void initialize_values()
 {
     RS_Version::getInstance()->setVersion() << "3.0.0"; // 版本号
 
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     
     // 分步初始化UI成员（确保在QApplication就绪后）
 
@@ -54,7 +54,7 @@ void initialize_values()
 
 void initialize_settings()
 {
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     // 默认显示主窗口
     gv->window_stack->setCurrentIndex(0);
     gv->main_window_shell->show();

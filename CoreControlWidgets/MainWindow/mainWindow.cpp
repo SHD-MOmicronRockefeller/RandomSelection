@@ -16,8 +16,9 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
             background-color: rgba(211, 229, 247, 1);
         }
     )");
-    this->setCentralWidget(this->m_baseWidget);// 设置窗口 
-    GlobalVariables::getInstance()->main_window_widget = this->m_baseWidget;
+    this->setCentralWidget(this->m_baseWidget);// 设置窗口
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->main_window_widget = this->m_baseWidget;
 
     // 设置窗口大小
     this->setGeometry(100, 100, 800, 600);
@@ -35,8 +36,8 @@ CoreControlWidgets::MainWindowShell::MainWindowShell(QWidget *parent) : QMainWin
     this->m_titleLayout->setSpacing(0);// 设置间距为0
 
     // 初始化自定义标题栏
-    // qDebug() << (GlobalVariables::getInstance()->custom_title_bar == nullptr); 
-    this->m_customTitleBar = GlobalVariables::getInstance()->custom_title_bar;
+    // qDebug() << (GlobalVariables::getInstance()->custom_title_bar == nullptr);
+    this->m_customTitleBar = gv->custom_title_bar;
     this->m_titleLayout->addWidget(this->m_customTitleBar); // 添加自定义标题栏
 
     // 初始化主体widget
@@ -94,7 +95,7 @@ void CoreControlWidgets::MainWindowShell::changeEvent(QEvent* event) {
 
         // 检测「全屏 → 正常窗口」的场景
         if ((oldState & Qt::WindowFullScreen) && !(newState & Qt::WindowFullScreen)){
-            auto gv = GlobalVariables::getInstance();
+            GlobalVariables* gv = GLOBAL_VARIABLES;
             gv->custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
             gv->min_custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
         }

@@ -18,6 +18,10 @@
 #include "BaseWidgets/BaseCoreWidget/MessageTipWidget.h"
 #include "CoreCalculation/SelectTabFunc/OptionList.hpp"
 #include "CoreCalculation/SelectTabFunc/ClassType/OptionItem.hpp"
+#include <tuple>
+
+
+#define GLOBAL_VARIABLES  GlobalVariables::getInstance(); QMutexLocker _locker(&GlobalVariables::getInstance()->getDataMutex())
 
 
 class GlobalVariables {
@@ -28,6 +32,9 @@ class GlobalVariables {
 
     private: static GlobalVariables* m_instance;
     private: static QMutex m_mutex;
+    private: mutable QRecursiveMutex m_dataMutex{};
+
+    public: QRecursiveMutex& getDataMutex() const { return m_dataMutex; }
 
 
     // 私有构造、析构、拷贝、赋值（仅声明）
@@ -69,6 +76,8 @@ class GlobalVariables {
     public: CoreCalculation::Base::OptionItem current_option_item; // 当前选项项
     public: CoreControlWidgets::SelectTab_NS::MidWidget* main_mid_widget; // 当前选项信息
     public: CoreControlWidgets::SelectTab_NS::MidWidget* min_mid_widget; // 当前选项信息
+
+    public: QVector<std::tuple<unsigned int, QString, QString>> memory_list; // 历史选择列表
 
     // 文件操作
     public: bool is_import_file = false; // 是否导入文件

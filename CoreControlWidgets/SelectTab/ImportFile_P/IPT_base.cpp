@@ -89,7 +89,7 @@ void CoreControlWidgets::SelectTab_NS::IPT_Base::dragLeaveEvent(QDragLeaveEvent 
     Q_UNUSED(event);
     this->setDefaultStyle();
 
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     QTimer::singleShot(0, [this, gv](){
         if (
             gv->select_tab->importFile_page->IPT_FileToSelect->m_isInDrag  ||
@@ -109,7 +109,7 @@ void CoreControlWidgets::SelectTab_NS::IPT_Base::dropEvent(QDropEvent *event)
 
     this->m_filePath = event->mimeData()->urls().first().toLocalFile();
 
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     gv->select_tab->setPage(gv->select_tab->m_oldPage);
 
     this->importFunction(this->m_filePath);

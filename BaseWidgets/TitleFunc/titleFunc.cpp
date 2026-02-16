@@ -9,7 +9,7 @@ namespace MY_FUNC {
 
 void setMinWindow() //700 280
 {
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     
     // 空指针安全检查
     if (!gv || !gv->window_stack || !gv->min_window_widget) {
@@ -47,7 +47,7 @@ void setMinWindow() //700 280
 
 void setMainWindow()
 {
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     
     if (!gv || !gv->window_stack || !gv->main_window_widget) {
         qWarning() << "主窗口初始化失败，无法切换";
@@ -88,7 +88,7 @@ void setMainWindow()
 
 void setWindowMaximized()
 {
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
 
     // 获取原始大小
     gv->normal_window_size = gv->main_window_shell->size();
@@ -104,7 +104,7 @@ void setWindowMaximized()
 
 void setWindowReMaximized()
 {
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
 
     // 还原窗口
     gv->main_window_shell->showNormal();

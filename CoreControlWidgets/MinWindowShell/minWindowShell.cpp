@@ -11,10 +11,11 @@ namespace CoreControlWidgets
 
 MinWindow::MinWindowShell::MinWindowShell(QWidget *parent): QWidget(parent)
 {
-    this->m_customTitleBar = GlobalVariables::getInstance()->min_custom_title_bar;
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    this->m_customTitleBar = gv->min_custom_title_bar;
     this->m_midWidget = new CoreControlWidgets::SelectTab_NS::MidWidget();
-    GlobalVariables::getInstance()->min_mid_widget = this->m_midWidget;
-    this->m_aspectRatioWidget = new BaseWidgets::AspectRatioWidget(this, GlobalVariables::getInstance()->mid_window_proportion);
+    gv->min_mid_widget = this->m_midWidget;
+    this->m_aspectRatioWidget = new BaseWidgets::AspectRatioWidget(this, gv->mid_window_proportion);
 
     this->setAutoFillBackground(true);
     this->setAttribute(Qt::WA_StyledBackground, true);

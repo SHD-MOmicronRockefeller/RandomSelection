@@ -28,12 +28,13 @@ CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWi
 
     // ========== 3. 构建中间比例固定区域 ==========
     // 初始化比例容器（示例：4:3的宽高比）
-    m_aspectMidWidget = new BaseWidgets::AspectRatioWidget(nullptr, GlobalVariables::getInstance()->mid_window_proportion);
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    m_aspectMidWidget = new BaseWidgets::AspectRatioWidget(nullptr, gv->mid_window_proportion);
     m_aspectMidWidget->setObjectName("SelectTab_AspectMidWidget");
     m_aspectMidWidget->setStyleSheet("QWidget#SelectTab_AspectMidWidget{background: #cee8f6;}");
     // 包裹原有MidWidget
     m_midWidget = new MidWidget();
-    GlobalVariables::getInstance()->main_mid_widget = m_midWidget;
+    gv->main_mid_widget = m_midWidget;
     m_aspectMidWidget->setContentWidget(m_midWidget);
 
     // ========== 4. 构建下层固定区域 ==========

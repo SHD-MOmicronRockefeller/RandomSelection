@@ -72,7 +72,7 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setUpLayout()
     this->m_upLayout->setContentsMargins(0, 0, 0, 0);
     this->m_upLayout->setSpacing(0);
 
-    m_numList = new BaseWidgets::AutoFitLabel("NUM> 123 / 123");
+    m_numList = new BaseWidgets::AutoFitLabel("NUM> ");
     m_numList->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_numList->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
     this->m_upLayout->addWidget(m_numList);
@@ -89,6 +89,23 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setUpLayout()
     button->setMinimumSize(0, 0);
     this->m_upLayout->addWidget(button);
     this->m_upLayout->setStretchFactor(button, ButtonSize);
+    QObject::connect(button, &QPushButton::clicked, QApplication::instance(), [=]() {
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        if (gv->current_select_index > 1) {
+            gv->current_select_index -= 1;
+
+            QString numText = QString("NUM> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            gv->main_mid_widget->m_numList->setText(numText);
+            gv->min_mid_widget->m_numList->setText(numText);
+
+            auto [num, content, information] = gv->memory_list[gv->current_select_index - 1];
+            gv->main_mid_widget->m_option_content->setText(content);
+            gv->min_mid_widget->m_option_content->setText(content);
+
+            gv->main_mid_widget->m_option_information->setText(information);
+            gv->min_mid_widget->m_option_information->setText(information);
+        }
+    });
 
     // BaseWidgets::AutoFitButton *button = new BaseWidgets::AutoFitButton("︽");
     // button->setFont(QFont("Microsoft YaHei", 24, QFont::Bold));
@@ -133,18 +150,14 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
         }
     )");
     QObject::connect(button, &QPushButton::clicked, QApplication::instance(), [=]() {
-        Task task = newTask;
-        PushTask([task]() mutable {
+        Task task_1 = newTask;
+        Task task_2 = newTask;
+        PushTask(([task_1, task_2]() mutable {
+            GlobalVariables* gv = GLOBAL_VARIABLES;
             const auto result = CoreCalculation::RandomSelectOption().RS_Balance(
-                GlobalVariables::getInstance()->active_option_list, 1, 20);
-            SendResultFinally(task, result);
-        });
-        ReturnTask(task, ([=]() mutable {
-            GlobalVariables* gv = GlobalVariables::getInstance();
-            const auto result =  GetResult(CoreCalculation::Base::OptionItem);
-            qDebug() << result.getContent();
-            gv->main_mid_widget->m_option_content->setText(result.getContent());
-            gv->main_mid_widget->m_option_information->setText(QString("选择对象：%1  序号：%2\n权重：%3/%4/%5 | 概率：%6/%7 | 抽取次数：%8/%9")
+                gv->active_option_list, 1, 20);
+            SendResultFinally(task_1, result);
+            QString information = QString("选择对象：%1  序号：%2\n权重：%3/%4/%5 | 概率：%6%/%7% | 抽取次数：%8/%9")
                     .arg(result.getContent()) // 选择对象
                     .arg(result.getIndex())   // 序号
                     .arg(result.getWeight()) // 权重
@@ -153,9 +166,26 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
                     .arg(QString::number(static_cast<double>(result.getWeight())*100/static_cast<double>(gv->total_weight), 'f', 3)) // 分概率
                     .arg(QString::number(static_cast<double>(result.getWeight())*100/static_cast<double>(gv->total_weight), 'f', 3)) // 总概率
                     .arg(result.getSelectedTimes() + 1) // 抽取次数
-                    .arg(gv->total_select_count)); // 总抽取次数
-            qDebug() << gv->main_mid_widget->m_option_information->text();
+                    .arg(gv->total_select_count); // 总抽取次数
+            SendResultFinally(task_2, information);
+            gv->memory_list.append({gv->total_select_count, result.getContent(), information});
         }));
+        ReturnTask(task_1, [=]() mutable {
+            GlobalVariables* gv = GLOBAL_VARIABLES;
+            const auto result =  GetResult(CoreCalculation::Base::OptionItem);
+            gv->main_mid_widget->m_option_content->setText(result.getContent());
+            gv->min_mid_widget->m_option_content->setText(result.getContent());
+        });
+        ReturnTask(task_2, [=]() mutable {
+            GlobalVariables* gv = GLOBAL_VARIABLES;
+            const auto result =  GetResult(QString);
+            gv->main_mid_widget->m_option_information->setText(result);
+            gv->min_mid_widget->m_option_information->setText(result);
+            gv->current_select_index = gv->total_select_count;
+            QString numText = QString("NUM> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            gv->main_mid_widget->m_numList->setText(numText);
+            gv->min_mid_widget->m_numList->setText(numText);
+        });
     });
     this->m_midLayout->addWidget(button);
     this->m_midLayout->setStretchFactor(button, ButtonSize);
@@ -172,9 +202,9 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setDownLayout()
     this->m_downLayout->setContentsMargins(0, 0, 0, 0);
     this->m_downLayout->setSpacing(0);
 
-    GlobalVariables* gv = GlobalVariables::getInstance();
+    GlobalVariables* gv = GLOBAL_VARIABLES;
     m_option_information = new BaseWidgets::AutoFitLabel(
-        "选择对象：人人人人  序号：xxx\n权重：xxxx/xxxxxx/xxxxxx | 概率：xxx.xxx%/xxx.xxx% | 抽取次数：xxxx/xxxxx", 0,this);
+        "", 0,this);
     m_option_information->setObjectName("OptionInformation_XXX");
     m_option_information->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_option_information->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -192,4 +222,22 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setDownLayout()
     //this->m_downLayout->addWidget();
     this->m_mainLayout->addLayout(this->m_downLayout);
     this->m_mainLayout->setStretchFactor(this->m_downLayout, 3);
+
+    QObject::connect(button, &QPushButton::clicked, QApplication::instance(), [=]() {
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        if (gv->current_select_index < gv->total_select_count) {
+            gv->current_select_index += 1;
+
+            QString numText = QString("NUM> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            gv->main_mid_widget->m_numList->setText(numText);
+            gv->min_mid_widget->m_numList->setText(numText);
+
+            auto [num, content, information] = gv->memory_list[gv->current_select_index - 1];
+            gv->main_mid_widget->m_option_content->setText(content);
+            gv->min_mid_widget->m_option_content->setText(content);
+
+            gv->main_mid_widget->m_option_information->setText(information);
+            gv->min_mid_widget->m_option_information->setText(information);
+        }
+    });
 }

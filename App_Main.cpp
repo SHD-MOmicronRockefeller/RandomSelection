@@ -13,8 +13,9 @@ int main(int argc, char* argv[])
 
     //  Initialization ApplicationShell
     {
+        GlobalVariables* gv = GLOBAL_VARIABLES;
         ApplicationClass::ApplicationShell* app = new ApplicationClass::ApplicationShell(argc, argv);
-        GlobalVariables::getInstance()->application_shell = app;
+        gv->application_shell = app;
         app = nullptr;
     }
 

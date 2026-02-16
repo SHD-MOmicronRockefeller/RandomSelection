@@ -8,7 +8,7 @@
 
 namespace CoreCalculation {
     void readFile::readByPath(const QString& path) {
-        GlobalVariables* gv = GlobalVariables::getInstance();
+        GlobalVariables* gv = GLOBAL_VARIABLES;
         OptionList optionList = RsolProcessor(false).readOptionList(path);
 
         // 添加选项列表
@@ -25,6 +25,7 @@ namespace CoreCalculation {
         gv->is_import_file = true;
 
         gv->total_select_count = 0;
+        gv->memory_list.clear();
     }
 
     void readFile::readByStr(const QString& str) {

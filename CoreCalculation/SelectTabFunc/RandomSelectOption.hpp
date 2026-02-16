@@ -24,7 +24,7 @@ class RandomSelectOption
         if (not _checkList(optionList)) return Base::OptionItem();
         Base::OptionItem result = isBalance ? _Ordinary(optionList) : _Balance(optionList, smoothing_factor, power_factor);
         if (result.getContent() == "__UNDEFINED__") return result;
-        GlobalVariables* gv = GlobalVariables::getInstance();
+        GlobalVariables* gv = GLOBAL_VARIABLES;
         gv->active_option_list.addOptionSelectedTimes(result);
         gv->current_option_item = result;
         gv->total_select_count++;
