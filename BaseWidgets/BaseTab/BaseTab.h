@@ -12,8 +12,9 @@ class BaseTab : public QWidget{
     Q_OBJECT
     public: BaseTab(QWidget *parent = nullptr);
     public: ~BaseTab();
-    public: void setPage(QWidget *page);
 
+    public: void setPage(QWidget *page);
+    public: bool isPage(QWidget *page);
     
     public: BaseElements::ControlList *controlList = nullptr;
     public: QHBoxLayout *m_controlLayout = nullptr;

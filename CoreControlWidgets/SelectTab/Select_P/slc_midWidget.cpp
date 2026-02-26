@@ -5,8 +5,12 @@
 
 #include "CoreCalculation/SelectTabFunc/RandomSelectOption.hpp"
 #include "Console/console.h"
+#include "CoreCalculation/SelectTabFunc/OptionList.hpp"
 
 #include <QDebug>
+
+#include "CoreCalculation/SelectTabFunc/RandomSelectOption.hpp"
+#include "CoreControlWidgets/SelectTab/Memory_P/memory.h"
 
 #define ButtonSize 1
 #define LabelSize 6
@@ -76,12 +80,7 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setUpLayout()
     m_numList->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_numList->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
     this->m_upLayout->addWidget(m_numList);
-    this->m_upLayout->setStretchFactor(m_numList, LabelSize - 4);
-
-    BaseWidgets::AutoFitLabel *spring = new BaseWidgets::AutoFitLabel("");
-    spring->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    this->m_upLayout->addWidget(spring);
-    this->m_upLayout->setStretchFactor(spring, 4);
+    this->m_upLayout->setStretchFactor(m_numList, LabelSize);
 
     BaseWidgets::AutoFitButton *button = new BaseWidgets::AutoFitButton("︽");
     button->setFont(QFont("Microsoft YaHei", 24, QFont::Bold));
@@ -94,7 +93,12 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setUpLayout()
         if (gv->current_select_index > 1) {
             gv->current_select_index -= 1;
 
-            QString numText = QString("NUM> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            QString numText = "";
+            if (gv->current_select_index == 1) {
+                numText = QString("<font color=#D9534F>NUM></font> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            } else {
+                numText = QString("<font color=#F0AD4E>NUM></font> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            }
             gv->main_mid_widget->m_numList->setText(numText);
             gv->min_mid_widget->m_numList->setText(numText);
 
@@ -154,8 +158,14 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
         Task task_2 = newTask;
         PushTask(([task_1, task_2]() mutable {
             GlobalVariables* gv = GLOBAL_VARIABLES;
-            const auto result = CoreCalculation::RandomSelectOption().RS_Balance(
-                gv->active_option_list, 1, 20);
+            auto result = CoreCalculation::Base::OptionItem();
+            if (gv->is_balance) {
+                result = CoreCalculation::RandomSelectOption().RS_Balance(
+                    gv->active_option_list, gv->smoothing_factor, gv->power_factor);
+            } else {
+                result = CoreCalculation::RandomSelectOption().RS_Ordinary(
+                    gv->active_option_list);
+            }
             SendResultFinally(task_1, result);
             QString information = QString("选择对象：%1  序号：%2\n权重：%3/%4/%5 | 概率：%6%/%7% | 抽取次数：%8/%9")
                     .arg(result.getContent()) // 选择对象
@@ -175,6 +185,8 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
             const auto result =  GetResult(CoreCalculation::Base::OptionItem);
             gv->main_mid_widget->m_option_content->setText(result.getContent());
             gv->min_mid_widget->m_option_content->setText(result.getContent());
+            gv->select_tab->memory_page->PushOption(result);
+            gv->select_tab->memory_page->SortMemory();
         });
         ReturnTask(task_2, [=]() mutable {
             GlobalVariables* gv = GLOBAL_VARIABLES;
@@ -224,11 +236,15 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setDownLayout()
     this->m_mainLayout->setStretchFactor(this->m_downLayout, 3);
 
     QObject::connect(button, &QPushButton::clicked, QApplication::instance(), [=]() {
-        GlobalVariables* gv = GLOBAL_VARIABLES;
         if (gv->current_select_index < gv->total_select_count) {
             gv->current_select_index += 1;
 
-            QString numText = QString("NUM> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            QString numText = "";
+            if (gv->current_select_index == gv->total_select_count) {
+                numText = QString("<font color=#5CB85C>NUM></font> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            } else {
+                numText = QString("<font color=#F0AD4E>NUM></font> %1 / %2").arg(gv->current_select_index).arg(gv->total_select_count);
+            }
             gv->main_mid_widget->m_numList->setText(numText);
             gv->min_mid_widget->m_numList->setText(numText);
 

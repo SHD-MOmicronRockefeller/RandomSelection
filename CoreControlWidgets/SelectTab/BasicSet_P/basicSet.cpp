@@ -123,6 +123,7 @@ CoreControlWidgets::SelectTab_NS::BasicSet_Page::~BasicSet_Page()
 {
 }
 
+// 设置选择模式
 void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectMod(QWidget* parent) {
     // 1 选择模式
     // 1.0 选择卡片
@@ -217,17 +218,6 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
     selectFuncFrameLayout->setAlignment(Qt::AlignLeft);
     selectFuncFrame->setLayout(selectFuncFrameLayout);
 
-    // 链接 参数设置
-    QObject::connect(selectFuncTabBar, &QTabBar::tabBarClicked, [=](int index) {
-        if (index == 0) {
-            selectFuncTip->setText(selectFuncTipText_1);
-            selectFuncMainLayout->removeWidget(selectFuncFrame);
-        } else {
-            selectFuncTip->setText(selectFuncTipText_2);
-            selectFuncMainLayout->addWidget(selectFuncFrame);
-        }
-    });
-
     // 分隔符
     QFrame *separator = new QFrame();
     separator->setStyleSheet(R"(
@@ -279,7 +269,9 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
         // 滑动条 数值标签同步
     selectFuncFrameLayout->addLayout(topLayout);
     connect(topSlider, &QSlider::valueChanged, [=](int value) {
-        topValueLabel->setText(QString::number(value / 1000.0, 'f', 3));
+        topValueLabel->setText(QString::number(value / 1000.0l, 'f', 3));
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        gv->smoothing_factor = static_cast<long double>(value) / 1000.0l;
     });
 
     QFrame *separator_2 = new QFrame();
@@ -347,10 +339,28 @@ void CoreControlWidgets::SelectTab_NS::BasicSet_Page::setSelectFunc(QWidget* par
     auto setPower = [=]() {
         powerValueLabel->setText(QString::number(
             powerSlider_coarse->value() + (powerSlider_fine->value() / 1000.0),'f', 3));
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        gv->power_factor = static_cast<long double>(powerSlider_coarse->value()) +
+                           (static_cast<long double>(powerSlider_fine->value()) / 1000.0l);
     };
 
     connect(powerSlider_coarse, &QSlider::valueChanged, setPower);
     connect(powerSlider_fine, &QSlider::valueChanged, setPower);
+
+    // 链接 参数设置
+    QObject::connect(selectFuncTabBar, &QTabBar::tabBarClicked, [=](int index) {
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        if (index == 0) {
+            selectFuncTip->setText(selectFuncTipText_1);
+            selectFuncMainLayout->removeWidget(selectFuncFrame);
+            gv->is_balance = false;
+        } else {
+            selectFuncTip->setText(selectFuncTipText_2);
+            selectFuncMainLayout->addWidget(selectFuncFrame);
+            gv->is_balance = true;
+            setPower();
+        }
+    });
 
     setStyleSheet(styleSheet() + R"(
         QSlider#whiteSlider::groove:horizontal {

@@ -13,6 +13,8 @@
 #include "BasicSet_P/basicSet.h"
 #include "Memory_P/memory.h"
 
+#include "VariablesStore/globalVariables.h"
+
 
 CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab(parent)
 {
@@ -40,6 +42,13 @@ CoreControlWidgets::SelectTab::SelectTab(QWidget *parent) : BaseWidgets::BaseTab
     // 选择按钮
     QPushButton* randomSelectButton = new QPushButton("随机选择");
     connect(randomSelectButton, &QPushButton::clicked, this, [=, this](){
+        GlobalVariables* gv = GLOBAL_VARIABLES;
+        if (this->isPage(this->basicSet_page) && not this->isPage(this->select_page)) {
+            if (gv->is_balance) {
+                MessageTipManager::getInstance().addMessage(QString("启用选择器平衡抽取模式\n权重平衡因子：%1|幂倍率：%2").arg(gv->smoothing_factor, 0, 'f', 3).arg(gv->power_factor, 0, 'f', 3), false, 1000);
+            } else {
+                MessageTipManager::getInstance().addMessage("随机选择-轮盘抽取", false, 2500);
+            }}
         this->setPage(this->select_page);
     });
     this->controlList->pushButton(randomSelectButton);

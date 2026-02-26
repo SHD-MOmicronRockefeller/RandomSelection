@@ -91,6 +91,13 @@ class OptionItem {
     private: QVector<Group> _ownGroups;
     public: inline QVector<Group>&   ownGroups() { return _ownGroups; }
     public: inline QVector<Group> getOwnGroups() const { return _ownGroups; }
+    public: inline QStringList getOwnGroupNames() const {
+        QStringList groupNames;
+        for (const Group& group : _ownGroups) {
+            groupNames.append(group.group());
+        }
+        return groupNames;
+    }
     // 加入组
     public: inline bool joinGroup(Group _group) {
         if (_ownGroups.contains(_group)) return false;

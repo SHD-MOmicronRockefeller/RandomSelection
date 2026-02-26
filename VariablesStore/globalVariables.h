@@ -73,6 +73,10 @@ class GlobalVariables {
     public: unsigned long long total_weight = 0; // 总的权重
     public: unsigned long long current_weight = 0; // 当前权重
 
+    public: bool is_balance = false; // 是否平衡模式
+    public: long double smoothing_factor = 0.0l; // 权重平衡因子
+    public: long double power_factor = 0.0l; // 幂倍率
+
     public: CoreCalculation::Base::OptionItem current_option_item; // 当前选项项
     public: CoreControlWidgets::SelectTab_NS::MidWidget* main_mid_widget; // 当前选项信息
     public: CoreControlWidgets::SelectTab_NS::MidWidget* min_mid_widget; // 当前选项信息

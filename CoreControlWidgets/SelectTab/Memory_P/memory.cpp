@@ -1,5 +1,8 @@
 #include "memory.h"
 
+#include "mmryItem.h"
+
+#include <algorithm>
 CoreControlWidgets::SelectTab_NS::Memory_Page::Memory_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
@@ -42,11 +45,54 @@ CoreControlWidgets::SelectTab_NS::Memory_Page::Memory_Page(QWidget *parent): QWi
     optionListWidget->setObjectName("BasicSetTab_SetListWidget");
     optionListWidget->setStyleSheet("QFrame#BasicSetTab_SetListWidget{background: transparent;}");
     optionListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    QVBoxLayout *setListLayout = new QVBoxLayout(optionListWidget);
-    setListLayout->setAlignment(Qt::AlignTop);
-    setListLayout->setSpacing(20);
-    // 0 设置标题
+    QVBoxLayout *memoryListLayout = new QVBoxLayout(optionListWidget);
+    memoryListLayout->setAlignment(Qt::AlignTop);
+    memoryListLayout->setSpacing(10);
 
+    // 获取记录列表
+    GetList = [=, this]() -> QList<MmryItem*> {
+        QList<MmryItem*> result;
+        if (!memoryListLayout || memoryListLayout->count() == 0) return result;
+        for (int i = 0; i < memoryListLayout->count(); i++) {
+            QLayoutItem* item = memoryListLayout->itemAt(i);
+            if (!item) continue;
+            MmryItem* memoryItem = qobject_cast<MmryItem*>(item->widget());
+            if (memoryItem) {
+                result.append(memoryItem);
+            }
+        }
+        return result;
+    };
+    // 添加记录
+    PushOption = [=, this](CoreCalculation::Base::OptionItem optionItem) {
+        QList<MmryItem*> mmryItemList = GetList();
+        bool is_have = false;
+        for (int i = 0; i < mmryItemList.size(); ++i) {
+            is_have = is_have || mmryItemList[i]->addOption(optionItem);
+        }
+        if (not is_have) {
+            memoryListLayout->addWidget(new MmryItem(optionItem));
+        }
+    };
+    // 排序记录列表
+    SortMemory = [=, this]() {
+        QList<MmryItem*> mmryItemList = GetList();
+        if (!memoryListLayout || mmryItemList.count() == 0) return;
+        QWidget* parentWidget = memoryListLayout->parentWidget();
+        if (parentWidget) parentWidget->setUpdatesEnabled(false);
+
+        std::sort(mmryItemList.begin(), mmryItemList.end(), [](MmryItem* a, MmryItem* b) {
+            return a->optionItem.getSelectedTimes() > b->optionItem.getSelectedTimes();
+        });
+
+        for (int i = 0; i < mmryItemList.size();++i) {
+            memoryListLayout->insertWidget(i, mmryItemList.at(i));
+        }
+        if (parentWidget) {
+            parentWidget->setUpdatesEnabled(true);
+            parentWidget->update();
+        }
+    };
 
 
     optionListWidget->adjustSize();

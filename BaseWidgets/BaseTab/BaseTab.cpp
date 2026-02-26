@@ -71,3 +71,7 @@ void BaseWidgets::BaseTab::setPage(QWidget *page)
     this->m_this_widget->show();
     this->m_centerLayout->setStretchFactor(this->m_this_widget, 1);
 }
+
+bool BaseWidgets::BaseTab::isPage(QWidget* page) {
+    return this->m_this_widget == page;
+}
