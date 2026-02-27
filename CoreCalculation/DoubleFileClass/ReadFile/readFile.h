@@ -8,10 +8,29 @@
 #include "ImportFile.h"
 
 namespace CoreCalculation {
+
+
+
 class readFile {
-    public: void readByPath(const QString& path); // 通过路径读取文件
-    public: void readByStr(const QString& str); // 通过字符串读取文件
+    public: OptionList readByPath(const QString& _path); // 通过路径读取文件
+    public: void readByStr(const QString& _str); // 通过字符串读取文件
 };
+
+
+
+
+class readDirt {
+    public: class _file {
+        public: QString fileName; // 文件名
+        public: QString filePath; // 文件路径
+        public: QString fileExtension; // 文件扩展名
+    };
+    public: QList<_file> getFilesBySuffix(const QString& folderPath, const QString& suffix, bool recursive = false); // 通过路径读取文件
+};
+
+
 } // CoreCalculation
+
+Q_DECLARE_METATYPE(CoreCalculation::readDirt::_file)
 
 #endif //READFILE_H

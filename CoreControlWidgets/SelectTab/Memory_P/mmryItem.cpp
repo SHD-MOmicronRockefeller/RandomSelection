@@ -105,7 +105,7 @@ CoreControlWidgets::SelectTab_NS::MmryItem::MmryItem(CoreCalculation::Base::Opti
     mainLayout->addWidget(selectedTimesLabel_Tip, 1);
 
     this->selectedTimesLabel_Val = new QLabel();
-    selectedTimesLabel_Val->setText(QString::number(optionItem.getSelectedTimes()));
+    selectedTimesLabel_Val->setText(QString::number(optionItem.getSelectedTimes() + 1));
     selectedTimesLabel_Val->setContentsMargins(3,2,3,2);
     selectedTimesLabel_Val->setFont(QFont("微软雅黑", 13));
     mainLayout->addWidget(selectedTimesLabel_Val, 2);
@@ -155,6 +155,6 @@ CoreControlWidgets::SelectTab_NS::MmryItem::MmryItem(CoreCalculation::Base::Opti
 bool CoreControlWidgets::SelectTab_NS::MmryItem::addOption(CoreCalculation::Base::OptionItem optionItem) {
     if (optionItem.getIndex() != this->optionItem.getIndex()) return false; // 避免添加重复的选项
     this->optionItem.setSelectedTimes(optionItem.getSelectedTimes()); // 更新选择次数
-    this->selectedTimesLabel_Val->setText(QString::number(optionItem.getSelectedTimes()));
+    this->selectedTimesLabel_Val->setText(QString::number(optionItem.getSelectedTimes() + 1));
     return true;
 }

@@ -1,5 +1,9 @@
 #include "listSet.h"
 
+#include "CoreCalculation/ToolBox/cleanLayout.hpp"
+
+#include "CoreCalculation/SelectTabFunc/OptionList.hpp"
+
 CoreControlWidgets::SelectTab_NS::ListSet_Page::ListSet_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
@@ -8,24 +12,66 @@ CoreControlWidgets::SelectTab_NS::ListSet_Page::ListSet_Page(QWidget *parent): Q
     this->m_centerLayout->setAlignment(Qt::AlignTop);
     this->setLayout(this->m_centerLayout);
 
-    // ========== 2. 构建上层固定区域 ==========
-    m_topWidget = new QWidget();
-    m_topWidget->setObjectName("ListSetTab_TopWidget");
-    m_topWidget->setStyleSheet("QWidget#ListSetTab_TopWidget{background: #FFCC00; min-height: 50px;}");
-    QHBoxLayout *topLayout = new QHBoxLayout(m_topWidget);
-    topLayout->setContentsMargins(10, 0, 10, 0);
-    topLayout->addWidget(new QLabel("上层固定区域"));
-    topLayout->addStretch();
-    topLayout->addWidget(new QPushButton("上层按钮"));
+    this->setAutoFillBackground(true);
+    this->setAttribute(Qt::WA_StyledBackground, true);
 
 
     // ========== 3. 构建中层可变区域 ==========
-    m_midWidget = new QWidget();
-    m_midWidget->setObjectName("ListSetTab_MidWidget");
-    m_midWidget->setStyleSheet("QWidget#ListSetTab_MidWidget{background: #cee8f6; min-height: 50px;}");
-    QHBoxLayout *midLayout = new QHBoxLayout(m_midWidget);
-    midLayout->setContentsMargins(10, 10, 10, 10);
-    midLayout->setSpacing(10);
+    m_setListScrollArea = new QScrollArea();
+    m_setListScrollArea->setFrameShape(QFrame::NoFrame);
+    m_setListScrollArea->setWidgetResizable(true);
+    m_setListScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    m_setListScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    m_setListScrollArea->setStyleSheet(R"(
+        QScrollArea {
+            border: none;
+            background-color: #cee8f6;
+        }
+        QScrollBar:vertical {
+            border: none;
+            background: #cee8f6;
+            width: 8px;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical {
+            background: #55a5f5;
+            border-radius: 4px;
+        }
+        QScrollBar::handle:vertical:hover {
+            background: #98c8fa;
+        }
+        QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+            border: none;
+            background: none;
+        }
+    )");
+    QFrame *listSetListWidget = new QFrame();
+    listSetListWidget->setAutoFillBackground(true);
+    listSetListWidget->setAttribute(Qt::WA_StyledBackground, true);
+    listSetListWidget->setObjectName("ListSetTab_SetListWidget");
+    listSetListWidget->setStyleSheet("QFrame#ListSetTab_SetListWidget{background: transparent;}");
+    listSetListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    m_setListScrollArea->setWidget(listSetListWidget);
+
+    QVBoxLayout *listSetListLayout = new QVBoxLayout(listSetListWidget);
+    listSetListLayout->setAlignment(Qt::AlignTop);
+    listSetListLayout->setSpacing(10);
+
+    // 0 设置标题
+    QLabel* title = new QLabel("选择设置");
+    title->setAlignment(Qt::AlignHCenter| Qt::AlignVCenter);
+    title->setFont(QFont("微软雅黑", 16, QFont::Bold));
+    title->setWordWrap(true);
+    listSetListLayout->addWidget(title);
+
+    // 1 设置选项列表
+    setOptionList = [=, this](CoreCalculation::OptionList optionList) {
+        MYFUNCTION::CleanLayout() << listSetListLayout;
+        for (CoreCalculation::Base::Group group : optionList.getGroups()) {
+            listSetListLayout->addWidget(new ListSetGroup(group, optionList));
+        }
+        listSetListLayout->addStretch();
+    };
 
     // ========== 4. 构建下层固定区域 ==========
     m_downWidget = new QWidget();
@@ -40,8 +86,7 @@ CoreControlWidgets::SelectTab_NS::ListSet_Page::ListSet_Page(QWidget *parent): Q
     // ========== 5. 把上/中/下添加到BaseTab的中心布局 ==========
     this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
     this->m_centerLayout->setSpacing(0);
-    this->m_centerLayout->addWidget(m_topWidget);          // 上层（固定）
-    this->m_centerLayout->addWidget(m_midWidget, 1); // 中间（占剩余空间，比例固定）
+    this->m_centerLayout->addWidget(m_setListScrollArea, 1); // 中间（占剩余空间，比例固定）
     this->m_centerLayout->addWidget(m_downWidget);       // 下层（固定）
 }
 

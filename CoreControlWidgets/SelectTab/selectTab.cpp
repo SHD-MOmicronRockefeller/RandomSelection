@@ -105,6 +105,13 @@ void CoreControlWidgets::SelectTab::dragEnterEvent(QDragEnterEvent *event)
 
     if (fileInfo.isFile()) {
         this->setPage(this->importFile_page);
+        this->importFile_page->changeToFilePage();
+        event->acceptProposedAction();
+    }
+
+    if (fileInfo.isDir()) {
+        this->setPage(this->importFile_page);
+        this->importFile_page->changeToDirtPage();
         event->acceptProposedAction();
     }
 }
@@ -118,7 +125,8 @@ void CoreControlWidgets::SelectTab::dragLeaveEvent(QDragLeaveEvent *event)
         if (
             this->importFile_page->IPT_FileToSelect->m_isInDrag ||
             this->importFile_page->IPT_FileToList->m_isInDrag   ||
-            this->importFile_page->IPT_BouthDouble->m_isInDrag
+            this->importFile_page->IPT_FileBouthDouble->m_isInDrag ||
+            this->importFile_page->IPT_DirtToList->m_isInDrag
         ) return;
         if (this->m_oldPage)
             this->setPage(this->m_oldPage);

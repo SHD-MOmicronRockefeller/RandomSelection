@@ -3,7 +3,7 @@
 namespace BaseWidgets {
 
 
-AspectRatioWidget::AspectRatioWidget(QWidget *parent, double ratio)
+AspectRatioWidget::AspectRatioWidget(double ratio, QWidget *parent)
     : QWidget(parent), m_aspectRatio(ratio)
 {
 

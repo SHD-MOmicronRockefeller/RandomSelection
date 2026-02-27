@@ -1,59 +1,47 @@
-#include "ToggleTopmost.h"
+//
+// Created by Administrator on 2026/2/26.
+//
 
-#include "VariablesStore/globalVariables.h"
+#include "listSetOption.h"
 
 #include "ApplicationClass/Application/SignalSource.h"
 
-#include "BaseWidgets/BaseCoreWidget/MessageTipWidget.h"
+static void refreshWidgetStyle(QWidget *widget) {
+    if (!widget) return;
+    // 强制Qt重新计算样式表
+    widget->style()->unpolish(widget);
+    widget->style()->polish(widget);
+    // 强制重绘
+    widget->update();
+}
 
-ModWidgets::ToggleTopmost::ToggleTopmost(QWidget *parent): QPushButton(parent)
-{
-    connect(this, &QPushButton::clicked, this, [this](){
-        this->changeWindowTopmost();
-        GlobalVariables* gv = GLOBAL_VARIABLES;
-        if (gv->is_settop_window)
-            MessageTipManager::getInstance().addMessage(QString("窗口已 置顶"), false, 1000);
-        else 
-            MessageTipManager::getInstance().addMessage(QString("窗口已 取消 置顶"), false, 1000);
-        emit SignalSource::getInstance()->WindowTopmostToggled();
-
-        this->setEnabled(false);
-        QTimer::singleShot(333, [this](){
-            this->setEnabled(true);
-        });
-    });
-    connect(SignalSource::getInstance(), &SignalSource::WindowTopmostToggled, this, [this](){
+CoreControlWidgets::SelectTab_NS::ListSetOption::ListSetOption(CoreCalculation::Base::OptionItem optionItem,QWidget* parent)
+    : BaseWidgets::AutoFitButton(optionItem.getContent(), 3, parent), optionItem(optionItem) {
+    QObject::connect(this, &QPushButton::clicked, this, [this](){
+        this->isSelected = !isSelected;
         this->changeColor();
     });
 
-    this->setText(QString("置顶窗口"));
+    QObject::connect(SignalSource::getInstance(), &SignalSource::SelectTab_ListSet_ChangeOption, this, [this](unsigned int index, bool isSelected){
+        if (this->optionItem.getIndex() != index) return;
+        this->isSelected = isSelected;
+        if (this->isSelected)
+            this->setGreenColor();
+        else
+            this->setRedColor();
+        refreshWidgetStyle(this);
+    });
 
-    this->setFixedSize(100, 45);
-    this->setFont(QFont("Microsoft YaHei", 14));
+    this->setGreenColor();
 }
 
-void ModWidgets::ToggleTopmost::changeWindowTopmost()
-{
-    GlobalVariables* gv = GLOBAL_VARIABLES;
-    if (gv->is_settop_window) {
-        gv->is_settop_window = false;
-        // 取消置顶
-        gv->main_window_shell->windowHandle()->setFlag(Qt::WindowStaysOnTopHint, false);
-    } else {
-        gv->is_settop_window = true;
-        // 置顶
-        gv->main_window_shell->windowHandle()->setFlag(Qt::WindowStaysOnTopHint, true);
-    }
-
+void CoreControlWidgets::SelectTab_NS::ListSetOption::changeColor() {
+    isSelected ? setRedColor() : setGreenColor();
+    this->update();
+    emit SignalSource::getInstance()->SelectTab_ListSet_ChangeOption(this->optionItem.getIndex(), this->isSelected);
 }
 
-void ModWidgets::ToggleTopmost::changeColor(){
-    GlobalVariables* gv = GLOBAL_VARIABLES;
-    gv->is_settop_window ? setGreenColor() : setRedColor();
-}
-
-void ModWidgets::ToggleTopmost::setGreenColor()
-{
+void CoreControlWidgets::SelectTab_NS::ListSetOption::setGreenColor() {
     setStyleSheet(R"(
         QPushButton {
             background-color: rgba(16, 185, 129, 0.2);
@@ -76,11 +64,9 @@ void ModWidgets::ToggleTopmost::setGreenColor()
             color: #999999;                              /* 浅灰色文字 */
             border: 2px solid rgba(180, 180, 180, 0.5);  /* 灰色边框 */}
     )");
-    this->setText(QString("取消置顶"));
 }
 
-void ModWidgets::ToggleTopmost::setRedColor()
-{
+void CoreControlWidgets::SelectTab_NS::ListSetOption::setRedColor() {
     setStyleSheet(R"(
         QPushButton {
             background-color: rgba(239, 68, 68, 0.15);
@@ -103,5 +89,9 @@ void ModWidgets::ToggleTopmost::setRedColor()
             color: #999999;                              /* 浅灰色文字 */
             border: 2px solid rgba(180, 180, 180, 0.5);  /* 灰色边框 */}
     )");
-    this->setText(QString("置顶窗口"));
+}
+
+void CoreControlWidgets::SelectTab_NS::ListSetOption::resizeEvent(QResizeEvent* event) {
+    this->setFixedHeight(event->size().width() * 0.5);
+    AutoFitButton::resizeEvent(event);
 }

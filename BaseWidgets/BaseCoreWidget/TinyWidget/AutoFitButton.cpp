@@ -3,8 +3,8 @@
 namespace BaseWidgets {
 
 // 构造函数1：带文字参数
-AutoFitButton::AutoFitButton(const QString& text, QWidget* parent)
-    : QPushButton(text, parent)
+AutoFitButton::AutoFitButton(const QString& text, int _subSize, QWidget* parent)
+    : QPushButton(text, parent) , m_subSize(_subSize)
 {
     initButtonSettings();
 }
@@ -102,7 +102,7 @@ void AutoFitButton::adjustFontSize()
 
         if (widthFit && heightFit)
         {
-            bestFontSize = fontSize;
+            bestFontSize = fontSize - m_subSize;
             break;
         }
     }

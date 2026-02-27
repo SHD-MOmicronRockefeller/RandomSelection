@@ -156,7 +156,7 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
     QObject::connect(button, &QPushButton::clicked, QApplication::instance(), [=]() {
         Task task_1 = newTask;
         Task task_2 = newTask;
-        PushTask(([task_1, task_2]() mutable {
+        PushTask([=]() mutable {
             GlobalVariables* gv = GLOBAL_VARIABLES;
             auto result = CoreCalculation::Base::OptionItem();
             if (gv->is_balance) {
@@ -179,7 +179,7 @@ void CoreControlWidgets::SelectTab_NS::MidWidget::setMidLayout()
                     .arg(gv->total_select_count); // 总抽取次数
             SendResultFinally(task_2, information);
             gv->memory_list.append({gv->total_select_count, result.getContent(), information});
-        }));
+        });
         ReturnTask(task_1, [=]() mutable {
             GlobalVariables* gv = GLOBAL_VARIABLES;
             const auto result =  GetResult(CoreCalculation::Base::OptionItem);

@@ -17,5 +17,6 @@ class SignalSource : public QObject
     private: SignalSource& operator=(const SignalSource&) = delete;
 
     signals: void WindowTopmostToggled();
+    signals: void SelectTab_ListSet_ChangeOption(unsigned int index, bool isSelected);
 
 };

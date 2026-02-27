@@ -176,6 +176,17 @@ class OptionList : public QVector<Base::OptionItem>
         });
     }
 
+    // 通过组名寻找option
+    public: OptionList findByGroup(Base::Group _group) {
+        OptionList options;
+        for (Base::OptionItem item : *this) {
+            if (item.getOwnGroups().contains(_group)) {
+                options.append(item);
+            }
+        }
+        return options;
+    }
+
     // 打印
     public: void print() const {
         if (not _groups.isEmpty()) {

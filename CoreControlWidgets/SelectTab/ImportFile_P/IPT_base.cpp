@@ -76,7 +76,7 @@ void CoreControlWidgets::SelectTab_NS::IPT_Base::dragEnterEvent(QDragEnterEvent 
         return;
 
     QFileInfo fileInfo(event->mimeData()->urls().first().toLocalFile());
-    if (not fileInfo.isFile())
+    if (not fileInfo.isFile() && not fileInfo.isDir())
         return;
 
     event->acceptProposedAction();
@@ -94,7 +94,7 @@ void CoreControlWidgets::SelectTab_NS::IPT_Base::dragLeaveEvent(QDragLeaveEvent 
         if (
             gv->select_tab->importFile_page->IPT_FileToSelect->m_isInDrag  ||
             gv->select_tab->importFile_page->IPT_FileToList  ->m_isInDrag  ||
-            gv->select_tab->importFile_page->IPT_BouthDouble ->m_isInDrag  ||
+            gv->select_tab->importFile_page->IPT_FileBouthDouble ->m_isInDrag  ||
             gv->select_tab->m_isInDrag
         ) return;
         gv->select_tab->setPage(gv->select_tab->m_oldPage);

@@ -10,7 +10,7 @@ class AspectRatioWidget : public QWidget
 {
     Q_OBJECT
     // ratio: 宽高比）
-    public: AspectRatioWidget(QWidget *parent = nullptr, double ratio = 1.0);
+    public: AspectRatioWidget(double ratio = 1.0, QWidget *parent = nullptr);
     // 设置要包裹的核心控件
     public: void setContentWidget(QWidget *widget);
 

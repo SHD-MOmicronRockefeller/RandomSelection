@@ -2,6 +2,9 @@
 #define LIST_SET_H
 #include "QtPrecompiled.h"
 
+#include "listSetGroup.h"
+#include "CoreCalculation/SelectTabFunc/OptionList.hpp"
+#include <functional>
 
 namespace CoreControlWidgets
 {
@@ -17,12 +20,11 @@ class ListSet_Page : public QWidget
 
     public: QVBoxLayout *m_centerLayout = nullptr;
 
-
-    protected: QWidget *m_topWidget = nullptr;    // 上层固定区域
-
-    protected: QWidget *m_midWidget = nullptr;     // 中层可变区域
+    protected: QScrollArea *m_setListScrollArea = nullptr;     // 中层可变区域
 
     protected: QWidget *m_downWidget = nullptr; // 下层固定区域
+
+    public: std::function<void(CoreCalculation::OptionList)> setOptionList = nullptr;
 
 
 };
