@@ -52,6 +52,7 @@ class CustomTitleBar : public QFrame
     protected: void initLayout(); // 初始化布局
     protected: void initWidgets(); // 初始化控件
     protected: void initStyle(); // 初始化样式
+    protected: void initConnections(); // 初始化信号与槽的连接
 
     // 布局成员
     protected: QHBoxLayout *m_mainLayout = nullptr; // 中心布局

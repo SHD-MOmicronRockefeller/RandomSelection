@@ -51,8 +51,8 @@ class GlobalVariables {
     public: const int application_setp_version = 1;
 
     // 主窗口信息
-    public: const int main_window_width = 700; // 主窗口宽度
-    public: const int main_window_height = 350 + 30; // 30为状态栏高度
+    public: const int main_window_width = 800; // 主窗口宽度
+    public: const int main_window_height = 400 + 30; // 30为状态栏高度
     public: const double mid_window_proportion = 3.0 / 1.0; // 主窗口中部窗口的比例
 
     // 最大化窗口信息

@@ -83,21 +83,29 @@ void CoreControlWidgets::MainWindowShell::resizeEvent(QResizeEvent *event)
     emit windowChanged();
 }
 
-void CoreControlWidgets::MainWindowShell::changeEvent(QEvent* event) {
+void CoreControlWidgets::MainWindowShell::changeEvent(QEvent* event)
+{
+    // 先调用父类函数，保证Qt内部状态正确更新
     QMainWindow::changeEvent(event);
-    // 判断是否是窗口状态变化事件
-    if (event->type() == QEvent::WindowStateChange)
-    {
-        // 转换为窗口状态变化事件，获取新旧状态
-        QWindowStateChangeEvent *stateEvent = static_cast<QWindowStateChangeEvent*>(event);
-        Qt::WindowStates oldState = stateEvent->oldState();
-        Qt::WindowStates newState = this->windowState();
 
-        // 检测「全屏 → 正常窗口」的场景
-        if ((oldState & Qt::WindowFullScreen) && !(newState & Qt::WindowFullScreen)){
-            GlobalVariables* gv = GLOBAL_VARIABLES;
-            gv->custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
-            gv->min_custom_title_bar->m_btnMax->setIcon(QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"));
-        }
+    // 只处理窗口状态变化事件
+    if (event->type() != QEvent::WindowStateChange) {
+        return;
     }
+
+    // 1. 获取当前最新的窗口状态
+    Qt::WindowStates currentState = this->windowState();
+    // 2. 判断窗口是否处于「放大状态」（最大化 或 全屏，统一处理）
+    bool isZoomed = (currentState & Qt::WindowMaximized) || (currentState & Qt::WindowFullScreen);
+    // 3. 统一设置图标
+    QIcon targetIcon = isZoomed
+        ? QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonM.png")  // 放大状态：还原图标
+        : QIcon(":/ICONS/icons/TitleIcons/_MaximizeButtonN.png"); // 正常状态：最大化图标
+
+    // 只获取一次全局变量，优化性能
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->custom_title_bar->m_btnMax->setIcon(targetIcon);
+    gv->min_custom_title_bar->m_btnMax->setIcon(targetIcon);
+
+    gv->is_max_window_showed = isZoomed;
 }

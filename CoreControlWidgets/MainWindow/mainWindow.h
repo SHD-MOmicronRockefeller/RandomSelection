@@ -34,6 +34,8 @@ class MainWindowShell : public QMainWindow{
     protected: void resizeEvent(QResizeEvent *event) override;
     protected: void changeEvent(QEvent *event) override;
 
+
+
     signals: void windowChanged();
 };
 

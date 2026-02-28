@@ -182,6 +182,10 @@ void CustomTitleBar::initStyle()//#f8f9fa
     )");
 }
 
+void CustomTitleBar::initConnections() {
+
+}
+
 QIcon CustomTitleBar::setIconColor(QIcon icon, QColor color)
 {
     if (icon.isNull()) {
@@ -408,7 +412,7 @@ void CustomTitleBar::setMainWindowminimized()
 void CustomTitleBar::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
-        // 关键：告诉系统，这是标题栏拖动
+        //告诉系统，这是标题栏拖动
         ReleaseCapture();
         SendMessage(HWND(this->window()->winId()),
                     WM_NCLBUTTONDOWN, HTCAPTION, 0);
