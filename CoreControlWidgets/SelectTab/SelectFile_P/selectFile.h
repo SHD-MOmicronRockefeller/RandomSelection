@@ -2,6 +2,7 @@
 #define SELECT_FILE_H
 
 #include "QtPrecompiled.h"
+#include "slcf_midBox.h"
 
 
 namespace CoreControlWidgets
@@ -27,11 +28,9 @@ class SelectFile_Page : public QWidget
 
 
     // mid
-    public: QGroupBox *m_thisFileGroupBox = nullptr;
-    public: QGroupBox *m_tempFileGroupBox = nullptr;
-    public: QGroupBox *m_thatFileGroupBox = nullptr;
-
-
+    public: Slcf_midBox *m_thisFileGroupBox = nullptr;
+    public: Slcf_midBox *m_tempFileGroupBox = nullptr;
+    public: Slcf_midBox *m_thatFileGroupBox = nullptr;
 
 };
 

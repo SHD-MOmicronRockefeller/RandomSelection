@@ -20,12 +20,13 @@ class readFile {
 
 
 class readDirt {
-    public: class _file {
+    public: struct _file {
         public: QString fileName; // 文件名
         public: QString filePath; // 文件路径
         public: QString fileExtension; // 文件扩展名
     };
     public: QList<_file> getFilesBySuffix(const QString& folderPath, const QString& suffix, bool recursive = false); // 通过路径读取文件
+    public: _file pathToFile(const QString& filePath); // 通过路径获取文件信息
 };
 
 

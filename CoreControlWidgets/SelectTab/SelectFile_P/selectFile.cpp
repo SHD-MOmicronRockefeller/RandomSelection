@@ -27,7 +27,7 @@ CoreControlWidgets::SelectTab_NS::SelectFile_Page::SelectFile_Page(QWidget *pare
     midLayout->setContentsMargins(10, 10, 10, 10);
     midLayout->setSpacing(10);
     // 左侧文件列表
-    m_thisFileGroupBox = new QGroupBox("当前文件");
+    m_thisFileGroupBox = new Slcf_midBox("当前文件");
     QVBoxLayout *thisFileLayout = new QVBoxLayout(m_thisFileGroupBox);
     thisFileLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -36,7 +36,7 @@ CoreControlWidgets::SelectTab_NS::SelectFile_Page::SelectFile_Page(QWidget *pare
     thisFileBoxLayout->setContentsMargins(0, 0, 0, 0);
     thisFileBoxLayout->setSpacing(0);
     
-    m_tempFileGroupBox = new QGroupBox("临时文件");
+    m_tempFileGroupBox = new Slcf_midBox("临时文件");
     QVBoxLayout *tempFileLayout = new QVBoxLayout(m_tempFileGroupBox);
     tempFileLayout->setContentsMargins(0, 0, 0, 0);
     thisFileBoxLayout->addWidget(m_tempFileGroupBox);
@@ -51,7 +51,7 @@ CoreControlWidgets::SelectTab_NS::SelectFile_Page::SelectFile_Page(QWidget *pare
     thatFileBoxLayout->setContentsMargins(0, 0, 0, 0);
     thatFileBoxLayout->setSpacing(0);   
     
-    m_thatFileGroupBox = new QGroupBox("其它文件");
+    m_thatFileGroupBox = new Slcf_midBox("其它文件");
     QVBoxLayout *thatFileLayout = new QVBoxLayout(m_thatFileGroupBox);
     thatFileLayout->setContentsMargins(0, 0, 0, 0);
     thatFileBoxLayout->addWidget(m_thatFileGroupBox);

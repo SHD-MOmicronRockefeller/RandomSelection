@@ -8,6 +8,11 @@
 
 #include "CoreControlWidgets/ModWidgets/ToggleTopmost.h"
 
+#include <QtTextToSpeech/QTextToSpeech>
+
+#include "BaseWidgets/BaseCoreWidget/TinyWidget/AutoFitLabel.h"
+#include "CoreControlWidgets/MintWidgets/TwoColorButton.h"
+
 CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWidget(parent)
 {
     this->m_centerLayout = new QVBoxLayout();
@@ -44,13 +49,30 @@ CoreControlWidgets::SelectTab_NS::Select_Page::Select_Page(QWidget *parent): QWi
     m_downWidget->setAttribute(Qt::WA_StyledBackground, true);
     m_downWidget->setStyleSheet("QWidget#SelectTab_BottomWidget{background: rgba(179, 214, 255, 1); min-height: 50px;}");
 
-    QHBoxLayout *bottomLayout = new QHBoxLayout(m_downWidget);
-    bottomLayout->setContentsMargins(5, 0, 5, 0);
-    bottomLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-    
-    bottomLayout->addWidget(new ::ModWidgets::ToggleTopmost());
-    bottomLayout->addStretch();
+    QHBoxLayout *buttomLayout = new QHBoxLayout(m_downWidget);
+    buttomLayout->setContentsMargins(5, 0, 5, 0);
+    buttomLayout->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
+    // 添加置顶按钮
+    buttomLayout->addWidget(new ::ModWidgets::ToggleTopmost());
+
+    // 添加朗读按钮
+    TwoColorButton *speechButton = new TwoColorButton();
+    speechButton->setText("朗读选项");
+    speechButton->setFixedSize(100, 45);
+    speechButton->setFont(QFont("Microsoft YaHei", 14));
+    QTextToSpeech* tts = new QTextToSpeech(this);
+    tts->setVolume(1.0);
+    QObject::connect(speechButton, &QPushButton::clicked, [=, this]() {
+        tts->say(this->m_midWidget->m_option_content->text());
+        speechButton->setEnabled(false);
+        QTimer::singleShot(1000, [speechButton](){
+            speechButton->setEnabled(true);
+        });
+    });
+    buttomLayout->addWidget(speechButton);
+
+    buttomLayout->addStretch();
     // ========== 5. 把上/中/下添加到BaseTab的中心布局 ==========
     this->m_centerLayout->setContentsMargins(0, 0, 0, 0);
     this->m_centerLayout->setSpacing(0);

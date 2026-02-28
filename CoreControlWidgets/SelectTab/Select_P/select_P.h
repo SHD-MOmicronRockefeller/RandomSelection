@@ -25,7 +25,7 @@ class Select_Page : public QWidget
     protected: QWidget *m_topWidget = nullptr;    // 上层固定区域
 
     protected: BaseWidgets::AspectRatioWidget *m_aspectMidWidget = nullptr; // 中间比例容器
-    protected: MidWidget* m_midWidget = nullptr;
+    public: MidWidget* m_midWidget = nullptr;
 
     protected: QWidget *m_downWidget = nullptr; // 下层固定区域
 

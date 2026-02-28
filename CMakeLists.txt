@@ -59,7 +59,7 @@ message(STATUS "最终编译的源文件数量: ${SOURCES_COUNT}")
 message(STATUS "源文件列表: ${SOURCES}")
 
 # 后续代码不变...
-find_package(Qt6 COMPONENTS Core Gui Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Core Gui Widgets TextToSpeech REQUIRED)
 
 qt_add_executable(${TARGET_NAME}
         ${SOURCES}
@@ -79,6 +79,7 @@ target_link_libraries(${TARGET_NAME} PRIVATE
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt::TextToSpeech
 )
 
 # 自动复制依赖

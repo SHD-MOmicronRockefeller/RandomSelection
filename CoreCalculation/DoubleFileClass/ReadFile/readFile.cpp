@@ -97,4 +97,12 @@ QList<readDirt::_file> readDirt::getFilesBySuffix(const QString& folderPath, con
 
     return result;
 }
+
+readDirt::_file readDirt::pathToFile(const QString& filePath) {
+    _file fileItem;
+    fileItem.filePath = filePath;
+    fileItem.fileName = QFileInfo(filePath).fileName();
+    fileItem.fileExtension = QFileInfo(filePath).suffix();
+    return fileItem;
+}
 } // CoreCalculation

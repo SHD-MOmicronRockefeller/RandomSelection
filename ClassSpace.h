@@ -1,8 +1,10 @@
 #ifndef CLASSSPACE_H
 #define CLASSSPACE_H
 
+class CollapsibleWidget;
 class Console;
 class GlobalVariables;
+class LayoutWidget;
 class MessageTipManager;
 class MessageTipWidget;
 class OptionItem;
@@ -28,6 +30,8 @@ namespace CoreCalculation {
     class RandomSelectOption;
     class RsolProcessor;
     class StringCodec;
+    class readDirt;
+    class readFile;
 
     namespace Base {
         class Group;
@@ -53,13 +57,21 @@ namespace CoreControlWidgets {
         class Hello_Page;
         class IPT_Base;
         class ImportFile_Page;
+        class ListSetGroup;
+        class ListSetOption;
         class ListSet_Page;
+        class Memory_Page;
         class MidWidget;
+        class MmryItem;
         class SelectFile_Page;
         class Select_Page;
-        class Memory_Page;
+        class importButton;
+        class Slcf_midBox;
     } // namespace SelectTab_NS
 } // namespace CoreControlWidgets
+namespace MYFUNCTION {
+    class CleanLayout;
+} // namespace MYFUNCTION
 namespace ModWidgets {
     class ToggleTopmost;
 } // namespace ModWidgets

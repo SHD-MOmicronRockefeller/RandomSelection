@@ -149,6 +149,10 @@ RandomSelection/
 │   │   │   └── AutoFitLabel.h
 │   │   ├── AspectRatioWidget.cpp
 │   │   ├── AspectRatioWidget.h
+│   │   ├── CollapsibleWidget.cpp
+│   │   ├── CollapsibleWidget.h
+│   │   ├── LayoutWidget.cpp
+│   │   ├── LayoutWidget.h
 │   │   ├── MessageTipWidget.cpp
 │   │   └── MessageTipWidget.h
 │   ├── BaseTab/
@@ -168,16 +172,20 @@ RandomSelection/
 │   │   └── ReadFile/
 │   │       ├── ImportFile.cpp
 │   │       ├── ImportFile.h
+│   │       ├── readFile.cpp
+│   │       ├── readFile.h
 │   │       └── target.rsol
 │   ├── FileEditFunc/
-│   └── SelectTabFunc/
-│       ├── ClassType/
-│       │   ├── OptionItem.hpp
-│       │   └── word.hpp
-│       ├── OptionList.hpp
-│       ├── RandomSelectOption.hpp
-│       ├── RandomSelectOption.md
-│       └── StringCodec.hpp
+│   ├── SelectTabFunc/
+│   │   ├── ClassType/
+│   │   │   ├── OptionItem.hpp
+│   │   │   └── word.hpp
+│   │   ├── OptionList.hpp
+│   │   ├── RandomSelectOption.hpp
+│   │   ├── RandomSelectOption.md
+│   │   └── StringCodec.hpp
+│   └── ToolBox/
+│       └── cleanLayout.hpp
 ├── CoreControlWidgets/
 │   ├── AboutTab/
 │   │   ├── aboutTab.cpp
@@ -214,10 +222,21 @@ RandomSelection/
 │   │   │   └── importFiles.h
 │   │   ├── ListSet_P/
 │   │   │   ├── listSet.cpp
-│   │   │   └── listSet.h
+│   │   │   ├── listSet.h
+│   │   │   ├── listSetGroup.cpp
+│   │   │   ├── listSetGroup.h
+│   │   │   ├── listSetOption.cpp
+│   │   │   └── listSetOption.h
+│   │   ├── Memory_P/
+│   │   │   ├── memory.cpp
+│   │   │   ├── memory.h
+│   │   │   ├── mmryItem.cpp
+│   │   │   └── mmryItem.h
 │   │   ├── SelectFile_P/
 │   │   │   ├── selectFile.cpp
-│   │   │   └── selectFile.h
+│   │   │   ├── selectFile.h
+│   │   │   ├── slcf_midBox.cpp
+│   │   │   └── slcf_midBox.h
 │   │   ├── Select_P/
 │   │   │   ├── select_P.cpp
 │   │   │   ├── select_P.h

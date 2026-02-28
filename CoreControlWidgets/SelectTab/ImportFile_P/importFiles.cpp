@@ -10,6 +10,9 @@
 #include "Console/console.h"
 #include "CoreControlWidgets/SelectTab/ListSet_P/listSet.h"
 #include "VariablesStore/globalVariables.h"
+#include "CoreCalculation/DoubleFileClass/ReadFile/readFile.h"
+#include "CoreControlWidgets/SelectTab/SelectFile_P/selectFile.h"
+#include "CoreControlWidgets/SelectTab/SelectFile_P/slcf_midBox.h"
 
 
 CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFile_Page(QWidget *parent): QWidget(parent)
@@ -106,16 +109,10 @@ void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToSelect(QStri
 
 void CoreControlWidgets::SelectTab_NS::ImportFile_Page::ImportFileToList(QString filePath)
 {
-    Task task = newTask;
-    PushTask([=]() mutable {
-        // 读取文件并发送结果
-        auto result = CoreCalculation::readFile().readByPath(filePath);
-        qDebug() << "ImportFileToSelect: " << filePath;
-        SendResultFinally(task, result);
-    });
-    ReturnTask(task, [=]() {
-        MessageTipManager::getInstance().addMessage("已添加文件至临时列表", false, 2000);
-        GlobalVariables* gv = GLOBAL_VARIABLES;
-        gv->select_tab->listSet_page->setOptionList(gv->base_option_list);
-    });
+    using File = CoreCalculation::readDirt::_file;
+    using RD = CoreCalculation::readDirt;
+
+    File file = RD().pathToFile(filePath);
+    GlobalVariables* gv = GLOBAL_VARIABLES;
+    gv->select_tab->selectFile_page->m_tempFileGroupBox->addButton(file);
 }

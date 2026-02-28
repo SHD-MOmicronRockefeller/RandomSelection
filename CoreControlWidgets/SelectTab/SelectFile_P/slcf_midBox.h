@@ -6,6 +6,7 @@
 #define SLCF_MIDBOX_H
 
 #include "QtPrecompiled.h"
+#include "CoreCalculation/DoubleFileClass/ReadFile/readFile.h"
 
 namespace CoreControlWidgets {
 
@@ -14,17 +15,20 @@ namespace SelectTab_NS {
 class importButton : public QPushButton
 {
     public: explicit importButton(QWidget *parent = nullptr);
-    public: QString filePath = "";
+    public: CoreCalculation::readDirt::_file file;
 };
 
 
-class slcf_midBox : public QGroupBox
+class Slcf_midBox : public QGroupBox
 {
-    public: explicit slcf_midBox(QWidget *parent = nullptr);
-    public: explicit slcf_midBox(QString title, QWidget *parent = nullptr);
+    public: explicit Slcf_midBox(QWidget *parent = nullptr);
+    public: explicit Slcf_midBox(QString title, QWidget *parent = nullptr);
 
+    public: QVBoxLayout *mainLayout = nullptr;
     private: void init();
-    public: QVBoxLayout *mainLayout;
+
+    public: void cleanButton();
+    public: void addButton(CoreCalculation::readDirt::_file file);
 };
 
 
